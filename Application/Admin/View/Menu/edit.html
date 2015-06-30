@@ -1,0 +1,119 @@
+<extend name="Public/base"/>
+
+<block name="body">
+
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div class="tabbable tabbable-custom boxless">
+                <form id="form" action="{:U()}" method="post" class="form-1">
+                <div class="tab-content">
+                    
+                    <div class="portlet box red">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-reorder"></i>{:isset($info['id'])?'编辑':'新增'}后台菜单</div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse"></a>
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <a href="javascript:;" class="reload"></a>
+                                <a href="javascript:;" class="remove"></a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <!-- BEGIN FORM-->
+                            
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label>标题<span class="check-tips">（用于后台显示的配置标题）</span></label>
+                                        <input type="text" class="form-control input-xlarge" name="title" value="{$info.title|default=''}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>排序<span class="check-tips">（用于分组显示的顺序）</span></label>
+                                        <input type="text" class="form-control input-xlarge" name="sort" value="{$info.sort|default=0}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>链接<span class="check-tips">（U函数解析的URL或者外链）</span></label>
+                                        <input type="text" class="form-control input-xlarge" name="url" value="{$info.url|default=''}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>上级菜单<span class="check-tips">（所属的上级菜单）</span></label>
+                                        <select class="form-control  input-medium" name="pid">
+                                            <volist name="Menus" id="menu">
+                                                <option value="{$menu.id}">{$menu.title_show}</option>
+                                            </volist>
+                                        </select>
+                                    </div> 
+                                    <div class="form-group">
+                                        <label>分组<span class="check-tips">（用于左侧分组二级菜单）</span></label>
+                                        <input type="text" class="form-control input-xlarge" name="group" value="{$info.group|default=''}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>是否隐藏<span class="check-tips"></span></label>
+                                        <div class="radio-list">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="hide" value="1">是
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="hide" value="0">否
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>仅开发者模式可见<span class="check-tips"></span></label>
+                                        <div class="radio-list">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="is_dev" value="1">是
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="is_dev" value="0">否
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>说明<span class="check-tips">（菜单详细说明）</span></label>
+                                        <input type="text" class="form-control input-xlarge" name="tip" value="{$info.tip|default=''}">
+                                    </div>
+
+                                </div>
+                                
+                                
+                                <div class="form-actions fluid ">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <input type="hidden" name="id" value="{$info.id|default=''}">
+                                        <button class="btn green submit-btn ajax-post" id="submit" type="submit" target-form="form-1">确 定</button>
+                                        <button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>                  
+                                    </div>
+                                </div>
+                            
+                            <!-- END FORM--> 
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        setValue("pid", {$info.pid|default = 0});
+        setValue("hide", {$info.hide|default = 0});
+        setValue("is_dev", {$info.is_dev|default = 0});
+    </script>
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<!-- END PAGE LEVEL SCRIPTS -->
+	<script>
+	jQuery(document).ready(function() {       
+		// initiate layout and plugins
+		App.init();
+
+        highlight_subnav('{:U('index')}');
+		
+	});
+	</script>
+</block>

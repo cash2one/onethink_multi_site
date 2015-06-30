@@ -1,0 +1,30 @@
+<ol class="dd-list">
+<volist name="tree" id="list">
+    <li class="dd-item dd3-item"  data-id="{$list.id}"> 
+        <div class="dd-handle dd3-handle"></div>
+        <div class="dd3-content">
+            <form action="{:U('edit')}" method="post">
+                <input type="hidden" name="id" value="{$list.id}">
+                <span class="title editHide">{$list.title}</span>
+                <label class="editShow"><input type="text" name="title" class="text" value="{$list.title}"><span class="msg"></span></label>
+                <div class="editShow">
+                    <span class="badge badge-success">是否发布：{$list['allow_publish']?'是':'否'}</span>
+                    <a class="add-sub-cate" title="添加子分类" href="{:U('add?pid='.$list['id'])}"><span class="badge badge-success"> 添加子分类</span> </a>
+                    <a title="编辑" href="{:U('edit?id='.$list['id'].'&pid='.$list['pid'])}"><span class="badge badge-success">编辑</a>
+                    <a title="{$list.status|show_status_op}" href="{:U('setStatus?ids='.$list['id'].'&status='.abs(1-$list['status']))}" class="ajax-get">
+                    	<span class="badge badge-success">{$list.status|show_status_op}</span>
+                    </a>
+                    <a title="删除" href="{:U('remove?id='.$list['id'])}" class="confirm ajax-get"><span class="badge badge-success">删除</span></a>
+                    <a title="合并" href="{:U('operate?type=merge&from='.$list['id'])}"><span class="badge badge-success">合并</span></a>
+                    
+                </div>
+            </form>
+        </div>
+        
+		<notempty name="list['_']">
+			{:R('Category/tree', array($list['_']))}
+		</notempty>
+    </li>
+    
+</volist>
+</ol>

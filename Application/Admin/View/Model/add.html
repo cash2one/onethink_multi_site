@@ -1,0 +1,97 @@
+<extend name="Public/base" />
+<block name="body">
+    
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div class="tabbable tabbable-custom boxless">
+                <form id="form" action="{:U('update')}" method="post" class="form-1" >
+                
+                <div class="tab-content">
+                    
+                    <div class="portlet box blue">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-reorder"></i>新增模型</div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse"></a>
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <a href="javascript:;" class="reload"></a>
+                                <a href="javascript:;" class="remove"></a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <!-- BEGIN FORM-->
+                            
+                                <div class="form-body">
+                                    
+                                    <div class="form-group">
+                                        <label>模型标识<span class="check-tips">（请输入文档模型标识）</span></label>
+                                        <input type="text" class="form-control input-xlarge"  name="name" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>模型名称<span class="check-tips">（请输入模型的名称）</span></label>
+                                        <input type="text" class="form-control input-xlarge"  name="title" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>模型类型<span class="check-tips"></span></label>
+                                        <select class="form-control input-medium" name="extend">
+                                            <option value="0">独立模型</option>
+                                            <option value="1">文档模型</option>
+                                            <option value="13">应付款模型</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>引擎类型<span class="check-tips"></span></label>
+                                        <select class="form-control input-medium" name="engine_type">
+                                            <option value="MyISAM">MyISAM</option>
+                                            <option value="InnoDB">InnoDB</option>
+                                            <option value="MEMORY">MEMORY</option>
+                                            <option value="BLACKHOLE">BLACKHOLE</option>
+                                            <option value="MRG_MYISAM">MRG_MYISAM</option>
+                                            <option value="ARCHIVE">ARCHIVE</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>是否需要主键<span class="check-tips">（选"是"则会新建默认的id字段作为主键）</span></label>
+                                        <select class="form-control input-medium" name="need_pk">
+                                            <option value="1" selected="selected">是</option>
+                                            <option value="0">否</option>
+                                        </select>
+                                    </div>
+                    
+                                </div>
+                                
+                                
+                                <div class="form-actions fluid ">
+                                    <div class="col-md-offset-3 col-md-9">           
+                                        <button class="btn green submit-btn ajax-post no-refresh" type="submit" target-form="form-1">确 定</button>
+                                        <button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>              
+                                    </div>
+                                </div>
+                            
+                            <!-- END FORM--> 
+                        </div>
+                    </div>
+                        
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<!-- END PAGE LEVEL SCRIPTS -->
+	<script>
+	jQuery(document).ready(function() {       
+		// initiate layout and plugins
+		App.init();
+
+        highlight_subnav('{:U('Model/index')}');
+	});
+	</script>
+</block>

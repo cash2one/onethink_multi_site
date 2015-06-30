@@ -1,0 +1,91 @@
+<extend name="Public/base"/>
+
+<block name="style">
+	<link rel="stylesheet" type="text/css" href="__STATIC__/plugins/select2/select2_metro.css" />
+	<link rel="stylesheet" href="__STATIC__/plugins/data-tables/DT_bootstrap.css" />
+</block>
+
+<block name="body">
+    
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="portlet box green">
+            
+                <div class="portlet-title">
+                    <div class="caption"><i class="fa fa-globe"></i>
+                    配置管理[ <present name="Think.get.group">
+         <a href="{:U('index')}">全部</a><else/><strong>全部</strong></present>&nbsp;<foreach name="group" item="vo">
+		<neq name="group_id" value="$key">
+         <a href="{:U('index?group='.$key)}">{$vo}</a><else/><strong>{$vo}</strong></neq>&nbsp;     
+        </foreach> ]
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                        <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                        <a href="javascript:;" class="reload"></a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="table-toolbar">
+                        <div class="btn-group">
+                            <a class="btn green" href="{:U('add')}">新 增</a>
+                        </div>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover" id="sample">
+                        <thead>
+                            <tr>
+                                <th class="table-checkbox"><input type="checkbox" class="group-checkable" data-set="#sample .checkboxes" /></th>
+                                <th>ID</th>
+                                <th>名称</th>
+                                <th>标题</th>
+                                <th>分组</th>
+                                <th>类型</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <volist name="list" id="config">
+                                <tr class="odd gradeX">
+                                    <td><input class="ids checkboxes" type="checkbox" name="id[]" value="{$config.id}"></td>
+                                    <td>{$config.id}</td>
+                                    <td><a href="{:U('edit?id='.$config['id'])}">{$config.name}</a></td>
+                                    <td>{$config.title}</td>
+                                    <td>{$config.group|get_config_group}</td>
+                                    <td>{$config.type|get_config_type}</td>
+                                    <td>
+                                        <a title="编辑" href="{:U('edit?id='.$config['id'])}">编辑</a>
+                                        <a class="confirm ajax-get" title="删除" href="{:U('del?id='.$config['id'])}">删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+    
+                    <!-- 分页 -->
+                    <div class="page">
+                        {$_page}
+                    </div>
+    
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/DT_bootstrap.js"></script>
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script src="__STATIC__/scripts/table-managed.js"></script>     
+	<script>
+		jQuery(document).ready(function() {       
+		   App.init();
+		   TableManaged.init();
+		});
+	</script>
+</block>

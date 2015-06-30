@@ -1,0 +1,95 @@
+<extend name="Public/base"/>
+
+<block name="body">
+
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div class="tabbable tabbable-custom boxless">
+                <form id="form" action="{:U('AuthManager/writeGroup')}" enctype="application/x-www-form-urlencoded" method="post" class="form-1" >
+                <div class="tab-content">
+                    
+                    <div class="portlet box blue">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-reorder"></i>{$auth_group['id']?'编辑':'新增'}用户组</div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse"></a>
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <a href="javascript:;" class="reload"></a>
+                                <a href="javascript:;" class="remove"></a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <!-- BEGIN FORM-->
+                            
+                                <div class="form-body">
+                                
+
+                                    <div class="form-group">
+                                        <label>所属部门<span class="check-tips">（所属的上级部门）</span></label>
+                                        <select class="form-control  input-medium" name="department_id" value="{$auth_group.department_id}">
+                                            <volist name="Departments" id="department">
+                                                <option value="{$department.id}">{$department.title_show}</option>
+                                            </volist>
+                                        </select>
+                                    </div> 
+                                    
+                                    <div class="form-group">
+                                        <label>上级<span class="check-tips">（所属的上级岗位）</span></label>
+                                        <select class="form-control  input-medium" name="pid" value="{$auth_group.pid}">
+                                            <volist name="auth_groups" id="group">
+                                                <option value="{$group.id}">{$group.title_show}</option>
+                                            </volist>
+                                        </select>
+                                    </div> 
+                                    
+                                    <div class="form-group">
+                                        <label>岗位</label>
+                                        <input type="text" class="form-control input-xlarge"  name="title" value="{$auth_group.title}">
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <label>描述</label>
+                                        <textarea class="form-control input-xlarge" rows="3"  name="description" >{$auth_group.description}</textarea>
+                                    </div>
+
+                                </div>
+                                
+                                
+                                <div class="form-actions fluid ">
+                                    <div class="col-md-offset-3 col-md-9">
+           								<input type="hidden" name="id" value="{$auth_group.id}" />
+                                        <button class="btn green submit-btn ajax-post" id="submit" type="submit" target-form="form-1">确 定</button>
+                                        <button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>   
+                                                       
+                                    </div>
+                                </div>
+                            
+                            <!-- END FORM--> 
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<!-- END PAGE LEVEL SCRIPTS -->
+	<script>
+	setValue("department_id", {$auth_group.department_id|default = 0});
+	setValue("pid", {$auth_group.pid|default = 0});
+	jQuery(document).ready(function() {       
+		// initiate layout and plugins
+		App.init();
+
+        highlight_subnav('{:U('AuthManager/index')}');
+	})
+	</script>
+</block>

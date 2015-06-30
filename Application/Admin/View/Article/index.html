@@ -1,0 +1,174 @@
+<extend name="Public/base"/>
+
+<block name="style">
+	<link rel="stylesheet" href="__STATIC__/plugins/data-tables/DT_bootstrap.css" />
+</block>
+
+<!-- 子导航 -->
+<block name="sidebar">
+    <include file="sidemenu" />
+</block>
+
+<block name="body">
+
+	<!-- 数据表格 -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                    	<i class="fa fa-globe"></i>
+                        文档列表({$_total}) [
+                        <volist name="rightNav" id="nav">
+                        <a href="{:U('article/index','cate_id='.$nav['id'])}">{$nav.title}</a>
+                            <if condition="count($rightNav) gt $i"><i class="ca"></i></if>
+                        </volist>
+                        <present name="article">：<a href="{:U('article/index','cate_id='.$cate_id.'&pid='.$article['id'])}">{$article.title}</a></present>
+                        ]
+                        <eq name="allow" value="0">（该分类不允许发布内容）</eq>
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                        <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                        <a href="javascript:;" class="reload"></a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="table-toolbar">
+                        <div class="btn-group">
+                            <gt name="allow" value="0">
+                                <button class="btn document_add green  dropdown-toggle"  data-toggle="dropdown" <if condition="count($model) eq 1">url="{:U('article/add',array('cate_id'=>$cate_id,'pid'=>I('pid',0),'model_id'=>$model[0]))}"</if>>新 增	
+                                    <if condition="count($model) gt 1"><i class="fa fa-chevron-down"></i></if>
+                                </button>
+                                <if condition="count($model) gt 1">
+                                <ul class="dropdown-menu">
+                                    <volist name="model" id="vo">
+                                    <li><a href="{:U('article/add',array('cate_id'=>$cate_id,'model_id'=>$vo,'pid'=>I('pid',0)))}">{$vo|get_document_model='title'}</a></li>
+                                    </volist>
+                                </ul>
+                                </if>
+                            <else/>
+                                <button class="btn disabled green" >新 增
+                                    <if condition="count($model) gt 1"><i class="btn-arrowdown"></i></if>
+                                </button>
+                            </gt>
+                            <button class="btn green ajax-post" target-form="ids" url="{:U("Article/setStatus",array("status"=>1))}">启 用</button>
+                            <button class="btn green ajax-post" target-form="ids" url="{:U("Article/setStatus",array("status"=>0))}">禁 用</button>
+                            <button class="btn green ajax-post" target-form="ids" url="{:U("Article/move")}">移 动</button>
+                            <button class="btn green ajax-post" target-form="ids" url="{:U("Article/copy")}">复 制</button>
+                            <button class="btn green ajax-post" target-form="ids" hide-data="true" url="{:U("Article/paste")}">粘 贴</button>
+                            <input type="hidden" class="hide-data" name="cate_id" value="{$cate_id}"/>
+                            <input type="hidden" class="hide-data" name="pid" value="{$pid}"/>
+                            <button class="btn green ajax-post confirm" target-form="ids" url="{:U("Article/setStatus",array("status"=>-1))}">删 除</button>
+                            <button class="btn green list_sort" url="{:U('sort',array('cate_id'=>$cate_id,'pid'=>I('pid',0)),'')}">排序</button>
+                        </div>
+
+                        <div class="btn-group pull-right">
+                        	
+                            <div class="input-group input-medium">
+                                <input type="text" class="form-control search-input" name="title" placeholder="">
+                                <span class="input-group-btn">
+                                <button class="btn green" type="button"  id="search" url="{:U('Article/index',array('cate_id'=>$cate_id))}">搜索</button>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover" id="sample">
+                        <thead>
+                            <tr>
+                                <th class="table-checkbox"><input type="checkbox" class="group-checkable" data-set="#sample .checkboxes" /></th>
+                                
+                                <volist name="list_grids" id="field">
+                                <th>{$field.title}</th>
+                                </volist>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        	<volist name="list" id="data">
+                            <tr class="odd gradeX">
+                                
+                                <td><input class="checkboxes ids" type="checkbox" value="{$data['id']}" name="ids[]"/></td>
+                                <volist name="list_grids" id="grid">
+                                    <td>{:get_list_field($data,$grid,$model_list)}</td>
+                                </volist>
+                            </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                    
+                    <div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true">
+                    </div>	
+                    <!-- 分页 -->
+                    <div class="page">
+                        {$_page}
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+</div>
+
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/DT_bootstrap.js"></script>
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script src="__STATIC__/scripts/table-managed.js"></script>    
+	<script src="__STATIC__/scripts/form-components.js"></script> 
+	<script>
+		jQuery(document).ready(function() {       
+			App.init();
+			TableManaged.init();
+			
+			//搜索功能
+			$("#search").click(function(){
+				var url = $(this).attr('url');
+				var query = $(".search-input").serialize();
+				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+				query = query.replace(/^&/g,'');
+
+				if( url.indexOf('?')>0 ){
+					url += '&' + query;
+				}else{
+					url += '?' + query;
+				}
+				window.location.href = url;
+			});
+			
+			//只有一个模型时，点击新增
+			$('.document_add').click(function(){
+				var url = $(this).attr('url');
+				if(url != undefined && url != ''){
+					window.location.href = url;
+				}
+			});
+			
+			//点击排序
+			$('.list_sort').click(function(){
+				var url = $(this).attr('url');
+				var ids = $('.ids:checked');
+				var param = '';
+				if(ids.length > 0){
+					var str = new Array();
+					ids.each(function(){
+						str.push($(this).val());
+					});
+					param = str.join(',');
+				}
+			
+				if(url != undefined && url != ''){
+					window.location.href = url + '/ids/' + param;
+				}
+			});
+		
+		});
+	</script>
+</block>

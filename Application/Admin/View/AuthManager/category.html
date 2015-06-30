@@ -1,0 +1,121 @@
+<extend name="Public/base" />
+
+<block name="style">
+	<link rel="stylesheet" type="text/css" href="__STATIC__/plugins/jquery-nestable/jquery.nestable.css" />
+</block>
+
+<block name="body">
+
+	<div class="row">
+        <div class="col-md-12">
+            
+            <div class="tabbable tabbable-custom boxless">
+                <ul class="nav nav-tabs">
+                    <li><a href="{:U('AuthManager/access',array('group_name'=>I('group_name') ,'group_id'=> I('group_id')))}">访问授权</a></li>
+                    <li class="active"><a href="javascript:;">分类授权</a></li>
+                    <li><a href="{:U('AuthManager/user',array('group_name'=>I('group_name') ,'group_id'=> I('group_id')))}">成员授权</a></li>
+                </ul>
+                
+                <div class="tab-content">
+                    
+                    <div class="portlet box green">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-reorder"></i>分类授权</div>
+                            <div class="tools">
+                                <select name="group">
+                                    <volist name="auth_group" id="vo">
+                                        <option value="{:U('AuthManager/category',array('group_id'=>$vo['id'],'group_name'=>$vo['title']))}" <eq name="vo['id']" value="$this_group['id']">selected</eq> >{$vo.title}</option>
+                                    </volist>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <!-- BEGIN FORM-->
+               				<form id="form" action="{:U('AuthManager/addToCategory')}"  method="post" class="form-1" enctype="application/x-www-form-urlencoded" >
+                           		<input type="hidden" name="group_id" value="{:I('group_id')}">
+                                <div class="form-body">
+                                
+                                    <div class="margin-bottom-10" id="nestable_list_menu">
+                                        <button type="button" class="btn green" data-action="expand-all">展开</button>
+                                        <button type="button" class="btn green" data-action="collapse-all">合并</button>
+                                    </div>
+                                    
+                                    <div class="category dd" id="nestable_category">
+                                        {:R('AuthManager/tree', array($group_list))}
+                                    </div>
+                                    
+                                </div>
+                                
+                                
+                                <div class="form-actions fluid ">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button class="btn green submit-btn ajax-post" id="submit" type="submit" target-form="form-1">确 定</button>
+										<button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>                      
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- END FORM--> 
+                        </div>
+                    </div>
+                        
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>   
+	<!-- END PAGE LEVEL SCRIPTS -->       
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script>
+		jQuery(document).ready(function() {       
+		   // initiate layout and plugins
+		   App.init();
+		   
+           highlight_subnav('{:U('AuthManager/index')}');
+
+		   $('#nestable_list_menu').on('click', function (e) {
+                var target = $(e.target),
+                    action = target.data('action');
+                if (action === 'expand-all') {
+                    $('.dd').nestable('expandAll');
+                }
+                if (action === 'collapse-all') {
+                    $('.dd').nestable('collapseAll');
+                }
+            });
+
+            $('#nestable_category').nestable({'dragEnable':false}); // 禁用拖拽
+			$('#nestable_category')[0].onselectstart=function (){return false;}; // 禁止选中时的蓝色背
+			
+			$('.dd3-content').click(function(){
+				var checked = $(this).find('input').prop('checked');
+				if(checked){
+					$(this).removeClass("checked");
+					$(this).find('span').removeClass('checked');
+					$(this).find('input').prop('checked',false);
+				}else{
+					$(this).addClass("checked");
+					$(this).find('span').addClass('checked');
+					$(this).find('input').prop('checked',true);
+				}
+			})
+			
+			var auth_groups = [{$authed_group}];
+			$('.cate_id').each(function(){
+				if( $.inArray( parseInt(this.value,10),auth_groups )>-1 ){
+					
+					$(this).prop('checked',true);
+					$(this).closest('.dd3-content').addClass("checked").find('span').addClass('checked');
+				}
+			});
+				
+			$('select[name=group]').change(function(){
+				location.href = this.value;
+			});
+			
+		});
+	</script>
+</block>

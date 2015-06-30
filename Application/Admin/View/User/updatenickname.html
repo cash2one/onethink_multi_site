@@ -1,0 +1,75 @@
+<extend name="Public/base" />
+
+<block name="body">
+    
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div class="tabbable tabbable-custom boxless">
+                <form id="form" action="{:U('User/submitNickname')}" method="post" class="form-1" >
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="javascript:;">修改昵称</a></li>
+                    <li ><a href="{:U('updatepassword')}">修改密码</a></li>
+                </ul>
+                
+                <div class="tab-content">
+                    
+                    <div class="portlet box red">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-reorder"></i>修改昵称</div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse"></a>
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <a href="javascript:;" class="reload"></a>
+                                <a href="javascript:;" class="remove"></a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <!-- BEGIN FORM-->
+                            
+                                <div class="form-body">
+                                
+                                    <div class="form-group">
+                                        <label>密码：<span class="check-tips">（请输入密码）</span></label>
+                                        <input type="password" class="form-control input-xlarge"  name="password" autocomplete="off" />
+                                    </div> 
+                                    
+                                    <div class="form-group">
+                                        <label>昵称：<span class="check-tips">（请输入新昵称）</span></label>
+                                        <input type="text" class="form-control input-xlarge"  name="nickname" autocomplete="off" value="{:get_username()}" />
+                                    </div>  
+                                    
+                                </div>
+                                
+                                
+                                <div class="form-actions fluid ">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button class="btn green submit-btn ajax-post" id="submit" type="submit" target-form="form-1">确 定</button>
+										<button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>                          
+                                    </div>
+                                </div>
+                            
+                            <!-- END FORM--> 
+                        </div>
+                    </div>
+                        
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<!-- END PAGE LEVEL SCRIPTS -->
+	<script>
+	jQuery(document).ready(function() {       
+		// initiate layout and plugins
+		App.init();
+	})
+	</script>
+</block>

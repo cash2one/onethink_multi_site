@@ -1,0 +1,122 @@
+<ul class="page-sidebar-menu">
+    <li>
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+        <div class="sidebar-toggler hidden-phone"></div>
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+    </li>
+
+    <notempty name="_extra_menu">
+        {// 动态扩展菜单 //}
+        {:extra_menu($_extra_menu,$__MENU__)}
+    </notempty>
+    <volist name="__MENU__.child" id="sub_menu">
+        <!-- 子导航 -->
+        <notempty name="sub_menu">
+            <notempty name="key">
+            <assign name="title" value="$key" />
+            <li class="<volist name="sub_menu" id="menu">
+                <switch name="menu.url|U">    
+                <case value="__SELF__">active</case>    
+                <case value="__ACTION__.html">active</case>    
+                <default />
+                </switch>
+            </volist>" >
+                <a href="javascript:;">
+                <i class="fa fa-reorder"></i> 
+                <span class="title">{$title}</span>
+                <span class="arrow "></span>
+                </a>
+                <ul class="sub-menu">
+                <volist name="sub_menu" id="menu">
+                    <li class="<switch name="menu.url|U">    
+                <case value="__SELF__">active</case>    
+                <case value="__ACTION__.html">active</case>    
+                <default />
+                </switch>" >
+                        <a href="{$menu.url|U}">{$menu.title}</a>
+                    </li>
+                </volist>
+                </ul>
+            </li>
+            </notempty>
+        </notempty>
+        <!-- /子导航 -->
+    </volist>
+
+    <li <in name="Think.ACTION_NAME" value="mydocument,draftbox,examine">class="active"</in>>
+        <a href="javascript:;">
+        <i class="fa fa-home"></i> 
+        <span class="title">个人中心</span>
+        <span class="arrow "></span>
+        </a>
+        <ul class="sub-menu">
+            <li <eq name="Think.ACTION_NAME" value="mydocument">class="active"</eq>><a class="item" href="{:U('article/mydocument')}">我的文档</a></li>
+            <eq name="show_draftbox" value="1">
+            <li <eq name="Think.ACTION_NAME" value="draftbox">class="active"</eq>><a class="item" href="{:U('article/draftbox')}">草稿箱</a></li>
+            </eq>
+            <eq name="show_examine" value="1">
+            <li <eq name="Think.ACTION_NAME" value="examine">class="active"</eq>><a class="item" href="{:U('article/examine')}">待审核</a></li>
+            </eq>
+        </ul>
+    </li>
+
+    <volist name="nodes" id="sub_menu">
+        <!-- 子导航 -->
+        <notempty name="sub_menu">
+            <li <eq name="sub_menu['current']" value="1">class="active"</eq>>
+            <empty name="sub_menu['_child']">
+                <a href="{$sub_menu.url|U}">
+                <i class="fa fa-file"></i> 
+                <span class="title">{$sub_menu.title}</span>
+                </a>
+            <else />
+                <a href="{$sub_menu.url|U}">
+                <i class="fa fa-folder"></i> 
+                <span class="title">{$sub_menu.title}</span>
+                <span class="arrow "></span>
+                </a>
+                <ul class="sub-menu">
+                    <volist name="sub_menu['_child']" id="menu">
+                        <li <if condition="$menu['id'] eq $cate_id or $menu['current'] eq 1">class="active"</if>>
+                        <empty name="menu['_child']">
+                            <gt name="menu['allow_publish']" value="0"><a href="{$menu.url|U}">{$menu.title}</a><else/><a href="javascript:void(0);">{$menu.title}</a></gt>
+                        <else />
+                            <a href="javascript:;">
+                            {$menu.title}
+                            <span class="arrow"></span>
+                            </a>
+                            <ul class="sub-menu">
+                                <foreach name="menu['_child']" item="three_menu">
+                                <li <if condition="$three_menu['id'] eq $cate_id or $three_menu['current'] eq 1">class="active"</if>>
+                                <empty name="three_menu['_child']">
+                                    <gt name="three_menu['allow_publish']" value="0"><a href="{$three_menu.url|U}">{$three_menu.title}</a><else/><a href="javascript:void(0);">{$three_menu.title}</a></gt>
+                                <else />
+                                    <a href="javascript:;">
+                                    {$three_menu.title}
+                                    <span class="arrow"></span>
+                                    </a>
+                                </empty>
+                                </li>
+                                </foreach>
+                            </ul>
+                        </empty>
+                        </li>
+                    </volist>
+                </ul>
+            </empty>
+            </li>
+        </notempty>
+        <!-- /子导航 -->
+    </volist>
+
+    <!-- 回收站 -->
+    <eq name="show_recycle" value="1">
+    <li <eq name="Think.ACTION_NAME" value="recycle">class="active"</eq>>
+        <a href="{:U('article/recycle')}">
+        <i class="fa fa-bitbucket"></i> 
+        <span class="title">回收站</span>
+        </a>
+    </li>
+    </eq>
+
+</ul>

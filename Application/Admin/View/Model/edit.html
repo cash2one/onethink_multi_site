@@ -1,0 +1,275 @@
+<extend name="Public/base" />
+
+<block name="style">
+	<link rel="stylesheet" type="text/css" href="__STATIC__/plugins/jquery-nestable/jquery.nestable.css" />
+</block>
+
+<block name="body">
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable tabbable-custom boxless">
+                <form id="form" action="{:U('update')}" method="post" class="form-1">
+                <script> var nestables = []</script>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_1" data-toggle="tab">基 础</a></li>
+                    <li><a href="#tab_2" data-toggle="tab">设 计</a></li>
+                    <li><a href="#tab_3" data-toggle="tab">高 级</a></li>
+                </ul>
+                
+                <div class="tab-content">
+                    <div id="tab_1" class="tab-pane active">
+                    
+                        <div class="portlet box red">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="fa fa-reorder"></i> <if condition="ACTION_NAME eq 'add'">新增<else/>编辑</if>模型 </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                    <a href="javascript:;" class="reload"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <!-- BEGIN FORM-->
+                                
+                                    <div class="form-body">
+                                    
+                                        <div class="form-group">
+                                            <label>模型标识<span class="check-tips">（请输入文档模型标识）</span></label>
+                                            <input type="text" class="form-control input-xlarge" name="name" value="{$info.name}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>模型名称<span class="check-tips">（请输入模型的名称）</span></label>
+                                            <input type="text" class="form-control input-xlarge" name="title" value="{$info.title}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>模型类型<span class="check-tips">（目前支持独立模型和文档模型）</span></label>        
+                                            <select class="form-control input-medium" name="extend">
+                                                <option value="0">独立模型</option>
+                                                <option value="1">文档模型</option>
+                                            	<option value="13">应付款模型</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    
+                                    
+                                    <div class="form-actions fluid ">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <input type="hidden" name="id" value="{$info['id']}"/>
+                                            <button class="btn green submit-btn ajax-post no-refresh" type="submit" target-form="form-1">确 定</button>
+                                            <button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>                      
+                                        </div>
+                                    </div>
+                                
+                                <!-- END FORM--> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div id="tab_2" class="tab-pane">
+                    
+                        <div class="portlet box red">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="fa fa-reorder"></i> <if condition="ACTION_NAME eq 'add'">新增<else/>编辑</if>模型 </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                    <a href="javascript:;" class="reload"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <!-- BEGIN FORM-->
+                                
+                                    <div class="form-body">
+                                    
+                                        <div class="form-group">
+                                            <label>字段管理<span class="check-tips">（只有新增了字段，该表才会真正建立）</span></label>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="portlet box red">
+                                                        <div class="portlet-title">
+                                                            <div class="caption"><i class="fa fa-comments"></i>字段列表</div>
+                                                        </div>
+                                                        <div class="portlet-body ">
+                                                            <div class="table-toolbar">
+                                                                <div class="btn-group">
+                                                                    <a class="btn red" href="{:U('Attribute/add?model_id='.$info['id'])}" target="_balnk">新增</a>
+                                                                    <a class="btn red" href="{:U('Attribute/index?model_id='.$info['id'])}" target="_balnk">管理</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="dd" id="nestable_list_manage">
+                                                                <ol class="dd-list">
+                                                                <foreach name="fields" item="field" key="k">
+                                                                 	<li class="dd-item">
+                                                                        <div class="dd-handle">{$field['title']} [{$field['name']}]</div>
+                                                                    </li>
+                                                                </foreach>
+                                                                </ol>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>表单显示分组<span class="check-tips">（用于表单显示的分组，以及设置该模型表单排序的显示）</span></label>
+                                            <input type="text" class="form-control input-medium" name="field_group" value="{$info.field_group}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>表单显示排序<span class="check-tips">（直接拖动进行排序）</span></label>        
+                                            <div class="row">
+                                                <volist name=":parse_field_attr($info['field_group'])" id="vo">
+                                                <script> nestables.push('nestable_list_{$key}')</script>
+                                                <div class="col-md-3">
+                                                    <div class="portlet box red">
+                                                        <div class="portlet-title">
+                                                            <div class="caption"><i class="fa fa-comments"></i>{$vo}</div>
+                                                        </div>
+                                                        <div class="portlet-body ">
+                                                            <div class="dd" id="nestable_list_{$key}">
+                                                                <ol class="dd-list"  data-group="{$key}">
+                                                                <foreach name="fields" item="field" key="k">
+                                                                    <if condition="(($field['group'] eq $key) or($i eq 1 and !isset($field['group']))) and ($field['is_show'] eq 1)">
+                                                                        <li class="dd-item" data-id="{$field['id']}">
+                                                                            <div class="dd-handle">{$field['title']} [{$field['name']}]<input type="hidden" name="field_sort[{$key}][]" value="{$field['id']}"/></div>
+                                                                        </li>
+                                                                    </if>
+                                                                </foreach>
+                                                                </ol>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </volist>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>列表定义<span class="check-tips">（默认列表模板的展示规则）</span></label>        
+                                            <textarea class="form-control input-xlarge" rows="3"  name="list_grid">{$info.list_grid}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>默认搜索字段<span class="check-tips">（默认列表模板的默认搜索项）</span></label>
+                                            <input type="text" class="form-control input-medium" name="search_key" value="{$info.search_key}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>高级搜索字段<span class="check-tips">（默认列表模板的高级搜索项）</span></label>
+                                            <input type="text" class="form-control input-medium" name="search_list" value="{$info.search_list}">
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    
+                                    <div class="form-actions fluid ">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <input type="hidden" name="id" value="{$info['id']}"/>
+                                            <button class="btn green submit-btn ajax-post no-refresh" type="submit" target-form="form-1">确 定</button>
+                                            <button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>                      
+                                        </div>
+                                    </div>
+                                
+                                <!-- END FORM--> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div id="tab_3" class="tab-pane">
+                    
+                        <div class="portlet box red">
+                            <div class="portlet-title">
+                                <div class="caption"><i class="fa fa-reorder"></i> <if condition="ACTION_NAME eq 'add'">新增<else/>编辑</if>模型 </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                    <a href="javascript:;" class="reload"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
+                            <div class="portlet-body form">
+                                <!-- BEGIN FORM-->
+                                
+                                    <div class="form-body">
+                                    
+                                        <div class="form-group">
+                                            <label>列表模板<span class="check-tips">（自定义的列表模板，放在Application\Admin\View\Think下，不写则使用默认模板）</span></label>
+                                            <input type="text" class="form-control input-xlarge" name="template_list" value="{$info.template_list}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>新增模板<span class="check-tips">（自定义的新增模板，放在Application\Admin\View\Think下，不写则使用默认模板）</span></label>
+                                            <input type="text" class="form-control input-xlarge" name="template_edit" value="{$info.template_edit}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>编辑模板<span class="check-tips">（自定义的编辑模板，放在Application\Admin\View\Think下，不写则使用默认模板）</span></label>
+                                            <input type="text" class="form-control input-xlarge" name="template_list" value="{$info.template_list}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>列表数据大小<span class="check-tips">（默认列表模板的分页属性）</span></label>
+                                            <input type="text" class="form-control input-medium" name="list_row" value="{$info.list_row}">
+                                        </div>
+
+
+                                    </div>
+                                    
+                                    
+                                    <div class="form-actions fluid ">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <input type="hidden" name="id" value="{$info['id']}"/>
+                                            <button class="btn green submit-btn ajax-post no-refresh" type="submit" target-form="form-1">确 定</button>
+                                            <button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>                      
+                                        </div>
+                                    </div>
+                                
+                                <!-- END FORM--> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>  
+	<!-- END PAGE LEVEL SCRIPTS -->
+	<script>
+	jQuery(document).ready(function() {    
+		setValue("extend", {$info.extend|default=0});   
+		// initiate layout and plugins
+		App.init();
+
+        highlight_subnav('{:U('Model/index')}');
+		
+		$('#nestable_list_manage')
+		.nestable({dragEnable:false})
+		.on('selectstart',function(){
+				return false;
+			});
+			
+		nestables.forEach(function(v){
+			$('#'+v)
+				.nestable({
+				group: 1,
+				maxDepth:1,
+				callBack:function(dom){
+					console.log(dom)
+					dom.find('input').attr('name', 'field_sort[' + dom.closest('ol').data('group') + '][]');
+				}
+			})
+			.on('selectstart',function(){
+				return false;
+			});
+		})
+		
+	});
+	</script>
+</block>

@@ -1,0 +1,15 @@
+#node_content {
+	padding:5px;
+}
+#node_content span[id*=node].active {
+	display:block;
+	z-index:2000;
+	background-color:#FFF;
+	position:relative;
+}
+
+#node_content span[id*=node].heightLight {
+	background-color: #FCC;
+	display:block;
+	color:#F00;
+}
