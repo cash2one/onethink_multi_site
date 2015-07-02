@@ -16,20 +16,15 @@ use Home\Service\Parsedown;
  * 用于动态调用分类信息
  */
 
-class CategoryWidget extends Controller{
+class ParsedownWidget extends Controller{
 	
-	/* 显示指定分类的同级分类或子分类列表 */
-	public function lists($cate, $child = false){
-		$field = 'id,name,pid,title,link_id';
-		if($child){
-			$category = D('Category')->getTree($cate, $field);
-			$category = $category['_'];
-		} else {
-			$category = D('Category')->getSameLevel($cate, $field);
-		}
-		$this->assign('category', $category);
-		$this->assign('current', $cate);
-		$this->display('Category/lists');
+	public function index($s){
+		$Parsedown = new Parsedown();
+
+		$text = $Parsedown->text($s);
+
+		$this->assign('text', $text);
+		$this->display('Parsedown/index');
 	}
 	
 }

@@ -26,8 +26,29 @@
     <div class="span9 main-content">
         <!-- Contents
         ================================================== -->
-        <section id="contents">{$info.content}</section>
+        <section id="contents">
+        <switch name="info.parse">
+        	<case value="0">{$info.content}</case>
+        	<case value="1"></case>
+        	<case value="2">{:W('Parsedown/index', array($info['content']))}</case>
+        	<default />
+        </switch>
+        </section>
         <hr/>
         {:hook('documentDetailAfter',$info)}
     </div>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__JS__/marked.min.js"></script>
+<script>
+/*
+$(function(){
+	var $content = $("#contents");
+	var html = $content.html();
+
+	$content.html(marked(html));
+})
+*/
+</script>
 </block>
