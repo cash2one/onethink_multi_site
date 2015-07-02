@@ -13,7 +13,7 @@
  */
 return array(
     /* 重新定义模板路径*/
-    'VIEW_PATH'=>'./../OT_tpl/',
+    //'VIEW_PATH'=>'./../OT_tpl/',
 
     /* 数据缓存设置 */
     'DATA_CACHE_PREFIX'    => 'onethink_', // 缓存前缀

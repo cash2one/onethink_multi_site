@@ -65,4 +65,17 @@ class UploadController extends AddonsController{
 		$this->ajaxReturn($return);
 	}
 
+	//ueditor编辑器上传图片处理
+	public function md_upimg(){
+
+		$img = $this->upload();
+		$return = array();
+		$return['url'] = $img['fullpath'].$img['editormd-image-file']['savepath'].$img['editormd-image-file']['savename'];
+		$title = htmlspecialchars($_POST['pictitle'], ENT_QUOTES);
+		$return['message'] = $title;
+		$return['success'] = ($img)? 1:0;
+		/* 返回JSON数据 */
+		$this->ajaxReturn($return);
+	}
+
 }

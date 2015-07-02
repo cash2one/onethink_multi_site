@@ -113,7 +113,9 @@
         </div>
     </case>
     <case value="editor">
-        <textarea name="{$field.name}" rows="20">{$field.value}</textarea>
+        <div id="markdown">
+            <textarea name="{$field.name}" rows="20">{$field.value}</textarea>
+        </div>
         {:hook('adminArticleEdit', array('name'=>$field['name'],'value'=>$field.value))}
     </case>
     <case value="picture">

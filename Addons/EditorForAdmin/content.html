@@ -87,23 +87,30 @@
 	</case>
 	<case value="4">
 		{// markdown }
-		<link rel="stylesheet" href="__STATIC__/thinkeditor/skin/default/style.css">
-		<script type="text/javascript" src="__STATIC__/jquery-migrate-1.2.1.min.js"></script>
-		<script type="text/javascript" src="__STATIC__/thinkeditor/jquery.thinkeditor.js"></script>
-		<script type="text/javascript">
-			$(function(){
-				$('textarea[name="{$addons_data.name}"]').attr('id', 'editor_id_{$addons_data.name}');
-				var options = {
-					"items"  : "h1,h2,h3,h4,h5,h6,-,link,image,-,bold,italic,code,-,ul,ol,blockquote,hr,-,fullscreen",
-			        "width"  : "100%", //宽度
-			        "height" : "{$addons_config.editor_height}", //高度
-			        "lang"   : "zh-cn", //语言
-			        "tab"    : "    ", //Tab键插入的字符， 默认为四个空格
-					"uploader": "{:addons_url('Editor://Upload/upload')}"
-			    };
-			    $('#editor_id_{$addons_data.name}').thinkeditor(options);
-			})
-		</script>
-		<input type="hidden" name="parse" value="2">
+        <link rel="stylesheet" href="__STATIC__/markdown/css/editormd.css" />
+        <script src="__STATIC__/markdown/editormd.min.js"></script>
+        <script type="text/javascript">
+			var testEditor;
+
+            $(function() {
+
+                testEditor = editormd("markdown", {
+                    width   : "100%",
+                    height  : 640,
+                    syncScrolling : "single",
+                    path    : "__STATIC__/markdown/lib/",
+			        toolbarIcons : [
+		            	"bold", "del", "italic", "quote",  "|", 
+			            "h1", "h2", "h3", "h4", "h5", "h6", "|", 
+			            "list-ul", "list-ol", "hr", "|",
+			            "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "html-entities", "pagebreak", "|",
+			            "watch", "preview"
+				    ],
+                    imageUpload : true,
+                    imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL : '{:addons_url("EditorForAdmin://Upload/md_upimg")}',
+                });
+            });
+        </script>
 	</case>
 </switch>
