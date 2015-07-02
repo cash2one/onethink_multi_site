@@ -65,7 +65,7 @@ class UploadController extends AddonsController{
 		$this->ajaxReturn($return);
 	}
 
-	//ueditor编辑器上传图片处理
+	//markdown编辑器上传图片处理
 	public function md_upimg(){
 
 		$img = $this->upload();
