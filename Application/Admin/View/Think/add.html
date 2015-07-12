@@ -79,7 +79,7 @@
         <div class="radio-list">
         <volist name=":parse_field_attr($field['extra'])" id="vo">
             <label class="radio-inline">
-            <input type="radio" name="{$field.name}" <eq name="field.value" value="$key">checked</eq>  value="{$key}" checked> {$vo}
+            <input type="radio" name="{$field.name}" <eq name="field.value" value="$key">checked</eq>  value="{$key}"> {$vo}
             </label>
         </volist>
         </div>
@@ -88,7 +88,7 @@
         <div class="checkbox-list">
         <volist name=":parse_field_attr($field['extra'])" id="vo">
             <label class="checkbox-inline">
-            <input type="checkbox" value="{$key}" name="{$field.name}" <eq name="field.value" value="$key">checked</eq>>{$vo}
+            <input type="checkbox" value="{$key}" name="{$field.name}[]" <eq name="field.value" value="$key">checked</eq>>{$vo}
             </label>
         </volist>
         </div>
