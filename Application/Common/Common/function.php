@@ -1016,3 +1016,12 @@ function check_category_model($info){
     $array  =   explode(',', $info['pid'] ? $cate['model_sub'] : $cate['model']);
     return in_array($info['model_id'], $array);
 }
+
+function get_img_html($cover_id) {
+        $url = get_cover ( $cover_id, 'path' );
+        
+        if (empty ( $url )){
+                return '';
+        }
+        return '<img class="list_img" width="30" src="' . $url . '" >';
+}

@@ -1,0 +1,11 @@
+<volist name="list" id="lo">
+	<notempty name='label'><{$label}></notempty>
+    <a href="{$lo.url}" rel="nofollow" target="_blank">
+    <eq name='type' value='2'>
+    {$lo.title}
+    <else/>
+    <img src="{$lo.path}" width="{$width}" height="{$height}" alt="{$lo.title}" />
+    </eq>
+    </a>
+	<notempty name='label'></{$label}></notempty>
+</volist>
