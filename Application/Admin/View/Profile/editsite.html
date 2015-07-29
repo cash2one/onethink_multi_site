@@ -1,4 +1,9 @@
-<extend name="Public/basefull"/>
+<extend name="Public/base"/>
+
+<!-- 子导航 -->
+<block name="sidebar">
+    <include file="sidemenu" />
+</block>
 
 <block name="body">
 
@@ -27,18 +32,18 @@
                                         <label>站点名<span class="check-tips"></span></label>
                                         <input type="text" class="form-control input-xlarge" name="name" value="{$info.name|default=''}">
                                     </div>
-                                    <div class="form-group">
-                                        <label>域名<span class="check-tips">（填写主域名）</span></label>
-                                        <input type="text" class="form-control input-xlarge" name="domain" value="{$info.domain|default=''}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>管理员<span class="check-tips"></span></label>
-                                        <select class="form-control input-xlarge" name="manage">
-                                        <volist name="manages" id="manage">
-                                            <option value="{$key}" <eq name="key" value="$info.manage">selected</eq>>{$manage}</option>
-                                        </volist>
-                                        </select>
-                                    </div> 
+                                        <div class="form-group">
+                                            <label>title<span class="check-tips"></span></label>
+                                            <textarea class="form-control" rows="3" name="title">{$info.title|default=''}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>description<span class="check-tips"></span></label>
+                                            <textarea class="form-control" rows="3" name="description">{$info.description|default=''}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>keywords<span class="check-tips"></span></label>
+                                            <textarea class="form-control" rows="3" name="keywords">{$info.keywords|default=''}</textarea>
+                                        </div>
                                 </div>
                                 
                                 

@@ -1,0 +1,37 @@
+<extend name="Public/base"/>
+
+<block name="style">
+	<link rel="stylesheet" href="__STATIC__/plugins/data-tables/DT_bootstrap.css" />
+</block>
+
+<!-- 子导航 -->
+<block name="sidebar">
+    <include file="sidemenu" />
+</block>
+
+<block name="body">
+    
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/DT_bootstrap.js"></script>
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script src="__STATIC__/scripts/table-managed.js"></script>     
+	<script>
+		jQuery(document).ready(function() {       
+		   App.init();
+		   TableManaged.init();
+		});
+	</script>
+</block>

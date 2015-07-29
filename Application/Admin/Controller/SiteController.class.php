@@ -3,16 +3,23 @@ namespace Admin\Controller;
 
 /**
  * 后台配置控制器
- * @author yangweijie <yangweijiester@gmail.com>
  */
 class SiteController extends AdminController {
 
+    private $manages = array();
+
+    public function _initialize(){
+        parent::_initialize();
+
+        // 获取站点管理用户列表
+        $this->manages = M("Member")->getField("uid,nickname");
+    }
 
     public function index(){
+        $manages = $this->manages;
 
         $list       =   M("Site")->order('id asc')->select();
-
-        int_to_string($list,array('status'=>array(0=>"关闭",1=>"开启")));
+        int_to_string($list,array('status'=>array(0=>"关闭",1=>"开启"),'manage'=>$manages));
     
         $this->assign('list',$list);
         // 记录当前列表页的cookie
@@ -23,8 +30,7 @@ class SiteController extends AdminController {
     }
 
     /**
-     * 新增菜单
-     * @author yangweijie <yangweijiester@gmail.com>
+     * 新增站点
      */
     public function add(){
         if(IS_POST){
@@ -41,15 +47,12 @@ class SiteController extends AdminController {
                 $this->error($Site->getError());
             }
         } else {
+            $this->assign('manages',$this->manages);
             $this->meta_title = '新增站点';
             $this->display('edit');
         }
     }
 
-    /**
-     * 编辑配置
-     * @author yangweijie <yangweijiester@gmail.com>
-     */
     public function edit($id = 0){
         if(IS_POST){
             $Site = D('Site');
@@ -68,6 +71,7 @@ class SiteController extends AdminController {
             /* 获取数据 */
             $info = M('Site')->field(true)->find($id);
             $this->assign('info', $info);
+            $this->assign('manages',$this->manages);
             $this->meta_title = '编辑站点';
             $this->display();
         }
