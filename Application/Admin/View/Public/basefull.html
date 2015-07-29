@@ -82,61 +82,6 @@
     <div class="clearfix"></div>
     <!-- BEGIN CONTAINER -->
     <div class="page-container">
-        <!-- BEGIN SIDEBAR -->
-        <div class="page-sidebar navbar-collapse collapse">
-            <!-- BEGIN SIDEBAR MENU -->   
-
-            <block name="sidebar">
-            <ul class="page-sidebar-menu">
-                <li>
-                    <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-                    <div class="sidebar-toggler hidden-phone"></div>
-                    <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-                </li>
-
-                <notempty name="_extra_menu">
-                    {// 动态扩展菜单 //}
-                    {:extra_menu($_extra_menu,$__MENU__)}
-                </notempty>
-                <volist name="__MENU__.child" id="sub_menu">
-                    <!-- 子导航 -->
-                    <notempty name="sub_menu">
-                        <notempty name="key">
-                        <assign name="title" value="$key" />
-                        <li class="<volist name="sub_menu" id="menu">
-                            <switch name="menu.url|U">    
-                            <case value="__SELF__">active</case>    
-                            <case value="__ACTION__.html">active</case>    
-                            <default />
-                            </switch>
-                        </volist>" >
-                            <a href="javascript:;">
-                            <i class="fa fa-reorder"></i> 
-                            <span class="title">{$title}</span>
-                            <span class="arrow "></span>
-                            </a>
-                            <ul class="sub-menu">
-                            <volist name="sub_menu" id="menu">
-                                <li class="<switch name="menu.url|U">    
-                            <case value="__SELF__">active</case>    
-                            <case value="__ACTION__.html">active</case>    
-                            <default />
-                            </switch>" >
-                                    <a href="{$menu.url|U}">{$menu.title}</a>
-                                </li>
-                            </volist>
-                            </ul>
-                        </li>
-                        </notempty>
-                    </notempty>
-                    <!-- /子导航 -->
-                </volist>
-            </ul>
-            </block>
-
-            <!-- END SIDEBAR MENU -->
-        </div>
-        <!-- END SIDEBAR -->
         <!-- BEGIN PAGE -->
         <div class="page-content">
             <div id="top-alert" class=" alert alert-danger" style="display: none;">
