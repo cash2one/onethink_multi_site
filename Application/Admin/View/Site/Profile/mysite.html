@@ -44,11 +44,10 @@
                                     <td>{$site.domain}</td>
                                     <td>{$site.status_text}</td>
                                     <td>
-                                        <a title="编辑" href="{:U('editsite?id='.$site['id'])}">编辑</a>
-                                        <a class="confirm ajax-get" title="设置" href="{:U('set?id='.$site['id'].'&status='.abs($site['status']-1))}">
+                                        <a href="{:U('Profile/site',array('smethod'=>'manage',id=>$site['id']))}">内容管理</a>
+                                        <a class="confirm ajax-get" title="设置" href="{:U('Profile/site',array('smethod'=>'set','id'=>$site['id'],'status'=>abs($site['status']-1)))}">
                                         <eq name="site.status" value="1">关闭<else/>开启</eq>
                                         </a>
-                                        <a href="{:U('manage?id='.$site['id'])}">内容管理</a>
                                     </td>
                                 </tr>
                             </volist>

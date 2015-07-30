@@ -1,0 +1,187 @@
+<extend name="Public/base"/>
+
+<block name="style">
+	<link rel="stylesheet" href="__STATIC__/plugins/data-tables/DT_bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="__STATIC__/plugins/jquery-nestable/jquery.nestable.css" />
+	<style>
+	.dd3-content.checked {
+		color: #000;
+		background: #93bafa;
+	}
+	</style>
+</block>
+
+<!-- 子导航 -->
+<block name="sidebar">
+	<include file="sidemenu" />
+</block>
+
+<block name="body">
+	
+	<div class="row">
+		<div class="col-md-12">
+			<div class="note note-success">
+				<h3 class="block">{$info.name}</h3>
+				<p>
+					<h4 class="label label-success"> 域名：{$info.domain}</h4>&nbsp;&nbsp;
+					<h4 class="label label-<eq name="info.status" value="1">success<else/>danger</eq>"> 状态：{$info.status_text}</h4>&nbsp;&nbsp;
+					<h4 class="label label-success"> 管理员：管理员</h4>
+				</p>
+			</div>
+			<!-- BEGIN EXAMPLE TABLE PORTLET-->
+			<div class="tabbable tabbable-custom boxless">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#tab_1" data-toggle="tab">站点信息</a></li>
+					<li><a href="#tab_2" data-toggle="tab">栏目管理</a></li>
+				</ul>
+				
+				<div class="tab-content">
+
+					<div id="tab_1" class="tab-pane active"> 
+						<div class="portlet box green">
+							<div class="portlet-title">
+								<div class="caption"><i class="fa fa-globe"></i>基本信息</div>
+								<div class="tools">
+									<a href="javascript:;" class="collapse"></a>
+									<a href="#portlet-config" data-toggle="modal" class="config"></a>
+									<a href="javascript:;" class="reload"></a>
+								</div>
+							</div>
+							<div class="portlet-body form">
+								<form action="{:U('Profile/site',array('smethod'=>'editsite'))}" method="post" class="form-1">
+									<div class="form-body">
+										<div class="form-group">
+											<label>站点名<span class="check-tips"></span></label>
+											<input type="text" class="form-control input-xlarge" name="name" value="{$info.name|default=''}">
+										</div>
+										<div class="form-group">
+											<label>title<span class="check-tips"></span></label>
+											<textarea class="form-control" rows="3" name="title">{$info.title|default=''}</textarea>
+										</div>
+										<div class="form-group">
+											<label>description<span class="check-tips"></span></label>
+											<textarea class="form-control" rows="3" name="description">{$info.description|default=''}</textarea>
+										</div>
+										<div class="form-group">
+											<label>keywords<span class="check-tips"></span></label>
+											<textarea class="form-control" rows="3" name="keywords">{$info.keywords|default=''}</textarea>
+										</div>
+									</div>
+									
+									<div class="form-actions fluid ">
+										<div class="col-md-offset-3 col-md-9">
+											<input type="hidden" name="id" value="{$info.id|default=''}">
+											<button class="btn green ajax-post" type="submit" target-form="form-1">确 定</button>
+											<button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>				  
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<div id="tab_2" class="tab-pane"> 
+			
+						<div class="portlet box blue">
+							<div class="portlet-title">
+								<div class="caption"><i class="fa fa-globe"></i>栏目管理</div>
+								<div class="tools">
+									<a href="javascript:;" class="collapse"></a>
+									<a href="#portlet-config" data-toggle="modal" class="config"></a>
+									<a href="javascript:;" class="reload"></a>
+								</div>
+							</div>
+							<div class="portlet-body form">
+								<form action="{:U('Profile/site',array('smethod'=>'category'))}" method="post" class="form-2">
+
+									<input type="hidden" name="site_id" value="{$info.id}">
+									<div class="form-body">
+									
+										<div class="margin-bottom-10" id="nestable_list_menu">
+											<button type="button" class="btn blue" data-action="expand-all">展开</button>
+											<button type="button" class="btn blue" data-action="collapse-all">合并</button>
+										</div>
+										
+										<div class="category dd" id="nestable_category">
+											{:R('AuthManager/tree', array($cate_list))}
+										</div>
+										
+									</div>
+									
+									<div class="form-actions fluid ">
+										<div class="col-md-offset-3 col-md-9">
+											<button class="btn blue ajax-post" type="submit" target-form="form-2">确 定</button>
+											<button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>					  
+										</div>
+									</div>
+
+								</form>
+							</div>
+						</div>
+					</div>
+
+				</div>
+					
+			</div>
+			<!-- END EXAMPLE TABLE PORTLET-->
+		</div>
+	</div>
+
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/DT_bootstrap.js"></script>
+	<script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>  
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script src="__STATIC__/scripts/table-managed.js"></script>	 
+	<script>
+		jQuery(document).ready(function() {	   
+			App.init();
+			TableManaged.init();
+
+			$('#nestable_list_menu').on('click', function (e) {
+				var target = $(e.target),
+					action = target.data('action');
+				if (action === 'expand-all') {
+					$('.dd').nestable('expandAll');
+				}
+				if (action === 'collapse-all') {
+					$('.dd').nestable('collapseAll');
+				}
+			});
+
+			$('#nestable_category').nestable({'dragEnable':false}); // 禁用拖拽
+			$('#nestable_category')[0].onselectstart=function (){return false;}; // 禁止选中时的蓝色背
+			
+			$('.dd3-content').click(function(){
+				var checked = $(this).find('input').prop('checked');
+				if(checked){
+					$(this).removeClass("checked");
+					$(this).find('span').removeClass('checked');
+					$(this).find('input').prop('checked',false);
+				}else{
+					$(this).addClass("checked");
+					$(this).find('span').addClass('checked');
+					$(this).find('input').prop('checked',true);
+				}
+			})
+			
+			var auth_groups = [{$info.category}];
+			$('.cate_id').each(function(){
+				if( $.inArray( parseInt(this.value,10),auth_groups )>-1 ){
+					
+					$(this).prop('checked',true);
+					$(this).closest('.dd3-content').addClass("checked").find('span').addClass('checked');
+				}
+			});
+				
+			$('select[name=group]').change(function(){
+				location.href = this.value;
+			});
+		});
+	</script>
+</block>
