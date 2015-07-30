@@ -1,115 +1,86 @@
 <?php
-// +----------------------------------------------------------------------
-// | OneThink [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2013 http://www.onethink.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Author: 麦当苗儿 <zuojiazi@vip.qq.com> <http://www.zjzit.cn>
-// +----------------------------------------------------------------------
-
-namespace Admin\Controller;
+namespace Admin\Controller\Profile;
 
 /**
- * 后台分类管理控制器
- * @author 麦当苗儿 <zuojiazi@vip.qq.com>
+ * 后台配置控制器
  */
-class CategoryController extends AdminController {
+class CategoryController extends \Admin\Controller\AdminController {
 
-    /**
-     * 分类管理列表
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
-     */
-    public function index(){
-        $tree = D('Category')->getTree(0,'id,name,title,sort,pid,allow_publish,status');
-        $this->assign('tree', $tree);
-        C('_SYS_GET_CATEGORY_TREE_', true); //标记系统获取分类树模板
-        $this->meta_title = '分类管理';
-        $this->display();
-    }
 
-    /**
-     * 显示分类树，仅支持内部调
-     * @param  array $tree 分类树
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
-     */
-    public function tree($tree = null){
-        $this->assign('tree', $tree);
-        $this->display('Category/tree');
-    }
 
     /* 编辑分类 */
-    public function edit($id = null, $pid = 0){
+    public function edit(){
         $Category = D('Category');
+        $cate = '';
+        $id = I('id');
+        $pid = I('pid');
 
-        if(IS_POST){ //提交表单
-
-            // 修改被移动菜单所属站点
-            $site_id = I('site_id');
-            $site_id_old = M("Category")->where("id = $id ")->getField('site_id');
-
-            if(false !== $Category->update()){
-                if( $site_id && $site_id != $site_id_old ){
-                    $Category->recursion_to_site($id, $site_id);
-                }
-                
-                $this->success('编辑成功！', U('index'));
-            } else {
-                $error = $Category->getError();
-                $this->error(empty($error) ? '未知错误！' : $error);
+        if($pid){
+            /* 获取上级分类信息 */
+            $cate = $Category->info($pid, 'id,name,title,status');
+            if(!($cate && 1 == $cate['status'])){
+                $this->error('指定的上级分类不存在或被禁用！');
             }
-        } else {
-            $cate = '';
-            if($pid){
-                /* 获取上级分类信息 */
-                $cate = $Category->info($pid, 'id,name,title,status');
-                if(!($cate && 1 == $cate['status'])){
-                    $this->error('指定的上级分类不存在或被禁用！');
-                }
-            }
-
-            $sites = M("Site")->getField('id,domain');
-            $this->assign('sites',  $sites);
-
-            /* 获取分类信息 */
-            $info = $id ? $Category->info($id) : '';
-
-            $this->assign('info',       $info);
-            $this->assign('category',   $cate);
-            $this->meta_title = '编辑分类';
-            $this->display();
         }
+
+        $sites = M("Site")->getField('id,domain');
+        $this->assign('sites',  $sites);
+
+        /* 获取分类信息 */
+        $info = $id ? $Category->info($id) : '';
+
+        $this->assign('info',       $info);
+        $this->assign('category',   $cate);
+        $this->meta_title = '编辑分类';
+        $this->display('Profile/Category/edit');
     }
 
     /* 新增分类 */
-    public function add($pid = 0){
+    public function add(){
         $Category = D('Category');
+        $cate = array();
+        $pid = I('pid');
+        $site_id = I('site_id');
 
-        if(IS_POST){ //提交表单
-            if(false !== $Category->update()){
-                $this->success('新增成功！', U('index'));
-            } else {
-                $error = $Category->getError();
-                $this->error(empty($error) ? '未知错误！' : $error);
+        if( $site_id ){
+            $this->assign('site_id',$site_id);
+        }
+
+        if($pid){
+            /* 获取上级分类信息 */
+            $cate = $Category->info($pid, 'id,name,title,status');
+            if(!($cate && 1 == $cate['status'])){
+                $this->error('指定的上级分类不存在或被禁用！');
             }
+            $site_id = $cate['site_id'];
+        }
+
+        $sites = M("Site")->getField('id,domain');
+        $this->assign('sites',  $sites);
+
+        /* 获取分类信息 */
+        $this->assign('info',     array('site_id'=>$site_id));
+        $this->assign('category', $cate);
+        $this->meta_title = '新增分类';
+        $this->display('Profile/Category/edit');
+    }
+
+    public function update(){
+        $Category = D('Category');
+        $id = I('id');
+        // 修改被移动菜单所属站点
+        $site_id = I('site_id');
+        if($id) $site_id_old = M("Category")->where("id = $id ")->getField('site_id');
+
+        if(false !== $Category->update()){
+            if( $site_id && $site_id_old && $site_id != $site_id_old ){
+                $Category->recursion_to_site($id, $site_id);
+            }
+            
+            $this->success('编辑成功！', U('Profile/site'));
         } else {
-            $cate = array();
-            if($pid){
-                /* 获取上级分类信息 */
-                $cate = $Category->info($pid, 'id,site_id,name,title,status');
-                if(!($cate && 1 == $cate['status'])){
-                    $this->error('指定的上级分类不存在或被禁用！');
-                }
-                $site_id = $cate['site_id'];
-            }
-
-            $sites = M("Site")->getField('id,domain');
-            $this->assign('sites',  $sites);
-
-            /* 获取分类信息 */
-            $this->assign('info',       array('site_id'=>$site_id));
-            $this->assign('category', $cate);
-            $this->meta_title = '新增分类';
-            $this->display('edit');
+            $error = $Category->getError();
+            $this->error(empty($error) ? '未知错误！' : $error);
         }
     }
 
@@ -164,17 +135,17 @@ class CategoryController extends AdminController {
         empty($from) && $this->error('参数错误！');
 
         //获取分类
-        $map = array('status'=>1, 'id'=>array('neq', $from));
+        $map = array('status'=>1, /*'site_id'=>,*/ 'id'=>array('neq', $from));
         $list = M('Category')->where($map)->field('id,pid,title')->select();
 
 
         //移动分类时增加移至根分类
         if(strcmp($type, 'move') == 0){
-        	//不允许移动至其子孙分类
-        	$list = tree_to_list(list_to_tree($list));
+            //不允许移动至其子孙分类
+            $list = tree_to_list(list_to_tree($list));
 
-        	$pid = M('Category')->getFieldById($from, 'pid');
-        	$pid && array_unshift($list, array('id'=>0,'title'=>'根分类'));
+            $pid = M('Category')->getFieldById($from, 'pid');
+            $pid && array_unshift($list, array('id'=>0,'title'=>'根分类'));
         }
 
         $this->assign('type', $type);
@@ -182,7 +153,7 @@ class CategoryController extends AdminController {
         $this->assign('from', $from);
         $this->assign('list', $list);
         $this->meta_title = $operate.'分类';
-        $this->display();
+        $this->display('Profile/Category/operate');
     }
 
     /**

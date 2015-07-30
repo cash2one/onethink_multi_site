@@ -204,7 +204,7 @@ class SiteController extends AdminController {
         Cookie('__forward__',$_SERVER['REQUEST_URI']);
 
         $this->meta_title = '我的站点';
-        $this->display('Site/Profile/mysite');
+        $this->display('Profile/Site/mysite');
     }
     
     /**
@@ -228,14 +228,14 @@ class SiteController extends AdminController {
         }
 
 
-        $cate_list     =   D('Category')->getTree();
+        $cate_list     =   D('Category')->where("site_id = $id")->getTree();
         $this->assign('cate_list',     $cate_list);
 
         $this->assign("info",$site_info);
         // 记录当前列表页的cookie
         Cookie('__forward__',$_SERVER['REQUEST_URI']);
         $this->meta_title = '管理站点';
-        $this->display('Site/Profile/manage');
+        $this->display('Profile/Site/manage');
     }
 
     /**

@@ -20,7 +20,7 @@ class ProfileController extends AdminController {
     public function site(){
         $a = I('get.smethod',"mysite");
 
-        $Site = new SiteController();
+        $Site = new Profile\SiteController();
         $res = $Site->$a();
 
         $return = array('editsite','category');
@@ -42,27 +42,20 @@ class ProfileController extends AdminController {
         }
     }
 
-
     /**
-     * 设置站点状态
+     * 管理站点栏目
+     * @return [type] [description]
      */
-    public function set($status){
-        $id = array_unique((array)I('id',0));
+    public function cate(){
+        $a = I('get.cmethod');
 
-        if ( empty($id) ) {
-            $this->error('请选择要操作的数据!');
-        }
-        if ( !in_array($status,array(0,1)) ) {
-            $this->error('参数错误!');
-        }
-
-        $map = array('id' => array('in', $id) );
-        if(M('Site')->where($map)->setField("status",$status)){
-            $this->success('操作成功');
-        } else {
-            $this->error('操作失败！');
-        }
+        $Category = new Profile\CategoryController();
+        $Category->$a();
     }
 
+    public function catetree($tree = null){
+        $this->assign('tree', $tree);
+        $this->display('Profile/Category/tree');
+    }
 
 }

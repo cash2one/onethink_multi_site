@@ -4,13 +4,18 @@
 	<link rel="stylesheet" type="text/css" href="__STATIC__/plugins/bootstrap-fileupload/bootstrap-fileupload.css" />
 </block>
 
+<!-- 子导航 -->
+<block name="sidebar">
+    <include file="sidemenu" />
+</block>
+
 <block name="body">
     
     <div class="row">
         <div class="col-md-12">
             
             <div class="tabbable tabbable-custom boxless">
-                <form id="form" action="{:U()}" method="post" class="form-1">
+                <form id="form" action="{:U('Profile/cate',array('cmethod'=>'update'))}" method="post" class="form-1">
                 <script> var _file = []; _file['picture'] = [];</script>
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_1" data-toggle="tab">基 础</a></li>
@@ -36,9 +41,7 @@
                                     <div class="form-body">
                                         <div class="form-group">
                                             <label>所属站点</label>
-                                            <select class="form-control input-xlarge" 
-                                            <gt name="category.id" value="0">readonly</gt> 
-                                            name="site_id">
+                                            <select class="form-control input-xlarge" readonly name="site_id">
                                             <option value=""><i>无站点</i></option>
                                             <volist name="sites" id="domain">
                                                 <option value="{$key}" <eq name="key" value="$info['site_id']">selected</eq>>{$domain}</option>
