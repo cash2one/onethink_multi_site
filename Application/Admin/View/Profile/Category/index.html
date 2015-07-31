@@ -1,8 +1,9 @@
-<extend name="Public/base" />
+<extend name="Public/base"/>
 
 <block name="style">
+	<link rel="stylesheet" href="__STATIC__/plugins/data-tables/DT_bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="__STATIC__/plugins/jquery-nestable/jquery.nestable.css" />
-    <style>
+	<style>
 	.dd3-content .editShow {
 		display:none;
 	}
@@ -38,57 +39,82 @@
 	</style>
 </block>
 
+<!-- 子导航 -->
+<block name="sidebar">
+	<include file="sidemenu" />
+</block>
+
 <block name="body">
-    
-    <div class="row">
-        <div class="col-md-12">
-            
-            <div class="tab-content">
-                <div class="portlet box green">
-                    <div class="portlet-title">
-                        <div class="caption"><i class="fa fa-reorder"></i>分类管理</div>
-                        <div class="tools">
-                        </div>
-                    </div>
-                    <div class="portlet-body form">
-                        <div class="form-body">
-                        
-                            <div class="btn-group" id="nestable_list_menu">
-                        		<a class="btn green" href="{:U('Category/add?pid=0')}">添加分类</a>
-                                <button type="button" class="btn green" data-action="expand-all">展开</button>
-                                <button type="button" class="btn green" data-action="collapse-all">合并</button>
-                        		<button type="button" class="btn green" data-action="order-all">排序</button>
-                            	（双击栏目编辑、拖动管理分类。）
-                            </div>
-                            
-                            <div class="category dd" id="nestable_category">
-                                {:R('Category/tree', array($tree))}
-                            </div>
-                                
-                        </div>
-                    </div>
-                </div>
-                    
-            </div>
-            
-                
-                
-        </div>
-    </div>
-    
-    
+	{:R("Profile/siteInfo")}
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN EXAMPLE TABLE PORTLET-->
+			<div class="tabbable tabbable-custom boxless">
+				<ul class="nav nav-tabs">
+					<li><a href="{:U('Profile/site?smethod=manage')}">站点信息</a></li>
+					<li class="active"><a href="#">栏目管理</a></li>
+                    <li><a href="{:U('Profile/article')}">文章管理</a></li>
+				</ul>
+				
+				<div class="tab-content">
+					<div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption"><i class="fa fa-globe"></i>栏目管理</div>
+							<div class="tools">
+								<a href="javascript:;" class="collapse"></a>
+								<a href="#portlet-config" data-toggle="modal" class="config"></a>
+								<a href="javascript:;" class="reload"></a>
+							</div>
+						</div>
+						<div class="portlet-body form">
+
+	                        <div class="form-body">
+	                        
+	                            <div class="btn-group" id="nestable_list_menu">
+	                        		<a class="btn blue" href="{:U('Profile/cate',array('cmethod'=>'add','site_id'=>$site_info['id']))}">添加分类</a>
+	                                <button type="button" class="btn blue" data-action="expand-all">展开</button>
+	                                <button type="button" class="btn blue" data-action="collapse-all">合并</button>
+	                        		<button type="button" class="btn blue" data-action="order-all">排序</button>
+	                            </div>
+
+	                            <div class="btn-group" id="nestable_list_menu">
+	                        		<a class="btn blue" href="{:U('Profile/article',array('site_id'=>$site_info['id']))}">文章管理</a>
+	                            </div>
+	                        	（双击栏目编辑、拖动管理分类。）
+	                            
+	                            <div class="category dd" id="nestable_category">
+	                                {:R('Profile/editCateTree', array($site_cate_list))}
+	                            </div>
+	                                
+	                        </div>
+						</div>
+					</div>
+
+				</div>
+					
+			</div>
+			<!-- END EXAMPLE TABLE PORTLET-->
+		</div>
+	</div>
+
 </block>
 
 <block name="script">
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/DT_bootstrap.js"></script>
+	<script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>  
+	<!-- END PAGE LEVEL PLUGINS -->
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
-	<script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>   
-	<!-- END PAGE LEVEL SCRIPTS -->       
 	<script src="__STATIC__/scripts/app.js"></script>
-	<script type="text/javascript">
-		jQuery(document).ready(function() {       
-		   // initiate layout and plugins
-		   App.init();
-		   
+	<script src="__STATIC__/scripts/table-managed.js"></script>	 
+	<script>
+		jQuery(document).ready(function() {	   
+			App.init();
+			TableManaged.init();
+
+
 		   $('#nestable_list_menu').on('click', function (e) {
                 var target = $(e.target),
                     action = target.data('action');
@@ -117,7 +143,7 @@
 				// 一次移动，只可能有一处不同	
 				if(change){
 					$.post(
-						"{:U('move')}",
+						"{:U('Profile/cate',array('cmethod'=>'move'))}",
 						change,
 						function(data){
 							/* 提示信息 */
@@ -160,7 +186,7 @@
 				if(rs){
 					rs = {'ids':rs.join(',')}
 					$.post(
-						"{:U('sort')}",
+						"{:U('Profile/cate',array('cmethod'=>'order'))}",
 						rs,
 						function(data){
 							//提示信息 
@@ -290,7 +316,6 @@
 			   }
 			},'input[name=title]')
 			
-		   
 		});
 	</script>
 </block>

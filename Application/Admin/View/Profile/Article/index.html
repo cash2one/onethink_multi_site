@@ -1,0 +1,213 @@
+<extend name="Public/base"/>
+
+<block name="style">
+	<link rel="stylesheet" href="__STATIC__/plugins/data-tables/DT_bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/plugins/jquery-nestable/jquery.nestable.css" />
+</block>
+
+<!-- 子导航 -->
+<block name="sidebar">
+    <include file="sidemenu" />
+</block>
+
+<block name="body">
+    
+    {:R("Profile/siteInfo")}
+
+    
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="tabbable tabbable-custom boxless">
+                <ul class="nav nav-tabs">
+                    <li><a href="{:U('Profile/site?smethod=manage')}">站点信息</a></li>
+                    <li><a href="{:U('Profile/cate')}">栏目管理</a></li>
+                    <li class="active"><a href="#">文章管理</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="row profile-account">
+                        <div class="col-md-3">
+                            <div class="category dd" id="nestable_category">
+                                {:R('Profile/listCateTree', array($site_cate_list))}
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+
+                            <!-- 数据表格 -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                                    <div class="portlet box green">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <i class="fa fa-globe"></i>
+                                                文档列表({$_total}) [
+                                                <volist name="rightNav" id="nav">
+                                                <a href="{:U('Profile/article','cate_id='.$nav['id'])}">{$nav.title}</a>
+                                                    <if condition="count($rightNav) gt $i"><i class="ca"></i></if>
+                                                </volist>
+                                                <present name="article">：<a href="{:U('article/index','cate_id='.$cate_id.'&pid='.$article['id'])}">{$article.title}</a></present>
+                                                ]
+                                                <eq name="allow" value="0">（该分类不允许发布内容）</eq>
+                                            </div>
+                                            <div class="tools">
+                                                <a href="javascript:;" class="collapse"></a>
+                                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                                <a href="javascript:;" class="reload"></a>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body">
+                                            <div class="table-toolbar">
+                                                <div class="btn-group">
+                                                    <gt name="allow" value="0">
+                                                        <button class="btn document_add green  dropdown-toggle"  data-toggle="dropdown" <if condition="count($model) eq 1">url="{:U('Profile/article?amethod=add',array('cate_id'=>$cate_id,'pid'=>I('pid',0),'model_id'=>$model[0]))}"</if>>新 增    
+                                                            <if condition="count($model) gt 1"><i class="fa fa-chevron-down"></i></if>
+                                                        </button>
+                                                        <if condition="count($model) gt 1">
+                                                        <ul class="dropdown-menu">
+                                                            <volist name="model" id="vo">
+                                                            <li><a href="{:U('Profile/article?amethod=add',array('cate_id'=>$cate_id,'model_id'=>$vo,'pid'=>I('pid',0)))}">{$vo|get_document_model='title'}</a></li>
+                                                            </volist>
+                                                        </ul>
+                                                        </if>
+                                                    <else/>
+                                                        <button class="btn disabled green" >新 增
+                                                            <if condition="count($model) gt 1"><i class="btn-arrowdown"></i></if>
+                                                        </button>
+                                                    </gt>
+                                                    <input type="hidden" class="hide-data" name="pid" value="{$pid}"/>
+                                                    <button class="btn green ajax-post confirm" target-form="ids" url="{:U("Profile/article?amethod=setStatus",array("status"=>-1))}">删 除</button>
+                                                </div>
+
+                                                <div class="btn-group pull-right">
+                                                    
+                                                    <div class="input-group input-medium">
+                                                        <input type="text" class="form-control search-input" name="title" placeholder="">
+                                                        <span class="input-group-btn">
+                                                        <button class="btn green" type="button"  id="search" url="{:U('Profile/article',array('cate_id'=>$cate_id))}">搜索</button>
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <table class="table table-striped table-bordered table-hover" id="sample">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th class="table-checkbox"><input type="checkbox" class="group-checkable" data-set="#sample .checkboxes" /></th>
+                                                        <th class="">编号</th>
+                                                        <th class="">标题</th>
+                                                        <th class="">分类</th>
+                                                        <th class="">最后更新</th>
+                                                        <th class="">状态</th>
+                                                        <th class="">操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <volist name="list" id="vo">
+                                                    <tr class="odd gradeX">
+                                                        
+                                                        <td><input class="checkboxes ids" type="checkbox" name="ids[]" value="{$vo.id}" /></td>
+                                                        <td>{$vo.id} </td>
+                                                        <td><a href="{:U('Profile/article?amethod=edit&cate_id='.$vo['category_id'].'&id='.$vo['id'])}">{$vo.title}</a></td>
+                                                        <td><span>{:get_cate($vo['category_id'])}</span></td>
+                                                        <td><span>{$vo.update_time|time_format}</span></td>
+                                                        <td>{$vo.status_text}</td>
+                                                        <td><a href="{:U('Profile/article?amethod=edit&cate_id='.$vo['category_id'].'&id='.$vo['id'])}">编辑</a>
+                                                            <a href="{:U('Profile/article?amethod=setStatus&ids='.$vo['id'].'&status='.abs(1-$vo['status']))}" class="ajax-get">{$vo.status|show_status_op}</a>
+                                                            <a href="{:U('Profile/article?amethod=setStatus&status=-1&ids='.$vo['id'])}" class="confirm ajax-get">删除</a>
+                                                            </td>
+                                                    </tr>
+                                                    </volist>
+                                                </tbody>
+                                            </table>
+                                            
+                                            <div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true">
+                                            </div>  
+                                            <!-- 分页 -->
+                                            <div class="page">
+                                                {$_page}
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- END EXAMPLE TABLE PORTLET-->
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--end col-md-9-->                                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/DT_bootstrap.js"></script>
+    <script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>  
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script src="__STATIC__/scripts/table-managed.js"></script>    
+	<script src="__STATIC__/scripts/form-components.js"></script> 
+	<script>
+		jQuery(document).ready(function() {       
+			App.init();
+			TableManaged.init();
+			
+			//搜索功能
+			$("#search").click(function(){
+				var url = $(this).attr('url');
+				var query = $(".search-input").serialize();
+				query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+				query = query.replace(/^&/g,'');
+
+				if( url.indexOf('?')>0 ){
+					url += '&' + query;
+				}else{
+					url += '?' + query;
+				}
+				window.location.href = url;
+			});
+			
+			//只有一个模型时，点击新增
+			$('.document_add').click(function(){
+				var url = $(this).attr('url');
+				if(url != undefined && url != ''){
+					window.location.href = url;
+				}
+			});
+			
+			//点击排序
+			$('.list_sort').click(function(){
+				var url = $(this).attr('url');
+				var ids = $('.ids:checked');
+				var param = '';
+				if(ids.length > 0){
+					var str = new Array();
+					ids.each(function(){
+						str.push($(this).val());
+					});
+					param = str.join(',');
+				}
+			
+				if(url != undefined && url != ''){
+					window.location.href = url + '/ids/' + param;
+				}
+			});
+		
+            $('#nestable_category')
+            .nestable({dragEnable:false})
+            .on('selectstart',function(){
+                return false;
+            });
+
+		});
+	</script>
+</block>

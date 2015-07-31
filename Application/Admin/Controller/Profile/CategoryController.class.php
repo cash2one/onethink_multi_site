@@ -4,9 +4,14 @@ namespace Admin\Controller\Profile;
 /**
  * 后台配置控制器
  */
-class CategoryController extends \Admin\Controller\AdminController {
+class CategoryController extends \Admin\Controller\ProfileController {
 
-
+    public function index(){
+        // 记录当前列表页的cookie
+        Cookie('__forward__',$_SERVER['REQUEST_URI']);
+        $this->meta_title = '栏目管理';
+        $this->display('Profile/Category/index');
+    }
 
     /* 编辑分类 */
     public function edit(){
@@ -77,7 +82,7 @@ class CategoryController extends \Admin\Controller\AdminController {
                 $Category->recursion_to_site($id, $site_id);
             }
             
-            $this->success('编辑成功！', U('Profile/site'));
+            $this->success('编辑成功！', U('Profile/cate'));
         } else {
             $error = $Category->getError();
             $this->error(empty($error) ? '未知错误！' : $error);

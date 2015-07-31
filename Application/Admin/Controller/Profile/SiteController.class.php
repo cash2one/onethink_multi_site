@@ -4,12 +4,11 @@ namespace Admin\Controller\Profile;
 /**
  * 后台配置控制器
  */
-class SiteController extends \Admin\Controller\AdminController {
+class SiteController extends \Admin\Controller\ProfileController {
 
     public $profile_info = array(
-        '-2' =>"数据保存失败",
         '-1' =>"没有选择要操作站点",
-        '0' =>"所选栏目没有改变",
+        '0' =>"数据没有改变",
     );
 
 
@@ -43,28 +42,21 @@ class SiteController extends \Admin\Controller\AdminController {
      */
     public function manage(){
         $id = I('get.id');
+        
 
         if(empty($id)){
-            $this->error("请选择要管理的站点！");
+            $id = session("site_id");
+            if( empty($id) ){
+                $this->error('没有选择要操作站点',U("Profile/site"));
+            }
+        }else{
+            session("site_id",$id);   
         }
 
-        $status = array(0=>'关闭',1=>'开启');
-        $site_info = M("Site")->find($id);
-        $site_info['status_text'] = $status[$site_info['status']];
-        if( !$site_info ){
-            $this->error("站点不存在！");
-        }
-        if( $site_info['manage'] != UID ){
-            $this->error("您无权管理他人站点！");
-        }
-
-        $cate_list     =   D('Category')->where("site_id = $id")->getTree();
-
-        $this->assign('cate_list',     $cate_list);
-        $this->assign("info",$site_info);
         // 记录当前列表页的cookie
         Cookie('__forward__',$_SERVER['REQUEST_URI']);
         $this->meta_title = '管理站点';
+
         $this->display('Profile/Site/manage');
     }
 

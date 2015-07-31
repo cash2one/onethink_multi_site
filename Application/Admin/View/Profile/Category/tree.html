@@ -3,7 +3,7 @@
     <li class="dd-item dd3-item"  data-id="{$list.id}"> 
         <div class="dd-handle dd3-handle"></div>
         <div class="dd3-content">
-            <form action="{:U('Profile/cate?cmethod=edit')}" method="post">
+            <form action="{:U('Profile/cate?cmethod=update')}" method="post">
                 <input type="hidden" name="id" value="{$list.id}">
                 <span class="title editHide">{$list.title}</span>
                 <label class="editShow"><input type="text" name="title" class="text" value="{$list.title}"><span class="msg"></span></label>
@@ -22,7 +22,7 @@
         </div>
         
 		<notempty name="list['_']">
-			{:R('Profile/catetree', array($list['_']))}
+			{:R('Profile/editCateTree', array($list['_']))}
 		</notempty>
     </li>
     
