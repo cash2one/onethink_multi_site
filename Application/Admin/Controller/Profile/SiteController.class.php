@@ -11,10 +11,6 @@ class SiteController extends \Admin\Controller\ProfileController {
         '0' =>"数据没有改变",
     );
 
-
-    /**************************
-     * Profile site method    *  
-     **************************/
     /**
      * 我的站点列表
      */
@@ -42,7 +38,9 @@ class SiteController extends \Admin\Controller\ProfileController {
      */
     public function manage(){
         $id = I('get.id');
-        
+
+
+        $session_id = session('site_id');
 
         if(empty($id)){
             $id = session("site_id");
@@ -50,7 +48,10 @@ class SiteController extends \Admin\Controller\ProfileController {
                 $this->error('没有选择要操作站点',U("Profile/site"));
             }
         }else{
-            session("site_id",$id);   
+            session("site_id",$id);
+
+            // 信息的获取在_initialize方法中进行，先于session的更改，故此要重新获取
+            $this->_getSiteInfo($id);   
         }
 
         // 记录当前列表页的cookie

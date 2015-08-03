@@ -15,24 +15,28 @@ class ProfileController extends AdminController {
 
         // 获取当前站点相关信息
         if( $this->site_id ){
-            $status = array(0=>'关闭',1=>'开启');
-            $site_info = M("Site")->find($this->site_id);
-            $site_info['status_text'] = $status[$site_info['status']];
-            if( !$site_info ){
-                $this->error("站点不存在！");
-            }
-            if( $site_info['manage'] != UID ){
-                $this->error("您无权管理他人站点！");
-            }
-
-            $nickname = M("Member")->where("uid = ".$site_info['manage'])->getField('nickname');
-            $site_info['manage_nickname'] = $nickname;
-
-            $cate_list     =   D('Category')->where("site_id = ".$this->site_id)->getTree();
-
-            $this->assign('site_cate_list',     $cate_list);
-            $this->assign("site_info",          $site_info);
+            $this->_getSiteInfo($this->site_id);
         }
+    }
+
+    protected function _getSiteInfo($site_id){
+        $status = array(0=>'关闭',1=>'开启');
+        $site_info = M("Site")->find($site_id);
+        $site_info['status_text'] = $status[$site_info['status']];
+        if( !$site_info ){
+            $this->error("站点不存在！");
+        }
+        if( $site_info['manage'] != UID ){
+            $this->error("您无权管理他人站点！");
+        }
+
+        $nickname = M("Member")->where("uid = ".$site_info['manage'])->getField('nickname');
+        $site_info['manage_nickname'] = $nickname;
+
+        $cate_list     =   D('Category')->where("site_id = ".$site_id)->getTree();
+
+        $this->assign('site_cate_list',     $cate_list);
+        $this->assign("site_info",          $site_info);
     }
 
     public function siteInfo(){
