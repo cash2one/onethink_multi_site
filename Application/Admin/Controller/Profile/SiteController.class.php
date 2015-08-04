@@ -6,11 +6,6 @@ namespace Admin\Controller\Profile;
  */
 class SiteController extends \Admin\Controller\ProfileController {
 
-    public $profile_info = array(
-        '-1' =>"没有选择要操作站点",
-        '0' =>"数据没有改变",
-    );
-
     /**
      * 我的站点列表
      */
@@ -90,28 +85,15 @@ class SiteController extends \Admin\Controller\ProfileController {
         $Site = D('Site');
         $data = $Site->create();
         if($data){
-            return $Site->save();
+            $res = $Site->save();
+            if($res){
+                $this->success("站点信息保存成功");
+            }else{
+                $this->error("站点信息保存失败");
+            }
         } else {
-            return -2;
+            $this->error("站点信息保存失败");
         }
-    }
-
-    /**
-     * 给站点添加分类
-     */
-    public function category(){
-        $cid = I("cid");
-        $site_id = I("site_id");
-
-        if( empty($site_id) ){
-            return -1;
-        }
-
-        $cid = implode(',',$cid);
-
-        $res = M("Site")->where("id = $site_id ")->setField('category',$cid);
-
-        return $res;
     }
 
 

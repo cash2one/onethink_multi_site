@@ -1,0 +1,93 @@
+<extend name="Public/base"/>
+
+<!-- 子导航 -->
+<block name="sidebar">
+    <include file="sidemenu" />
+</block>
+
+<block name="body">
+
+    {:R("Profile/siteInfo")}
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div class="tabbable tabbable-custom boxless">
+                <form id="form" action="{:U('Profile/channel?cmethod=update')}" method="post" class="form-1">
+				<input type="hidden" name="pid" value="{$pid}">
+                <div class="tab-content">
+                    
+                    <div class="portlet box red">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-reorder"></i>
+                            {$info['id']?'编辑':'新增'}导航
+                            <notempty name="pid">
+                                [&nbsp;父导航：<a href="{:U('index','pid='.$pid)}">{$parent.title}</a>&nbsp;]
+                            </notempty>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse"></a>
+                                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                <a href="javascript:;" class="reload"></a>
+                                <a href="javascript:;" class="remove"></a>
+                            </div>
+                        </div>
+                        <div class="portlet-body form">
+                            <!-- BEGIN FORM-->
+                            
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label>导航标题<span class="check-tips">（用于显示的文字）</span></label>
+                                        <input type="text" class="form-control input-xlarge" name="title" value="{$info.title|default=''}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>导航连接<span class="check-tips">（用于调转的URL，支持带http://的URL或U函数参数格式）</span></label>
+                                        <input type="text" class="form-control input-xlarge" name="url" value="{$info.url|default=''}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>新窗口打开<span class="check-tips">（是否新窗口打开链接）</span></label>
+                                        <select class="form-control  input-medium" name="target">
+                                             <option value="0">否</option>
+                                             <option value="1">是</option>
+                                        </select>
+                                    </div> 
+                                    <div class="form-group">
+                                        <label>排序<span class="check-tips">（用于分组显示的顺序）</span></label>
+                                        <input type="text" class="form-control input-xlarge" name="sort" value="{$info.sort|default=0}">
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="form-actions fluid ">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <input type="hidden" name="id" value="{$info.id|default=''}">
+                                        <input type="hidden" name="site_id" value="{$site_info['id']}">
+                                        <button class="btn green submit-btn ajax-post" id="submit" type="submit" target-form="form-1">确 定</button>
+                                        <button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>                  
+                                    </div>
+                                </div>
+                            
+                            <!-- END FORM--> 
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<!-- END PAGE LEVEL SCRIPTS -->
+	<script>
+	jQuery(document).ready(function() {       
+		// initiate layout and plugins
+		App.init();
+
+        highlight_subnav('{:U('index')}');
+	});
+	</script>
+</block>

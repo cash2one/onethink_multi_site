@@ -58,25 +58,8 @@ class ProfileController extends AdminController {
         $a = I('get.smethod',"mysite");
 
         $Site = new Profile\SiteController();
-        $res = $Site->$a();
+        $Site->$a();
 
-        $return = array('editsite','category');
-        if( in_array($a,$return) ){
-            
-            if( $res == 1 ){
-                $info = array(
-                    'status'    => 1,
-                    'info'      => "操作成功"
-                );
-            }else{
-                $info=array(
-                    'status'    => ($res == 1) ? 1 : 0,
-                    'info'      => $Site->profile_info[$res],
-                );
-            }
-
-            $this->ajaxReturn($info);
-        }
     }
 
     /**
@@ -107,5 +90,15 @@ class ProfileController extends AdminController {
 
         $Article = new Profile\ArticleController();
         $Article->$a();
+    }
+
+    /**
+     * 管理站点导航
+     */
+    public function channel(){
+        $a = I('get.cmethod','index');
+
+        $Channel = new Profile\ChannelController();
+        $Channel->$a();
     }
 }
