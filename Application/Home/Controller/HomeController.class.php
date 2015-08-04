@@ -17,6 +17,9 @@ use Think\Controller;
 class HomeController extends Controller {
 
 	protected $site_id = 0;
+	protected $site_info = null;
+	protected $cate_ids = null;
+	protected $cate_list = null;
 
 	/* 空操作，用于输出404页面 */
 	public function _empty(){
@@ -88,12 +91,23 @@ class HomeController extends Controller {
     	$site_id = $this->site_id;
 
         $site_info = M("Site")->find($site_id);
+        $this->site_info = $site_info;
 
+        // 模板设置
         if( $site_info['theme'] ){
         	C('DEFAULT_THEME',$site_info['theme']);
         }else{
         	C('DEFAULT_THEME','default');
         }
+
+        // 站点分类获取
+        $cate_ids = D('Category')->where("site_id = ".$site_id)->getField('id',true);
+        $this->cate_ids = array(
+        	'array'=>$cate_ids,
+        	'string'=>implode(',',$cate_ids)
+        );
+        $cate_list     =   D('Category')->where("site_id = ".$site_id)->getTree();
+        $this->cate_list = $cate_list;
     }
 
 }

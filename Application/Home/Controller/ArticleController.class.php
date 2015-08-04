@@ -97,6 +97,12 @@ class ArticleController extends HomeController {
 
 		/* 获取分类信息 */
 		$category = D('Category')->info($id);
+
+		if( !in_array($category['id'], $this->cate_ids['array']) ){
+			$this->error('分类不存在。');
+		}
+
+
 		if($category && 1 == $category['status']){
 			switch ($category['display']) {
 				case 0:
