@@ -71,9 +71,9 @@ class InitSiteBehavior extends Behavior {
 
         if( $site_info['theme'] ){
             C('DEFAULT_THEME',$site_info['theme']);
-            $theme = './Template/'.$site_info['theme'].'/';
+            $theme = './'.C('THEME_PACKAGE').'/'.$site_info['theme'].'/';
         }else{
-            $theme = './Template/default/';
+            $theme = './'.C('THEME_PACKAGE').'/default/';
         }
         C('VIEW_PATH',$theme);
 

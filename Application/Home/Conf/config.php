@@ -65,11 +65,14 @@ return array(
 
     /* 模板相关配置 */
     'TMPL_PARSE_STRING' => array(
-        '__STATIC__' => __ROOT__ . '/Public/static',
-        '__ADDONS__' => __ROOT__ . '/Public/' . MODULE_NAME . '/Addons',
-        '__IMG__'    => __ROOT__ . '/Public/' . MODULE_NAME . '/images',
-        '__CSS__'    => __ROOT__ . '/Public/' . MODULE_NAME . '/css',
-        '__JS__'     => __ROOT__ . '/Public/' . MODULE_NAME . '/js',
+        /* 公共静态资源路径 */
+        '__STATIC__' => __ROOT__ . '/' . C('THEME_PACKAGE'). '/' . C('THEME_STATIC'),
+
+        /* 主题静态资源路径 */
+        '__ADDONS__' => __ROOT__ . '/' . C('VIEW_PATH'). '/' . C('THEME_STATIC') . '/Addons',
+        '__IMG__'    => __ROOT__ . '/' . C('VIEW_PATH'). '/' . C('THEME_STATIC') . '/images',
+        '__CSS__'    => __ROOT__ . '/' . C('VIEW_PATH'). '/' . C('THEME_STATIC') . '/css',
+        '__JS__'     => __ROOT__ . '/' . C('VIEW_PATH'). '/' . C('THEME_STATIC') . '/js',
     ),
 
     /* SESSION 和 COOKIE 配置 */
