@@ -71,11 +71,10 @@ class InitSiteBehavior extends Behavior {
 
         if( $site_info['theme'] ){
             C('DEFAULT_THEME',$site_info['theme']);
-            $theme = './'.C('THEME_PACKAGE').'/'.$site_info['theme'].'/';
         }else{
-            $theme = './'.C('THEME_PACKAGE').'/default/';
+            C('DEFAULT_THEME','default');
         }
-        C('VIEW_PATH',$theme);
+        C('VIEW_PATH','./'.C('THEME_PACKAGE').'/');
 
         // 读取站点设置
         // 分页数，伪静态，路由规则等等

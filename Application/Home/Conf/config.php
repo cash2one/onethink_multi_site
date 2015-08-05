@@ -69,10 +69,10 @@ return array(
         '__STATIC__' => __ROOT__ . '/' . C('THEME_PACKAGE'). '/' . C('THEME_STATIC'),
 
         /* 主题静态资源路径 */
-        '__ADDONS__' => __ROOT__ . '/' . C('VIEW_PATH'). '/' . C('THEME_STATIC') . '/Addons',
-        '__IMG__'    => __ROOT__ . '/' . C('VIEW_PATH'). '/' . C('THEME_STATIC') . '/images',
-        '__CSS__'    => __ROOT__ . '/' . C('VIEW_PATH'). '/' . C('THEME_STATIC') . '/css',
-        '__JS__'     => __ROOT__ . '/' . C('VIEW_PATH'). '/' . C('THEME_STATIC') . '/js',
+        '__ADDONS__' => __ROOT__ . '/' . C('THEME_PACKAGE') . '/' . C('DEFAULT_THEME') . '/' . C('THEME_STATIC') . '/Addons',
+        '__IMG__'    => __ROOT__ . '/' . C('THEME_PACKAGE') . '/' . C('DEFAULT_THEME') . '/' . C('THEME_STATIC') . '/images',
+        '__CSS__'    => __ROOT__ . '/' . C('THEME_PACKAGE') . '/' . C('DEFAULT_THEME') . '/' . C('THEME_STATIC') . '/css',
+        '__JS__'     => __ROOT__ . '/' . C('THEME_PACKAGE') . '/' . C('DEFAULT_THEME') . '/' . C('THEME_STATIC') . '/js',
     ),
 
     /* SESSION 和 COOKIE 配置 */
