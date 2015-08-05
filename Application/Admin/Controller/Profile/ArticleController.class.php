@@ -68,53 +68,89 @@ class ArticleController extends \Admin\Controller\ProfileController {
             $this->assign('model', null);
         }
 
-        //解析列表规则
-        $fields =	array();
-        $grids  =	preg_split('/[;\r\n]+/s', trim($model['list_grid']));
-        foreach ($grids as &$value) {
-            // 字段:标题:链接
-            $val      = explode(':', $value);
-            // 支持多个字段显示
-            $field   = explode(',', $val[0]);
-            $value    = array('field' => $field, 'title' => $val[1]);
-            if(isset($val[2])){
-                // 链接信息
-                $value['href']  =   $val[2];
-                // 搜索链接信息中的字段信息
-                preg_replace_callback('/\[([a-z_]+)\]/', function($match) use(&$fields){$fields[]=$match[1];}, $value['href']);
-            }
-            if(strpos($val[1],'|')){
-                // 显示格式定义
-                list($value['title'],$value['format'])    =   explode('|',$val[1]);
-            }
-            foreach($field as $val){
-                $array  =   explode('|',$val);
-                $fields[] = $array[0];
-            }
-        }
+        if( $model['name'] == 'single' ){
 
-        // 文档模型列表始终要获取的数据字段 用于其他用途
-        $fields[] = 'category_id';
-        $fields[] = 'model_id';
-        $fields[] = 'pid';
-        // 过滤重复字段信息
-        $fields =   array_unique($fields);
-        // 列表查询
-        $list   =   $this->getDocumentList($cate_id,$model_id,$position,$fields,$group_id);
-        // 列表显示处理
-        $list   =   $this->parseDocumentList($list,$model_id);
-        
-        $this->assign('cate_id',$cate_id);
-        $this->assign('model_id',$model_id);
-		$this->assign('group_id',$group_id);
-        $this->assign('position',$position);
-        $this->assign('groups', $groups);
-        $this->assign('list',   $list);
-        $this->assign('list_grids', $grids);
-        $this->assign('model_list', $model);
-        // 记录当前列表页的cookie
-        Cookie('__forward__',$_SERVER['REQUEST_URI']);
-        $this->display('Profile/Article/index');
+            $document_id = M('Document')->where("category_id=$cate_id")->getField('id');
+
+            $data = array();
+            if( $document_id ){
+                // 获取详细数据 
+                $Document = D('Document');
+                $data = $Document->detail($document_id);
+            }else{
+                $data['pid'] = 0;
+                $data['category_id'] = $cate_id;
+                $data['model_id'] = $model_id;
+            }
+
+
+            $this->assign('data', $data);
+            $this->assign('model_id', $data['model_id']);
+            $this->assign('model',      $model);
+
+            //获取表单字段排序
+            $fields = get_model_attribute($model['id']);
+            $this->assign('fields',     $fields);
+
+
+
+            //获取当前分类的文档类型
+            $this->assign('type_list', get_type_bycate($data['category_id']));
+
+            $this->meta_title   =   '编辑内容';
+            $this->display('Profile/article/edit');
+
+        }else{
+
+            //解析列表规则
+            $fields =   array();
+            $grids  =   preg_split('/[;\r\n]+/s', trim($model['list_grid']));
+            foreach ($grids as &$value) {
+                // 字段:标题:链接
+                $val      = explode(':', $value);
+                // 支持多个字段显示
+                $field   = explode(',', $val[0]);
+                $value    = array('field' => $field, 'title' => $val[1]);
+                if(isset($val[2])){
+                    // 链接信息
+                    $value['href']  =   $val[2];
+                    // 搜索链接信息中的字段信息
+                    preg_replace_callback('/\[([a-z_]+)\]/', function($match) use(&$fields){$fields[]=$match[1];}, $value['href']);
+                }
+                if(strpos($val[1],'|')){
+                    // 显示格式定义
+                    list($value['title'],$value['format'])    =   explode('|',$val[1]);
+                }
+                foreach($field as $val){
+                    $array  =   explode('|',$val);
+                    $fields[] = $array[0];
+                }
+            }
+
+            // 文档模型列表始终要获取的数据字段 用于其他用途
+            $fields[] = 'category_id';
+            $fields[] = 'model_id';
+            $fields[] = 'pid';
+            // 过滤重复字段信息
+            $fields =   array_unique($fields);
+            // 列表查询
+            $list   =   $this->getDocumentList($cate_id,$model_id,$position,$fields,$group_id);
+            // 列表显示处理
+            $list   =   $this->parseDocumentList($list,$model_id);
+            
+            $this->assign('model_id',$model_id);
+            $this->assign('cate_id',$cate_id);
+            $this->assign('group_id',$group_id);
+            $this->assign('position',$position);
+            $this->assign('groups', $groups);
+            $this->assign('list',   $list);
+            $this->assign('list_grids', $grids);
+            $this->assign('model_list', $model);
+            // 记录当前列表页的cookie
+            Cookie('__forward__',$_SERVER['REQUEST_URI']);
+            $this->display('Profile/article/index');
+
+        }
     }
 
     /**
@@ -282,7 +318,6 @@ class ArticleController extends \Admin\Controller\ProfileController {
         //获取表单字段排序
         $fields = get_model_attribute($model['id']);
         $this->assign('fields',     $fields);
-
 
         //获取当前分类的文档类型
         $this->assign('type_list', get_type_bycate($data['category_id']));
