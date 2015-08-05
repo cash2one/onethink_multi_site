@@ -4,6 +4,7 @@
  */
 namespace Home\Behavior;
 use Think\Behavior;
+use Think\Controller;
 
 defined('THINK_PATH') or exit();
 
@@ -58,20 +59,23 @@ class InitSiteBehavior extends Behavior {
         // 查询站点
         $site_id = array_search($domain, $domain_list);
         if( !$site_id ){
-            $this->error("站点不存在，请确认！");
+            exit("site is not exist!");
         }else if( $site_list[$site_id]['status'] == 0 ){
-            $this->error('当前站点无法访问~');
+            exit('site closed!');
         }else{
             C('SITE_ID', $site_id);
         }
 
         // 模板设置
         $site_info = M("Site")->find($site_id);
+
         if( $site_info['theme'] ){
             C('DEFAULT_THEME',$site_info['theme']);
+            $theme = './Template/'.$site_info['theme'].'/';
         }else{
-            C('DEFAULT_THEME','default');
+            $theme = './Template/default/';
         }
+        C('VIEW_PATH',$theme);
 
         // 读取站点设置
         // 分页数，伪静态，路由规则等等

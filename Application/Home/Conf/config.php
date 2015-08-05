@@ -26,11 +26,6 @@ return array(
         '/^detail\/(\d+)$/' => 'Article/detail?id=:1',
         '/^search\/([a-zA-Z0-9_-]+)$/' => 'Article/search?keyword=:1',
     ),
-    
-    /* 主题设置 */
-    //'DEFAULT_THEME' =>  'default',  // 默认模板主题名称
-    'TMPL_ACTION_ERROR' => 'Home@Public:error',  //默认错误跳转对应的模板文件
-    'TMPL_ACTION_SUCCESS' => 'Home@Public:error',  //默认成功跳转对应的模板文件
 
     /* 数据缓存设置 */
     'DATA_CACHE_PREFIX' => 'onethink_', // 缓存前缀
