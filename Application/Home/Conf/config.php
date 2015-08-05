@@ -16,6 +16,17 @@ return array(
     // 预先加载的标签库
     'TAGLIB_PRE_LOAD'     =>    'OT\\TagLib\\Article,OT\\TagLib\\Think',
         
+    /* 路由设置 */
+    'URL_ROUTER_ON' => true,
+    'URL_ROUTE_RULES' => array(
+        '/^cate\/([a-zA-Z0-9]+)$/' => 'Article/index?category=:1',
+        '/^cate\/([a-zA-Z0-9]+)\/([0-9]+)$/' => 'Article/index?category=:1&p=:2',
+        '/^list\/([a-zA-Z0-9]+)$/' => 'Article/lists?category=:1',
+        '/^list\/([a-zA-Z0-9]+)\/([0-9]+)$/' => 'Article/lists?category=:1&p=:2',
+        '/^detail\/(\d+)$/' => 'Article/detail?id=:1',
+        '/^search\/([a-zA-Z0-9_-]+)$/' => 'Article/search?keyword=:1',
+    ),
+    
     /* 主题设置 */
     //'DEFAULT_THEME' =>  'default',  // 默认模板主题名称
     'TMPL_ACTION_ERROR' => 'Home@Public:error',  //默认错误跳转对应的模板文件
