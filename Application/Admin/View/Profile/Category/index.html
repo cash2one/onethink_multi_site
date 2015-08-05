@@ -56,6 +56,7 @@
 					<li class="active"><a href="#">栏目管理</a></li>
                     <li><a href="{:U('Profile/article')}">文章管理</a></li>
                     <li><a href="{:U('Profile/channel')}">导航管理</a></li>
+                    <li><a href="{:U('Profile/site?smethod=config')}">站点设置</a></li>
 				</ul>
 				
 				<div class="tab-content">
@@ -77,10 +78,6 @@
 	                                <button type="button" class="btn blue" data-action="expand-all">展开</button>
 	                                <button type="button" class="btn blue" data-action="collapse-all">合并</button>
 	                        		<button type="button" class="btn blue" data-action="order-all">排序</button>
-	                            </div>
-
-	                            <div class="btn-group" id="nestable_list_menu">
-	                        		<a class="btn blue" href="{:U('Profile/article',array('site_id'=>$site_info['id']))}">文章管理</a>
 	                            </div>
 	                        	（双击栏目编辑、拖动管理分类。）
 	                            

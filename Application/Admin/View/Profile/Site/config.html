@@ -17,17 +17,17 @@
 			<!-- BEGIN EXAMPLE TABLE PORTLET-->
 			<div class="tabbable tabbable-custom boxless">
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#">站点信息</a></li>
+					<li><a href="{:U('Profile/site?smethod=manage')}">站点信息</a></li>
 					<li><a href="{:U('Profile/cate')}">栏目管理</a></li>
                     <li><a href="{:U('Profile/article')}">文章管理</a></li>
                     <li><a href="{:U('Profile/channel')}">导航管理</a></li>
-                    <li><a href="{:U('Profile/site?smethod=config')}">站点设置</a></li>
+                    <li class="active"><a href="{:U('Profile/site?smethod=config')}">站点设置</a></li>
 				</ul>
 				
 				<div class="tab-content">
 					<div class="portlet box green">
 						<div class="portlet-title">
-							<div class="caption"><i class="fa fa-globe"></i>基本信息</div>
+							<div class="caption"><i class="fa fa-globe"></i>站点设置</div>
 							<div class="tools">
 								<a href="javascript:;" class="collapse"></a>
 								<a href="#portlet-config" data-toggle="modal" class="config"></a>
@@ -38,20 +38,8 @@
 							<form action="{:U('Profile/site',array('smethod'=>'editsite'))}" method="post" class="form-1">
 								<div class="form-body">
 									<div class="form-group">
-										<label>站点名<span class="check-tips"></span></label>
-										<input type="text" class="form-control input-xlarge" name="name" value="{$site_info.name|default=''}">
-									</div>
-									<div class="form-group">
-										<label>title<span class="check-tips"></span></label>
-										<textarea class="form-control" rows="3" name="title">{$site_info.title|default=''}</textarea>
-									</div>
-									<div class="form-group">
-										<label>description<span class="check-tips"></span></label>
-										<textarea class="form-control" rows="3" name="description">{$site_info.description|default=''}</textarea>
-									</div>
-									<div class="form-group">
-										<label>keywords<span class="check-tips"></span></label>
-										<textarea class="form-control" rows="3" name="keywords">{$site_info.keywords|default=''}</textarea>
+										<label>设置<span class="check-tips"></span></label>
+										<textarea class="form-control" rows="5" name="config" >{$site_info.config|default=''}</textarea>
 									</div>
 								</div>
 								

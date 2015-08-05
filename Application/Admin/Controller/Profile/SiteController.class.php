@@ -95,6 +95,14 @@ class SiteController extends \Admin\Controller\ProfileController {
             $this->error("站点信息保存失败");
         }
     }
+    
+    /**
+     * 基础信息管理
+     */
+    public function config(){
+        
+        $this->display("Profile/Site/config");
+    }
 
 
 }
