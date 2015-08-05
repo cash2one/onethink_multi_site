@@ -24,7 +24,9 @@
         <!-- Contents
         ================================================== -->
         <section id="contents">
-            <article:list name="article" category="119" child="true">
+
+            <php> $cate = D('Category')->getChildrenId(119);$listrow=10;</php>
+            <article:list name="article" category="$cate" child="true" row="$listrow">
                 <div class="">
                     <h3><a href="{:U('Article/detail?id='.$article['id'])}">{$article.title}</a></h3>
                 </div>
@@ -41,6 +43,10 @@
                 </div>
                 <hr/>
             </article:list>
+
+            <div class="onethink pagination pagination-right pagination-large">
+                <article:page cate="$cate" listrow="10" />
+            </div>
 
         </section>
     </div>
