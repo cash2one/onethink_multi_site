@@ -74,7 +74,7 @@ class InitSiteBehavior extends Behavior {
         }else{
             C('DEFAULT_THEME','default');
         }
-        C('VIEW_PATH','./'.C('THEME_PACKAGE').'/');
+        //C('VIEW_PATH','./'.C('THEME_PACKAGE').'/');
 
         // 读取站点设置
         // 分页数，伪静态，路由规则等等

@@ -1,0 +1,7 @@
+<volist name="category" id="cate">
+	<eq name="current" value="$cate['id']">
+		<a href="/list/{$cate['name']}" title="{$cate.title}" class="button current">{$cate.title}</a>
+	<else/>
+		<a href="/list/{$cate['name']}" title="{$cate.title}" class="button">{$cate.title}</a>
+	</eq>
+</volist>

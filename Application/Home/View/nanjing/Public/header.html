@@ -1,0 +1,18 @@
+<div class="layout bg-white" id="header">
+  <div class="container max_width">
+    <div class="logo float-left fadein-left"><a href="/"></a></div>
+    <div class="text-right float-right" id="nav">
+      <ul class="menu fadein-right">
+
+        <think:nav name="nav">
+        <eq name="nav.pid" value="0">
+            <li>  <!--  class="current"--> 
+            <a href="{$nav.url|get_nav_url}" target="<eq name='nav.target' value='1'>_blank<else/>_self</eq>">{$nav.title}</a>
+            </li>
+        </eq>
+        </think:nav>
+      </ul>
+      <div class="nav-current fadein-right"></div>
+    </div>
+  </div>
+</div>
