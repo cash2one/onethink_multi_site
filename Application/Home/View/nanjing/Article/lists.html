@@ -16,11 +16,10 @@
         <div class="subject margin-big-bottom">产品中心</div>
         <div class="button-group">
           {:W('Category/lists', array($category['id'], ACTION_NAME == 'index'))}
-            
         </div>
         <div class="line caselist margin-big-top">
           
-        <article:list name="list" category="$category['id']" child="true">
+        <article:list name="list" category="$category['id']" child="true" row="$category['list_row']">
             <div class="x3">
               <a href="/detail/{$list['id']}" title="{$list.title}" target="_blank">
                 <div><img src="__IMG__/2015061748152085.jpg"></div>

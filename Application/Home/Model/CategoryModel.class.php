@@ -65,7 +65,7 @@ class CategoryModel extends Model{
         }
 
         /* 获取所有分类 */
-        $map  = array('status' => 1);
+        $map  = array('status' => 1, 'site_id' => C('SITE_ID'));
         $list = $this->field($field)->where($map)->order('sort')->select();
         $list = list_to_tree($list, $pk = 'id', $pid = 'pid', $child = '_', $root = $id);
         
@@ -88,7 +88,7 @@ class CategoryModel extends Model{
      */
     public function getSameLevel($id, $field = true){
         $info = $this->info($id, 'pid');
-        $map = array('pid' => $info['pid'], 'status' => 1);
+        $map = array('pid' => $info['pid'], 'status' => 1, 'site_id' => C('SITE_ID'));
         return $this->field($field)->where($map)->order('sort')->select();
     }
 

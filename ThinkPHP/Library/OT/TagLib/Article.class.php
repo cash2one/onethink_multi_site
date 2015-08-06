@@ -70,7 +70,8 @@ class Article extends TagLib{
         $cate    = $tag['cate'];
         $listrow = $tag['listrow'];
         $parse   = '<?php ';
-        $parse  .= '$__PAGE__ = new \Think\Page(get_list_count(' . $cate . '), ' . $listrow . ');';
+        $parse  .= '$__CATE__ = D(\'Category\')->getChildrenId('.$cate.');';
+        $parse  .= '$__PAGE__ = new \Home\Service\Page(get_list_count($__CATE__), ' . $listrow . ');';
         $parse  .= 'echo $__PAGE__->show();';
         $parse  .= ' ?>';
         return $parse;

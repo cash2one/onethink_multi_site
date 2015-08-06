@@ -506,6 +506,7 @@
 
 	});
 	
+	/*
 	//新增的导航
 	var li_index = $("#nav ul li").index($("#nav ul li.current")[0]);
 	var $navcur = $(".nav-current");
@@ -529,7 +530,9 @@
 		$nav.find("li").eq(li_index).addClass("current");
 		$navcur.stop().animate({left:defLeftW,width:itemW},300)
 	})
-	
+	*/
+
+
 	//
 	$(".newslist a,#footer a,.article a,.border a").hover(function(){
 		$(this).stop(true,false).animate({marginLeft:5},"fast");

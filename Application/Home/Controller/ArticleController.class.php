@@ -15,10 +15,15 @@ namespace Home\Controller;
  */
 class ArticleController extends HomeController {
 
+	// 当前栏目
+	public $category;
+	// 当前栏目父栏目数组
+	public $parent_cate;
+
     /* 文档模型频道页 */
 	public function index(){
 		/* 分类信息 */
-		$category = $this->category();
+		$category = $this->_category();
 
 		//频道页只显示模板，默认不读取任何内容
 		//内容可以通过模板标签自行定制
@@ -29,20 +34,12 @@ class ArticleController extends HomeController {
 	}
 
 	/* 文档模型列表页 */
-	public function lists($p = 1){
+	public function lists(){
 		/* 分类信息 */
-		$category = $this->category();
-
-		/* 获取当前分类列表 */
-		$Document = D('Document');
-		$list = $Document->page($p, $category['list_row'])->lists($category['id']);
-		if(false === $list){
-			$this->error('获取列表数据失败！');
-		}
+		$category = $this->_category();
 
 		/* 模板赋值并渲染模板 */
 		$this->assign('category', $category);
-		$this->assign('list', $list);
 		$this->display($category['template_lists']);
 	}
 
@@ -65,7 +62,7 @@ class ArticleController extends HomeController {
 		}
 
 		/* 分类信息 */
-		$category = $this->category($info['category_id']);
+		$category = $this->_category($info['category_id']);
 
 		/* 获取模板 */
 		if(!empty($info['template'])){//已定制模板
@@ -88,7 +85,7 @@ class ArticleController extends HomeController {
 	}
 
 	/* 文档分类检测 */
-	private function category($id = 0){
+	private function _category($id = 0){
 		/* 标识正确性检测 */
 		$id = $id ? $id : I('get.category', 0);
 		if(empty($id)){
@@ -96,12 +93,16 @@ class ArticleController extends HomeController {
 		}
 
 		/* 获取分类信息 */
-		$category = D('Category')->info($id);
+		$category = $this->category = D('Category')->info($id);
 
 		if( !in_array($category['id'], $this->cate_ids['array']) ){
 			$this->error('分类不存在。');
 		}
 
+		// 获取面包屑导航
+		$parent_cate = $this->parent_cate = $this->_get_parent_category($category['id']);
+		// 高亮主导航
+		//$current_main_menu = $this->_hight_light_nav();
 
 		if($category && 1 == $category['status']){
 			switch ($category['display']) {
@@ -115,6 +116,43 @@ class ArticleController extends HomeController {
 		} else {
 			$this->error('分类不存在或被禁用！');
 		}
+	}
+
+	/**
+	 * 面包屑导航
+	 * @param  [type] $cid [description]
+	 * @return [type]      [description]
+	 */
+	private function _get_parent_category($cid){
+	    if(empty($cid)){
+	        return false;
+	    }
+	    $cates  =   M('Category')->where(array('status'=>1))->field('id,title,pid')->order('sort')->select();
+	    $child  =   get_category($cid); //获取参数分类的信息
+	    $pid    =   $child['pid'];
+	    $temp   =   array();
+	    $res[]  =   $child;
+	    while(true){
+	        foreach ($cates as $key=>$cate){
+	            if($cate['id'] == $pid){
+	                $pid = $cate['pid'];
+	                array_unshift($res, $cate); //将父分类插入到数组第一个元素前
+	            }
+	        }
+	        if($pid == 0){
+	            break;
+	        }
+	    }
+	    return $res;
+	}
+
+	/**
+	 * 高亮主导航
+	 * @return [type] [description]
+	 */
+	private function _hight_light_nav(){
+		$site_id = $this->site_id;
+		$nav = M('Channel')->where("status=1 and site_id=$site_id")->order("sort")->select();
 	}
 
 }
