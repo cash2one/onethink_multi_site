@@ -100,8 +100,31 @@ class SiteController extends \Admin\Controller\ProfileController {
      * 基础信息管理
      */
     public function config(){
+        if(IS_POST){
+            $data = array();
+
+            $data['id'] = I('id');
+
+            $config = I('config');
+            $data['config'] = json_encode($config);
+
+            $Site = D('Site');
+            $data = $Site->create($data);
+            if($data){
+                $res = $Site->save();
+                if($res){
+                    $this->success("站点信息保存成功");
+                }else{
+                    $this->error("站点信息保存失败");
+                }
+            } else {
+                $this->error("站点信息保存失败");
+            }
+
+        }else{
+            $this->display("Profile/Site/config"); 
+        }
         
-        $this->display("Profile/Site/config");
     }
 
 

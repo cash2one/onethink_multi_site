@@ -35,11 +35,18 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="{:U('Profile/site',array('smethod'=>'editsite'))}" method="post" class="form-1">
+							<form action="{:U('Profile/site',array('smethod'=>'config'))}" method="post" class="form-1">
 								<div class="form-body">
 									<div class="form-group">
-										<label>设置<span class="check-tips"></span></label>
-										<textarea class="form-control" rows="5" name="config" >{$site_info.config|default=''}</textarea>
+										<label>网页标题是否继承分类<span class="check-tips"></span></label>
+								        <div class="radio-list">
+								            <label class="radio-inline">
+								            <input type="radio" name="config[MULTI_TITLE]" <eq name="site_info.config.MULTI_TITLE" value="1">checked</eq>  value="1"> 继承
+								            </label>
+								            <label class="radio-inline">
+								            <input type="radio" name="config[MULTI_TITLE]" <eq name="site_info.config.MULTI_TITLE" value="2">checked</eq>  value="2"> 不继承
+								            </label>
+								        </div>
 									</div>
 								</div>
 								

@@ -38,14 +38,17 @@ class SeoBehavior extends Behavior {
 
         if( I('id') ){
             $article = D('Document')->detail(I('id'));
+
+            $category = D('Category')->info($article['category_id']);
+
             $seo['title']       = $article['title'];
             $seo['keywords']    = $article['keywords'];
             $seo['description'] = $article['description'];
-        }
-
-        // title是否继承分类
-        if( C('MULTI_TITLE') ){
-            $seo['title'] = $category['title'] . ' - ' . $article['title'];
+            
+            // title是否继承分类
+            if( C('MULTI_TITLE') == 1 ){
+                $seo['title'] = $category['title'] . ' - ' . $article['title'];
+            }
         }
 
         C('SEO_TITLE',$seo['title']);

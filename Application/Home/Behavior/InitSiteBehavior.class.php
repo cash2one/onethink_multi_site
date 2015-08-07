@@ -77,7 +77,12 @@ class InitSiteBehavior extends Behavior {
 
         // 读取站点设置
         // 分页数，伪静态，路由规则等等
-        $site_config = $site_info['config'];
+        $site_config = json_decode($site_info['config'],1);
+
+        foreach( $site_config as $k => $v ){
+            C($k, $v);
+        }
+
 
 
         /*

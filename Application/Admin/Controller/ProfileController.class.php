@@ -33,6 +33,8 @@ class ProfileController extends AdminController {
         $nickname = M("Member")->where("uid = ".$site_info['manage'])->getField('nickname');
         $site_info['manage_nickname'] = $nickname;
 
+        $site_info['config'] = json_decode($site_info['config'],1);
+
         $cate_list     =   D('Category')->where("site_id = ".$site_id)->getTree();
 
         $this->assign('site_cate_list',     $cate_list);
