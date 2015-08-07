@@ -4,7 +4,6 @@
  */
 namespace Home\Behavior;
 use Think\Behavior;
-use Think\Controller;
 
 defined('THINK_PATH') or exit();
 
