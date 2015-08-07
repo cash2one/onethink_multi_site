@@ -30,7 +30,7 @@ class Article extends TagLib{
         $name   = $tag['name'];
         $cate   = $tag['category'];
         $child  = empty($tag['child']) ? 'false' : $tag['child'];
-        $row    = empty($tag['row'])   ? '10' : $tag['row'];
+        $row    = (empty($tag['row']) || $tag['row']==0)   ? C('SITE_LIST_ROW') : $tag['row'];
         $field  = empty($tag['field']) ? 'true' : $tag['field'];
 
         $parse  = '<?php ';
@@ -68,7 +68,7 @@ class Article extends TagLib{
     /* 列表数据分页 */
     public function _page($tag){
         $cate    = $tag['cate'];
-        $listrow = $tag['listrow'];
+        $listrow = (empty($tag['listrow']) || empty($tag['listrow']) == 0 )   ? C('SITE_LIST_ROW') : $tag['listrow'];
         $parse   = '<?php ';
         $parse  .= '$__CATE__ = D(\'Category\')->getChildrenId('.$cate.');';
         $parse  .= '$__PAGE__ = new \Home\Service\Page(get_list_count($__CATE__), ' . $listrow . ');';
