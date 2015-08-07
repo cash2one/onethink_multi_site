@@ -25,12 +25,18 @@ class ArticleController extends HomeController {
 		/* 分类信息 */
 		$category = $this->_category();
 
-		//频道页只显示模板，默认不读取任何内容
-		//内容可以通过模板标签自行定制
+		$single = $this->_single_model();
+		if( $single ){
+			$this->detail($single);
+		}else{
 
-		/* 模板赋值并渲染模板 */
-		$this->assign('category', $category);
-		$this->display($category['template_index']);
+			//频道页只显示模板，默认不读取任何内容
+			//内容可以通过模板标签自行定制
+
+			/* 模板赋值并渲染模板 */
+			$this->assign('category', $category);
+			$this->display($category['template_index']);
+		}
 	}
 
 	/* 文档模型列表页 */
@@ -38,9 +44,14 @@ class ArticleController extends HomeController {
 		/* 分类信息 */
 		$category = $this->_category();
 
-		/* 模板赋值并渲染模板 */
-		$this->assign('category', $category);
-		$this->display($category['template_lists']);
+		$single = $this->_single_model();
+		if( $single ){
+			$this->detail($single);
+		}else{
+			/* 模板赋值并渲染模板 */
+			$this->assign('category', $category);
+			$this->display($category['template_index']);
+		}
 	}
 
 	/* 文档模型详情页 */
@@ -77,6 +88,7 @@ class ArticleController extends HomeController {
 		$map = array('id' => $id);
 		$Document->where($map)->setInc('view');
 
+		S('SEO_ARTICLE',$info);
 		/* 模板赋值并渲染模板 */
 		$this->assign('category', $category);
 		$this->assign('info', $info);
@@ -103,6 +115,8 @@ class ArticleController extends HomeController {
 		$parent_cate = $this->parent_cate = $this->_get_parent_category($category['id']);
 		// 高亮主导航
 		//$current_main_menu = $this->_hight_light_nav();
+
+		S('SEO_CATE',$category);
 
 		if($category && 1 == $category['status']){
 			switch ($category['display']) {
@@ -153,6 +167,26 @@ class ArticleController extends HomeController {
 	private function _hight_light_nav(){
 		$site_id = $this->site_id;
 		$nav = M('Channel')->where("status=1 and site_id=$site_id")->order("sort")->select();
+	}
+
+	/**
+	 * 检查当前分类是否为单页类型
+	 * 		是的话返回对应文档id
+	 * @return int 文档id或false
+	 */
+	private function _single_model(){
+		$category = $this->category;
+		$model_name = 'single';
+
+		$single_model_id = M('Model')->where(" name='$model_name' ")->getField('id');
+		$model_id = $category['model'];
+
+		if( in_array($single_model_id, $model_id) ){
+			$document_id = M("Document")->where('category_id='.$category['id'])->getField('id');
+			return $document_id;
+		}
+		return false;
+
 	}
 
 }

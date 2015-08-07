@@ -29,17 +29,17 @@ class SeoBehavior extends Behavior {
         $seo['keywords']    = $site['keywords'];
         $seo['description'] = $site['description'];
 
-        if( I('category') ){
-            $category = D('Category')->info(I('category'));
+        if( S('SEO_CATE') ){
+            $category = S('SEO_CATE');
             $seo['title']       = $category['meta_title'];
             $seo['keywords']    = $category['keywords'];
             $seo['description'] = $category['description'];
         }
 
-        if( I('id') ){
-            $article = D('Document')->detail(I('id'));
+        if( S('SEO_ARTICLE') ){
+            $article =  S('SEO_ARTICLE');
 
-            $category = D('Category')->info($article['category_id']);
+            $category = S('SEO_CATE');
 
             $seo['title']       = $article['title'];
             $seo['keywords']    = $article['keywords'];
@@ -49,7 +49,12 @@ class SeoBehavior extends Behavior {
             if( C('MULTI_TITLE') == 1 ){
                 $seo['title'] = $category['title'] . ' - ' . $article['title'];
             }
-        }
+        }  
+        
+        // 每次访问删除缓存
+        S('SEO_ARTICLE',null);
+        S('SEO_CATE',null);
+
 
         C('SEO_TITLE',$seo['title']);
         C('SEO_KEYWORDS',$seo['keywords']);
