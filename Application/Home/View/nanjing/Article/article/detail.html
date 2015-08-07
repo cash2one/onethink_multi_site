@@ -3,10 +3,15 @@
 <block name="header">
 <div class="layout" id="banner">
     <div class="container max_width">
-        <h2 class="fadein-top">产品详情</h2><span class="fadein-bottom">Product</span>
+        <h2 class="fadein-top">产品详情</h2>
+        <span class="fadein-bottom">
+            <a href="/">首页</a>
+            <volist name="breadcrumb" id="cate">
+            &gt;&gt;<a href="{:U('list/'.$cate['name'])}"> {$cate.title}</a>
+            </volist>
+        </span>
     </div>
 </div>
-</block>
 </block>
 
 <block name="body">
@@ -40,19 +45,8 @@
         
     </div>
 </div>
-
 </block>
 
 <block name="script">
 <script type="text/javascript" src="__JS__/marked.min.js"></script>
-<script>
-/*
-$(function(){
-    var $content = $("#contents");
-    var html = $content.html();
-
-    $content.html(marked(html));
-})
-*/
-</script>
 </block>

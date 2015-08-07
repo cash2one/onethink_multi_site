@@ -112,11 +112,12 @@ class ArticleController extends HomeController {
 		}
 
 		// 获取面包屑导航
-		$parent_cate = $this->parent_cate = $this->_get_parent_category($category['id']);
+		$breadcrumb = $this->parent_cate = $this->_get_parent_category($category['id']);
 		// 高亮主导航
 		//$current_main_menu = $this->_hight_light_nav();
 
 		S('SEO_CATE',$category);
+		$this->assign('breadcrumb', $breadcrumb);
 
 		if($category && 1 == $category['status']){
 			switch ($category['display']) {
@@ -141,7 +142,7 @@ class ArticleController extends HomeController {
 	    if(empty($cid)){
 	        return false;
 	    }
-	    $cates  =   M('Category')->where(array('status'=>1))->field('id,title,pid')->order('sort')->select();
+	    $cates  =   M('Category')->where(array('status'=>1))->field('id,title,pid,name')->order('sort')->select();
 	    $child  =   get_category($cid); //获取参数分类的信息
 	    $pid    =   $child['pid'];
 	    $temp   =   array();

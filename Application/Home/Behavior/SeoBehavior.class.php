@@ -1,6 +1,6 @@
 <?php
 /**
- * Home 模块自动识别站点
+ * Home 模块获取SEO信息
  */
 namespace Home\Behavior;
 use Think\Behavior;
