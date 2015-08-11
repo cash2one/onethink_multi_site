@@ -14,7 +14,7 @@
 return array(
 
     // 预先加载的标签库
-    'TAGLIB_PRE_LOAD'     =>    'OT\\TagLib\\Article,OT\\TagLib\\Think',
+    'TAGLIB_PRE_LOAD'     =>    'OT\\TagLib\\Article,OT\\TagLib\\Think,Home\\TagLib\\Addons',
         
     /* 路由设置 */
     'URL_ROUTER_ON' => true,

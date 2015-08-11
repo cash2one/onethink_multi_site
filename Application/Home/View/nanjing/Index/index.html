@@ -4,9 +4,9 @@
 <div class="layout text-center fadein-bottom">
   <div class="banner">
     <div class="carousel">
-      <div class="item b01"><a href="/product/portal.html" title="门户版"></a></div>
-      <div class="item b02"><a href="/product/shop.html" title="商城版"></a></div>
-      <div class="item b03"><a href="/product/web.html" title="企业版"></a></div>
+    <Addons:focus group="focus" name="pic">
+      <div class="item b0{$key+1}" style="background-image:url({$pic.path})"><a href="{$pic.url}" title="{$pic.title}"></a></div>
+    </Addons:focus>
     </div>
   </div>
 </div>

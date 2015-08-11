@@ -6,7 +6,7 @@
 .bg_top a{color:#fff;font-family:microsoft yahei;}
 .bg_top a:hover{color:#ff0;}
 
-.logo{width:200px;height:90px;background:url(img/logo.gif) no-repeat center;}
+.logo{width:600px;height:90px;background:url(img/logo.gif) no-repeat center;}
 #nav{position:relative;}
 .menu{position:relative;list-style:none;}
 .menu li{float:left;}
