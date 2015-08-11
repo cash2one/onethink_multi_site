@@ -44,15 +44,24 @@ class InitSiteBehavior extends Behavior {
             $host_name = substr($host_name, 0, $port_start);
         }
 
-        $host_name = explode('.',$host_name);
-        $len = count($host_name);
+        // 1.直接判断域名是否在站点列表中
+        if( in_array($host_name, $domain_list) ){
+            $domain = $host_name;
+        }
+        // 2.查询主域名
+        else{
 
-        if( in_array( $host_name[$len-2].'.'.$host_name[$len-1] , $domain_suffix ) ){
-            $domain = $host_name[$len-3].'.'.$host_name[$len-2].'.'.$host_name[$len-1];
-            $sub_domain = $host_name[$len-4];
-        }else{
-            $domain = $host_name[$len-2].'.'.$host_name[$len-1];
-            $sub_domain = $host_name[$len-3];
+            $host_name = explode('.',$host_name);
+            $len = count($host_name);
+
+            if( in_array( $host_name[$len-2].'.'.$host_name[$len-1] , $domain_suffix ) ){
+                $domain = $host_name[$len-3].'.'.$host_name[$len-2].'.'.$host_name[$len-1];
+                $sub_domain = $host_name[$len-4];
+            }else{
+                $domain = $host_name[$len-2].'.'.$host_name[$len-1];
+                $sub_domain = $host_name[$len-3];
+            }
+
         }
 
         // 查询站点
