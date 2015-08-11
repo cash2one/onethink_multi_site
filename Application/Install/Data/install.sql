@@ -533,6 +533,7 @@ CREATE TABLE `onethink_channel` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
   `target` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '新窗口打开',
+  `site_id` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -540,7 +541,7 @@ CREATE TABLE `onethink_channel` (
 -- -----------------------------
 -- Records of `onethink_channel`
 -- -----------------------------
-INSERT INTO `onethink_channel` VALUES ('1', '0', '首页', 'Index/index', '1', '1379475111', '1379923177', '1', '0');
+INSERT INTO `onethink_channel` VALUES ('1', '0', '首页', 'Index/index', '1', '1379475111', '1379923177', '1', '0', '1');
 
 -- -----------------------------
 -- Table structure for `onethink_config`
@@ -941,6 +942,28 @@ CREATE TABLE `onethink_picture` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- -----------------------------
+-- Table structure for `onethink_site`
+-- -----------------------------
+DROP TABLE IF EXISTS `onethink_site`;
+CREATE TABLE `onethink_site` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(255) NOT NULL COMMENT '站点名称',
+  `domain` varchar(20) NOT NULL COMMENT '域名',
+  `manage` int(10) unsigned NOT NULL COMMENT '管理员',
+  `status` char(50) NOT NULL COMMENT '状态',
+  `title` varchar(255) NOT NULL COMMENT 'title',
+  `description` varchar(255) NOT NULL COMMENT 'description',
+  `keywords` varchar(255) NOT NULL COMMENT 'keywords',
+  `theme` varchar(100) NOT NULL COMMENT '模板',
+  `config` text NOT NULL COMMENT '站点设置',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+
+-- -----------------------------
+-- Records of `onethink_site`
+-- -----------------------------
+INSERT INTO `onethink_site` VALUES(1, '测试站点', 'localhost', 1, '1', 'title', 'description', 'keywords', 'default', '');
 
 -- -----------------------------
 -- Table structure for `onethink_ucenter_admin`
