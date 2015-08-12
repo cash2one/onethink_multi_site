@@ -521,7 +521,7 @@ CREATE TABLE `onethink_category` (
 -- -----------------------------
 -- Records of `onethink_category`
 -- -----------------------------
-INSERT INTO `onethink_category` VALUES(1, 'blog', '博客', 0, 1, 10, '', '', '', '', '', '', '', '2', '', '2,1,3', 0, 1, 1, 1, 0, '', '', 1421400189, 1438324631, 1, 0, '', 2);
+INSERT INTO `onethink_category` VALUES(1, 'blog', '博客', 0, 1, 10, '', '', '', '', '', '', '', '2', '', '2,1,3', 0, 1, 1, 1, 0, '', '', 1421400189, 1438324631, 1, 0, '', 1);
 
 
 -- -----------------------------
@@ -640,7 +640,7 @@ CREATE TABLE `onethink_document` (
 -- -----------------------------
 -- Records of `onethink_document`
 -- -----------------------------
-INSERT INTO `onethink_document` VALUES(1, 1, '', 'OneThink1.1开发版发布', 2, 0, '期待已久的OneThink最新版发布', 0, 0, 2, 2, 0, 0, 0, 1, 0, 0, 8, 0, 0, 0, 1406001413, 1406001413, 1, '');
+INSERT INTO `onethink_document` VALUES(1, 1, '', 'OneThink1.1开发版发布', 1, 0, '期待已久的OneThink最新版发布', 0, 0, 2, 2, 0, 0, 0, 1, 0, 0, 8, 0, 0, 0, 1406001413, 1406001413, 1, '');
 
 -- -----------------------------
 -- Table structure for `onethink_document_article`

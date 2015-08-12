@@ -29,13 +29,17 @@ class ArticleController extends HomeController {
 		if( $single ){
 			$this->detail($single);
 		}else{
-
+			if (!empty($category['template_index'])){ //分类已定制模板
+				$tmpl = $category['template_index'];
+			} else { //使用默认模板
+				$tmpl = 'Article/'. get_document_model($category['model'][0],'name') .'/index';
+			}
 			//频道页只显示模板，默认不读取任何内容
 			//内容可以通过模板标签自行定制
 
 			/* 模板赋值并渲染模板 */
 			$this->assign('category', $category);
-			$this->display($category['template_index']);
+			$this->display($tmpl);
 		}
 	}
 
@@ -48,9 +52,14 @@ class ArticleController extends HomeController {
 		if( $single ){
 			$this->detail($single);
 		}else{
+			if (!empty($category['template_index'])){ //分类已定制模板
+				$tmpl = $category['template_index'];
+			} else { //使用默认模板
+				$tmpl = 'Article/'. get_document_model($category['model'][0],'name') .'/index';
+			}
 			/* 模板赋值并渲染模板 */
 			$this->assign('category', $category);
-			$this->display($category['template_index']);
+			$this->display($tmpl);
 		}
 	}
 

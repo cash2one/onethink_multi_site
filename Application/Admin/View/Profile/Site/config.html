@@ -49,6 +49,23 @@
 								        </div>
 									</div>
 									<div class="form-group">
+										<label>URL模式<span class="check-tips"></span></label>
+								        <div class="radio-list">
+								            <label class="radio-inline">
+								            <input type="radio" name="config[URL_MODEL]" <eq name="site_info.config.URL_MODEL" value="0">checked</eq>  value="0"> 普通
+								            </label>
+								            <label class="radio-inline">
+								            <input type="radio" name="config[URL_MODEL]" <eq name="site_info.config.URL_MODEL" value="1">checked</eq>  value="1"> PATHINFO
+								            </label>
+								            <label class="radio-inline">
+								            <input type="radio" name="config[URL_MODEL]" <eq name="site_info.config.URL_MODEL" value="2">checked</eq>  value="2"> 静态化
+								            </label>
+								            <label class="radio-inline">
+								            <input type="radio" name="config[URL_MODEL]" <eq name="site_info.config.URL_MODEL" value="3">checked</eq>  value="3"> 兼容
+								            </label>
+								        </div>
+									</div>
+									<div class="form-group">
 										<label>默认分页条数<span class="check-tips">（当分类没有分页数或分页数为0时使用该值）</span></label>
 								        <input type="text" class="form-control input-medium"  name="config[SITE_LIST_ROW]" value="{$site_info.config.SITE_LIST_ROW}">
 									</div>
