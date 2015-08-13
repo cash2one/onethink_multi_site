@@ -78,6 +78,10 @@ class PublicController extends \Think\Controller {
 
     public function verify(){
         $verify = new \Think\Verify();
+        $verify->useCurve = false;
+        $verify->useNoise = false;
+        $verify->length = 4;
+        $verify->fontttf = '4.ttf';
         $verify->entry(1);
     }
 

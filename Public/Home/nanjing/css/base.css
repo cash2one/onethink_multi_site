@@ -68,8 +68,6 @@
 .case .x4 a:hover{-webkit-box-shadow:0 0px 8px #999;box-shadow:0 0px 8px #999;}
 .case .x4 a p{position:relative;background:#555;color:#fff;bottom:-1px;height:40px;line-height:40px;padding-left:15px;opacity:0.7}
 
-
-.news .border{border-top:0;overflow:hidden;}
 .news .border ul{margin:7px 25px;padding:0;list-style:none;}
 .news .border ul li{line-height:35px;}
 .news .border ul li span{display:inline-block;width:15px;height:15px;background:#dedede;border-radius:20px;vertical-align:middle;margin-right:10px;}
