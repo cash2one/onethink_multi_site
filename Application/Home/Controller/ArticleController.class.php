@@ -193,6 +193,9 @@ class ArticleController extends HomeController {
 
 		if( in_array($single_model_id, $model_id) ){
 			$document_id = M("Document")->where('category_id='.$category['id'])->getField('id');
+			if( !$document_id ){
+				$this->error('没有添加内容');
+			}
 			return $document_id;
 		}
 		return false;
