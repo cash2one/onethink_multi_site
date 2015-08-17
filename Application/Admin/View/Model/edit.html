@@ -1,7 +1,7 @@
 <extend name="Public/base" />
 
 <block name="style">
-	<link rel="stylesheet" type="text/css" href="__STATIC__/plugins/jquery-nestable/jquery.nestable.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/plugins/jquery-nestable/jquery.nestable.css" />
 </block>
 
 <block name="body">
@@ -102,7 +102,7 @@
                                                             <div class="dd" id="nestable_list_manage">
                                                                 <ol class="dd-list">
                                                                 <foreach name="fields" item="field" key="k">
-                                                                 	<li class="dd-item">
+                                                                    <li class="dd-item">
                                                                         <div class="dd-handle">{$field['title']} [{$field['name']}]</div>
                                                                     </li>
                                                                 </foreach>
@@ -128,8 +128,8 @@
                                                             <div class="caption"><i class="fa fa-comments"></i>{$vo}</div>
                                                         </div>
                                                         <div class="portlet-body ">
-                                                            <div class="dd" id="nestable_list_{$key}">
-                                                                <ol class="dd-list"  data-group="{$key}">
+                                                            <div class="dd" id="nestable_list_{$key}" data-group="{$key}">
+                                                                <ol class="dd-list">
                                                                 <foreach name="fields" item="field" key="k">
                                                                     <if condition="(($field['group'] eq $key) or($i eq 1 and !isset($field['group']))) and ($field['is_show'] eq 1)">
                                                                         <li class="dd-item" data-id="{$field['id']}">
@@ -236,18 +236,18 @@
 
 
 <block name="script">
-	<!-- BEGIN PAGE LEVEL SCRIPTS -->
-	<script src="__STATIC__/scripts/app.js"></script>
-	<script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>  
-	<!-- END PAGE LEVEL SCRIPTS -->
-	<script>
-	jQuery(document).ready(function() {    
-		setValue("extend", {$info.extend|default=0});   
-		// initiate layout and plugins
-		App.init();
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="__STATIC__/scripts/app.js"></script>
+    <script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>  
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+    jQuery(document).ready(function() {    
+        setValue("extend", {$info.extend|default=0});   
+        // initiate layout and plugins
+        App.init();
 
         highlight_subnav('{:U('Model/index')}');
-		
+        
         (function(){
             var $ols = $("ol.dd-list");
 
@@ -258,27 +258,26 @@
             })
         })();
         
-		$('#nestable_list_manage')
-		.nestable({dragEnable:false})
-		.on('selectstart',function(){
-				return false;
-			});
-			
-		nestables.forEach(function(v){
-			$('#'+v)
-				.nestable({
-				group: 1,
-				maxDepth:1,
-				callBack:function(dom){
-					console.log(dom)
-					dom.find('input').attr('name', 'field_sort[' + dom.closest('ol').data('group') + '][]');
-				}
-			})
-			.on('selectstart',function(){
-				return false;
-			});
-		})
-		
-	});
-	</script>
+        $('#nestable_list_manage')
+        .nestable({dragEnable:false})
+        .on('selectstart',function(){
+                return false;
+            });
+            
+        nestables.forEach(function(v){
+            $('#'+v)
+                .nestable({
+                group: 1,
+                maxDepth:1,
+                callBack:function(dom){
+                    dom.find('input').attr('name', 'field_sort[' + dom.closest('ol').parent().data('group') + '][]');
+                }
+            })
+            .on('selectstart',function(){
+                return false;
+            });
+        })
+        
+    });
+    </script>
 </block>
