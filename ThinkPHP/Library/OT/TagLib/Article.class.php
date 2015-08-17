@@ -24,7 +24,23 @@ class Article extends TagLib{
         'page'     => array('attr' => 'cate,listrow', 'close' => 0), //列表分页
         'position' => array('attr' => 'pos,cate,limit,filed,name', 'close' => 1), //获取推荐位列表
         'list'     => array('attr' => 'name,category,child,page,row,field', 'close' => 1), //获取指定分类列表
+        'content'  => array('attr' => 'id,callback', 'close' => 1), //获取指定分类列表
     );
+
+    public function _content($tag, $content){
+        $id   = $tag['id'];
+        $callback   = $tag['callback'];
+
+        $parse  = '<?php ';
+        $parse .= '$__CONTENT__ = D(\'Document\')->detail("'.$id.'");';
+        if( $callback ){
+            $parse .= '$__CONTENT__ = '.$callback.'($__CONTENT__);';
+        }
+        $parse .= ' ?>';
+        $parse .= '<assign name="content" value="$__CONTENT__"/>';
+        $parse .= $content;
+        return $parse;
+    }
 
     public function _list($tag, $content){
         $name   = $tag['name'];
