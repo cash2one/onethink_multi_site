@@ -98,7 +98,7 @@ class ArticleController extends \Admin\Controller\ProfileController {
             $this->assign('type_list', get_type_bycate($data['category_id']));
 
             $this->meta_title   =   '编辑内容';
-            $this->display('Profile/article/edit');
+            $this->display('Profile/Article/edit');
 
         }else{
 
@@ -148,7 +148,7 @@ class ArticleController extends \Admin\Controller\ProfileController {
             $this->assign('model_list', $model);
             // 记录当前列表页的cookie
             Cookie('__forward__',$_SERVER['REQUEST_URI']);
-            $this->display('Profile/article/index');
+            $this->display('Profile/Article/index');
 
         }
     }
