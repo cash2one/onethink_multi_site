@@ -249,6 +249,16 @@
 
         highlight_subnav('{:U('Model/index')}');
 		
+        (function(){
+            var $ols = $("ol.dd-list");
+
+            $ols.each(function(i,ol){
+                if( $(ol).children().length == 0){
+                    $(ol).after("<div class='dd-empty'></div>").remove();
+                }
+            })
+        })();
+        
 		$('#nestable_list_manage')
 		.nestable({dragEnable:false})
 		.on('selectstart',function(){
