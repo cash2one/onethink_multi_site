@@ -11,7 +11,7 @@
 .menu{position:relative;list-style:none;}
 .menu li{float:left;}
 .menu li a{line-height:90px;height:90px;font-size:18px;margin:auto 1em;display:block;color:#333;text-align:center;}
-.menu li span{font-size:12px;margin:-2.5em 1.5em;display:block;color:#333;text-align:center;}
+.menu li span{font-size:12px;margin:-2.5em 0.5em 0 0.5em ;display:block;color:#333;text-align:center;}
 .menu li:hover a,
 .menu li:hover span{color:#f30;}
 .menu .current a{line-height:90px;height:90px;font-size:18px;margin:auto 1.5em;color:#f30;display:block;text-align:center;}
