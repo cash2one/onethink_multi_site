@@ -6,12 +6,14 @@
 .bg_top a{color:#fff;font-family:microsoft yahei;}
 .bg_top a:hover{color:#ff0;}
 
-.logo{width:600px;height:90px;background:url(img/logo.gif) no-repeat center;}
+.logo{width:420px;height:90px;background:url(img/logo.png) no-repeat center;}
 #nav{position:relative;}
 .menu{position:relative;list-style:none;}
 .menu li{float:left;}
 .menu li a{line-height:90px;height:90px;font-size:18px;margin:auto 1.5em;display:block;color:#333;text-align:center;}
-.menu li a:hover{color:#f30;}
+.menu li span{font-size:12px;margin:-2.5em 1.5em;display:block;color:#333;text-align:center;}
+.menu li:hover a,
+.menu li:hover span{color:#f30;}
 .menu .current a{line-height:90px;height:90px;font-size:18px;margin:auto 1.5em;color:#f30;display:block;text-align:center;}
 .nav-current{background:#f60;height:2px;position:absolute;bottom:1px;display:block;}
 
