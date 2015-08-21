@@ -30,11 +30,37 @@
 
       <div class="x4">
         <div class="pro p03">
-          <div class="item"><span class="icon_01"></span><strong>系统登录</strong>欢迎使用</div>
           <div class="line">
             <div class="x4"><a href="#">企业邮箱</a></div>
             <div class="x4"><a href="#">&nbsp;</a></div>
-            <div class="x4"><a href="http://oa.canopharm.com" target="_blank">OA系统</a></div>
+            <div class="x4"><a href="http://oa.canopharm.com" target="_blank">OA系统&raquo;</a></div>
+          </div>
+          <div class="item">
+            <form name="form1" id="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="return checkInput()">
+              <input type="hidden" name="firstlogin" value="false">
+              <input type="hidden" name="errtemplate" value="dm_loginpage">
+              <input type="hidden" name="aliastype" value="other">
+              <input type="hidden" name="dmtype" value="bizmail">
+              <input type="hidden" name="p" value="">
+              <div class="bizmail_column">
+                <label>帐号:</label>
+                <div class="bizmail_inputArea">
+                <input type="text" name="uin" class="text" size="10" value="">@canopharm.com
+                <input type="hidden" name="domain" value="canopharm.com">
+                </div>
+              </div>
+              <div class="bizmail_column">
+                <label>密码:</label>
+                <div class="bizmail_inputArea">
+                <input type="password" name="pwd" class="text" size="10" value="">
+                <input type="submit" class="button bg-green-light" name=""  value="登录">
+
+                </div>
+              </div>
+              <div class="bizmail_SubmitArea">
+                <a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&amp;t=bizmail_orz" target="_blank">忘记密码?</a>
+              </div>
+            </form>
           </div>
         </div>
       </div>

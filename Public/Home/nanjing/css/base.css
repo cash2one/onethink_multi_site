@@ -28,7 +28,7 @@
 .pointer li{_float:left;}
 
 .subject{font-size:24px;color:#444;}
-.pro{width:284px;}
+.pro{width:284px;box-shadow: 0 3px 10px #8D8DA1;}
 .p01{background:#309AD8;}
 .p02{background:#FF5D43;margin:0 0 0 4px;}
 .p03{background:#33D2B9;margin:0 0 0 9px;}
@@ -204,3 +204,22 @@ code.highlight{margin:0;padding:0;border:0;background:none;}
 .lang-css .urls{color:#f0f;}
 .lang-css .colors{color:#808000;}
 .lang-css .important{color:#00f;}
+
+
+/** 企业邮箱登录 */
+#form1 input.text{
+  font-size: 14px;
+  font-weight: normal;
+  color: #333333;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  padding: 6px 12px;
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+#form1 input[type="submit"]{
+}
