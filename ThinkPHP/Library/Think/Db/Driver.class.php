@@ -101,7 +101,6 @@ abstract class Driver {
                     $this->options[PDO::ATTR_EMULATE_PREPARES]  =   false;
                 }
                 $this->linkID[$linkNum] = new PDO( $config['dsn'], $config['username'], $config['password'],$this->options);
-                $this->linkID[$linkNum]->exec("SET NAMES 'utf8';"); 
             }catch (\PDOException $e) {
                 if($autoConnection){
                     trace($e->getMessage(),'','ERR');
