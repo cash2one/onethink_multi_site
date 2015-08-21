@@ -13,15 +13,28 @@
     </div>
 </div>
 </block>
-</block>
 
 <block name="body">
 <div class="container fadein-top" id="pagewidth">
     <div class="padding-big">
+        <div class="button-group">
+            <article:list name="list" category="$category['id']" child="true" row="$category['list_row']">
+            <eq name="info.id" value="$list['id']">
+            <a href="{:U('detail/'.$list['id'])}" title="{$list.title}" class="button bg-blue">{$list.title}</a>
+            <else/>
+            <a href="{:U('detail/'.$list['id'])}" title="{$list.title}" class="button">{$list.title}</a>
+            </eq>
+            </article:list>
+        </div>
         <div class="detail margin-big-top">
         <h1>{$info.title}</h1>
         
-        {$info.content}
+        <switch name="info.parse">
+            <case value="0">{$info.content}</case>
+            <case value="1"></case>
+            <case value="2">{:W('Parsedown/index', array($info['content']))}</case>
+            <default />
+        </switch>
         
         <ul class="pager clearfix margin-top">
             <li class="float-left">
