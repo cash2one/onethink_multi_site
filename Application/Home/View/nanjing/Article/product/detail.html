@@ -20,12 +20,7 @@
         <div class="detail margin-big-top">
         <h1>{$info.title}</h1>
         
-        <switch name="info.parse">
-            <case value="0">{$info.content}</case>
-            <case value="1"></case>
-            <case value="2">{:W('Parsedown/index', array($info['content']))}</case>
-            <default />
-        </switch>
+        {$info['content']}
         
         <ul class="pager clearfix margin-top">
             <li class="float-left">
