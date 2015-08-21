@@ -30,12 +30,12 @@
         <ul class="pager clearfix margin-top">
             <li class="float-left">
             <article:prev name="prev" info="info">
-                <a href="{:U('?id='.$prev['id'])}">{$prev['title']}</a>
+                <a href="{:U('detail/'.$prev['id'])}">{$prev['title']}</a>
             </article:prev>
             </li>
             <li class="float-right">
             <article:next name="next" info="info">
-                <a href="{:U('?id='.$next['id'])}">{$next['title']}</a>
+                <a href="{:U('detail/'.$next['id'])}">{$next['title']}</a>
             </article:next>
             </li>
         </ul>
