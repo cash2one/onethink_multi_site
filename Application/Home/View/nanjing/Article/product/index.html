@@ -20,11 +20,11 @@
         <div class="button-group">
           {:W('Category/lists', array($category['id'], ACTION_NAME == 'index'))}
         </div>
-        
+
         <article:list name="list" category="$category['id']" child="true" row="$category['list_row']">
             <div class="x3">
               <a href="{:U('detail/'.$list['id'])}" title="{$list.title}" target="_blank">
-                <div><img src="__IMG__/2015061748152085.jpg"></div>
+                <div><img src="{$list.cover_id|get_cover=###,'path'}"></div>
                 <p>{$list.title}</p>
               </a>
             </div>
