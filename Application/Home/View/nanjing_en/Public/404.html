@@ -1,0 +1,47 @@
+<extend name="Base/common"/>
+
+<block name="style">
+<style type="text/css">
+#msg {
+width:600px;
+height:250px;
+margin:100px auto;
+background-repeat:no-repeat;
+background-image:url('__IMG__/404.jpg');
+background-position:right top;
+font-size:14px;
+}
+#msg ul li {height:22px;}
+</style>
+</block>
+
+<block name="body">
+<hr/>
+<div id="msg">
+    <div>
+    <p><h2><i>{$error_info}</i></h2></p>
+    <p>Continue：</p>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="{:U('cate/product')}">Product</a></li>
+        <li><a id="href" href="/">Redirecting</a>,wait：<b id="wait">5</b>s</li>
+    </ul>
+    </p>
+    </div>
+</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+(function(){
+  var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+  var interval = setInterval(function(){
+    var time = --wait.innerHTML;
+    if(time <= 0) {
+      location.href = href;
+      clearInterval(interval);
+    };
+  }, 1000);
+})();
+</script>
+</block>

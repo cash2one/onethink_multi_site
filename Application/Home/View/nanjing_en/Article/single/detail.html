@@ -1,0 +1,46 @@
+<extend name="Base/common"/>
+
+<block name="header">
+<div class="layout" id="banner">
+    <div class="container max_width">
+        <h2 class="fadein-top">{$info.title}</h2>
+        <span class="fadein-bottom">
+            <a href="/">Home</a>
+            <volist name="breadcrumb" id="cate">
+            &gt;&gt;<a href="{:U('cate/'.$cate['name'])}"> {$cate.title}</a>
+            </volist>
+        </span>
+    </div>
+</div>
+</block>
+</block>
+
+<block name="body">
+<div class="container fadein-top" id="pagewidth">
+    <div class="padding-big">
+        <div class="detail margin-big-top">
+        <h1>{$info.title}</h1>
+        
+        {$info.content}
+        
+        <ul class="pager clearfix margin-top">
+            <li class="float-left">
+            <article:prev name="prev" info="info">
+                <a href="{:U('detail/'.$prev['id'])}">{$prev['title']}</a>
+            </article:prev>
+            </li>
+            <li class="float-right">
+            <article:next name="next" info="info">
+                <a href="{:U('detail/'.$next['id'])}">{$next['title']}</a>
+            </article:next>
+            </li>
+        </ul>
+        </div>
+        
+    </div>
+</div>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__JS__/marked.min.js"></script>
+</block>

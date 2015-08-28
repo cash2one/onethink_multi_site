@@ -23,7 +23,7 @@ class HomeController extends Controller {
 
 	/* 空操作，用于输出404页面 */
 	public function _empty(){
-		$this->service_error('页面不存在', '404');
+		$this->service_error(L('_ERROR_404_'), '404');
 	}
 
     public function service_error($message = '', $code = ''){
@@ -47,7 +47,7 @@ class HomeController extends Controller {
         C($config); //添加配置
 
         if(!C('WEB_SITE_CLOSE')){
-            $this->error('站点已经关闭，请稍后访问~');
+            $this->error(L('_WEB_SERVER_CLOSE_'));
         }
 
         // 初始化站点信息

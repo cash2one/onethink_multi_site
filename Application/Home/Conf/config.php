@@ -15,6 +15,11 @@ return array(
 
     // 预先加载的标签库
     'TAGLIB_PRE_LOAD'     =>    'OT\\TagLib\\Article,OT\\TagLib\\Think,Home\\TagLib\\Addons',
+
+    'LANG_SWITCH_ON'   => true,
+    'LANG_AUTO_DETECT' => false,
+    'LANG_LIST'        => 'zh-cn,en-us', 
+    'VAR_LANGUAGE'     => 'l', 
         
     /* 路由设置 */
     'URL_ROUTER_ON' => true,

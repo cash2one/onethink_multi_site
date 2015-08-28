@@ -64,7 +64,11 @@ class ArticleController extends \Admin\Controller\ProfileController {
             // 获取基础模型信息
             $model = M('Model')->getByName('document');
             $model_id   =   null;
-            $cate_id    =  array('in',$cates);
+            if( empty($cates) ){
+                $cate_id    =  array('in',array(null));
+            }else{
+                $cate_id    =  array('in',$cates);
+            }
             $this->assign('model', null);
         }
 
