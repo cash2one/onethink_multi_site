@@ -1,0 +1,15 @@
+<ol class="dd-list">
+<volist name="tree" id="list">
+    <li class="dd-item dd3-item"  data-id="{$list.id}"> 
+        <div class="dd-handle dd3-handle"></div>
+        <div class="dd3-content">
+            <a href="{:U('Profile/addons',array('name'=>$list['name']))}"><span class="title">{$list.title}</span></a>
+        </div>
+        
+        <notempty name="list['_']">
+            {:R('Profile/listCateTree', array($list['_']))}
+        </notempty>
+    </li>
+    
+</volist>
+</ol>

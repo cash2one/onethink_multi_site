@@ -84,6 +84,11 @@ class ProfileController extends AdminController {
         $this->display('Profile/Article/tree');
     }
 
+    public function AddonsTree($tree = null){
+        $this->assign('tree', $tree);
+        $this->display('Profile/Addons/tree');
+    }
+
     /**
      * 管理站点文章
      */
@@ -101,6 +106,21 @@ class ProfileController extends AdminController {
         $a = I('get.cmethod','index');
 
         $Channel = new Profile\ChannelController();
+        $Channel->$a();
+    }
+
+    /**
+     * 管理站点插件
+     */
+    public function addons(){
+        $a = I('get.amethod','index');
+
+        // 获取插件列表
+        $addons_list = M('Addons')->where("status=1 AND has_adminlist=1")->field('title,name')->select();
+
+        $this->assign('addons_list', $addons_list);
+
+        $Channel = new Profile\AddonsController();
         $Channel->$a();
     }
 }
