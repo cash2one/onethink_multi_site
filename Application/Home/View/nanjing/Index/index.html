@@ -68,28 +68,26 @@
   </div>
 </div>
 
-<!--div class="container max_width">
+<div class="container max_width">
   <div class="line">
     
     <div>
       <div class="subject padding-big">产品推荐</div>
       <div class="line">
 
-      <article:list name="article" category="2" child="true">
-          <div class="x3">
-            <a href="{:U('detail/'.$article['id'])}" target="_blank" title="{$article.title}">
-              <div>
-              <img src="{$article.cover_id|get_cover=###,'path'}" width="250" height="188" alt="{$article.title}" title="{$article.title}">
-              </div>
-              <p>{$article.title}</p>
-            </a>
-          </div>
+      <article:list name="article" category="4" child="true">
+            <div class="x3">
+              <a href="{:U('detail/'.$article['id'])}" title="{$article.title}" target="_blank">
+                <div class="pic-box"><img src="{$article.cover_id|get_cover=###,'path'}" /></div>
+                <p>{$article.title}</p>
+              </a>
+            </div>
       </article:list>
 
       </div>
     </div>
   </div>
-</div-->
+</div>
 
 <div class="layout article">
   <div class="container max_width">

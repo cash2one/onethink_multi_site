@@ -1,7 +1,7 @@
 ﻿a,a:focus{outline:none;}
 .bg{background:#efefef;}
 .layout{min-width:1190px;}
-.max_width{width:1190px;padding:0;}
+.max_width{width:1280px;padding:0;}
 .bg_top{background:#474E5D;height:40px;line-height:40px;color:#7F8AA0;font-family:宋体;}
 .bg_top a{color:#fff;font-family:microsoft yahei;}
 .bg_top a:hover{color:#ff0;}
