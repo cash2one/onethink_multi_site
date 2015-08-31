@@ -225,4 +225,20 @@ class CategoryController extends AdminController {
         }
 
     }
+
+    /**
+     * 分类排序
+     */
+    public function sort(){
+        $ids = I('post.ids');
+        $ids = explode(',', $ids);
+        foreach ($ids as $key=>$value){
+            $res = M('Category')->where(array('id'=>$value))->setField('sort', $key+1);
+        }
+        if($res !== false){
+            $this->success('排序成功！');
+        }else{
+            $this->eorror('排序失败！');
+        }
+    }
 }
