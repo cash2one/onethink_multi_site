@@ -1,5 +1,11 @@
 <extend name="Base/common"/>
 
+<block name="style">
+<link href="__CSS__/markdown.css" rel="stylesheet">
+<link href="__CSS__/prettify.css" rel="stylesheet">
+<link href="__CSS__/sunburst.css" rel="stylesheet">
+</block>
+
 <block name="header">
     <header class="jumbotron subhead" id="overview">
 		<div class="container">
@@ -30,4 +36,14 @@
         <hr/>
         {:hook('documentDetailAfter',$info)}
     </div>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__JS__/prettify.js"></script>
+<script>
+$(window).load(function(){
+     $("pre").addClass("prettyprint");
+     prettyPrint();
+})
+</script>
 </block>
