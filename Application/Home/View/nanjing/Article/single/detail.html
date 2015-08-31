@@ -3,11 +3,11 @@
 <block name="header">
 <div class="layout" id="banner">
     <div class="container max_width">
-        <h2 class="fadein-top">文章内容</h2>
+        <h2 class="fadein-top">{$info.title}</h2>
         <span class="fadein-bottom">
             <a href="/">首页</a>
             <volist name="breadcrumb" id="cate">
-            &gt;&gt;<a href="{:U('list/'.$cate['name'])}"> {$cate.title}</a>
+            &gt;&gt;<a href="{:U('cate/'.$cate['name'])}"> {$cate.title}</a>
             </volist>
         </span>
     </div>
@@ -18,27 +18,20 @@
 <block name="body">
 <div class="container fadein-top" id="pagewidth">
     <div class="padding-big">
-        <div class="subject margin-big-bottom">文章内容</div>
         <div class="detail margin-big-top">
         <h1>{$info.title}</h1>
-        <div class="info">日期:{$info.create_time|date='Y-m-d H:i:s',###}　人气：<span id="hits">{$info.view}</span></div>
         
-        <switch name="info.parse">
-            <case value="0">{$info.content}</case>
-            <case value="1"></case>
-            <case value="2">{:W('Parsedown/index', array($info['content']))}</case>
-            <default />
-        </switch>
+        {$info.content}
         
         <ul class="pager clearfix margin-top">
             <li class="float-left">
             <article:prev name="prev" info="info">
-                <a href="{:U('?id='.$prev['id'])}">上一篇</a>
+                <a href="{:U('detail/'.$prev['id'])}">{$prev['title']}</a>
             </article:prev>
             </li>
             <li class="float-right">
             <article:next name="next" info="info">
-                <a href="{:U('?id='.$next['id'])}">下一篇</a>
+                <a href="{:U('detail/'.$next['id'])}">{$next['title']}</a>
             </article:next>
             </li>
         </ul>

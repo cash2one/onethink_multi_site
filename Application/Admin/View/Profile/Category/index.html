@@ -184,7 +184,7 @@
 				if(rs){
 					rs = {'ids':rs.join(',')}
 					$.post(
-						"{:U('Profile/cate',array('cmethod'=>'order'))}",
+						"{:U('Profile/cate',array('cmethod'=>'sort'))}",
 						rs,
 						function(data){
 							//提示信息 

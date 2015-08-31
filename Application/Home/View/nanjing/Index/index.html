@@ -14,179 +14,120 @@
 
 <block name="body">
 <div class="container max_width fadein-top">
-  <div class="subject text-center padding-big">产品系列</div>
+  <div class="subject text-center padding-big"></div>
   <div class="line">
+
       
-      <div class="x3">
-        <div class="pro p01">
-          <div class="item"><span class="icon_01"></span><strong>门户版</strong>最新版本：V3.1<br />更新日期：2015/6/2</div>
-          <div class="line">
-            <div class="x4"><a href="/product/portal.html">产品介绍</a></div>
-            <div class="x4"><a href="/product/portal.html?v=2">版本区别</a></div>
-            <div class="x4"><a href="/product/portal.html?v=3">下载体验</a></div>
-          </div>
-        </div>
+      <div class="x7">
+        <article:content id="5">
+        {$content.content}
+        </article:content>
       </div>
       
-      <div class="x3">
-        <div class="pro p02">
-          <div class="item"><span class="icon_02"></span><strong>商城版</strong>最新版本：V2.0<br />更新日期：2015/5/4</div>
-          <div class="line">
-            <div class="x4"><a href="/product/shop.html">产品介绍</a></div>
-            <div class="x4"><a href="/product/shop.html?v=2">版本区别</a></div>
-            <div class="x4"><a href="/product/shop.html?v=3">下载体验</a></div>
-          </div>
-        </div>
+
+      <div class="x1">
       </div>
-      
-      <div class="x3">
+
+      <div class="x4">
         <div class="pro p03">
-          <div class="item"><span class="icon_03"></span><strong>企业版</strong>最新版本：V2.0<br />更新日期：2015/3/9</div>
           <div class="line">
-            <div class="x4"><a href="/product/web.html">产品介绍</a></div>
-            <div class="x4"><a href="/product/web.html?v=2">版本区别</a></div>
-            <div class="x4"><a href="/product/web.html?v=3">下载体验</a></div>
+            <div class="x4"><a href="#">企业邮箱</a></div>
+            <div class="x4"><a href="#">&nbsp;</a></div>
+            <div class="x4"><a href="http://oa.canopharm.com" target="_blank">OA系统&raquo;</a></div>
+          </div>
+          <div class="item">
+            <form name="form1" id="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="return checkInput()">
+              <input type="hidden" name="firstlogin" value="false">
+              <input type="hidden" name="errtemplate" value="dm_loginpage">
+              <input type="hidden" name="aliastype" value="other">
+              <input type="hidden" name="dmtype" value="bizmail">
+              <input type="hidden" name="p" value="">
+              <div class="bizmail_column">
+                <label>帐号:</label>
+                <div class="bizmail_inputArea">
+                <input type="text" name="uin" class="text" size="10" value="">@canopharm.com
+                <input type="hidden" name="domain" value="canopharm.com">
+                </div>
+              </div>
+              <div class="bizmail_column">
+                <label>密码:</label>
+                <div class="bizmail_inputArea">
+                <input type="password" name="pwd" class="text" size="10" value="">
+                <input type="submit" class="button bg-green-light" name=""  value="登录">
+
+                </div>
+              </div>
+              <div class="bizmail_SubmitArea">
+                <a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&amp;t=bizmail_orz" target="_blank">忘记密码?</a>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-      
-      <div class="x3">
-        <div class="pro p04 shake-hover">
-          <div class="wait"><span></span><div>敬请期待</div></div>
-        </div>
-      </div>
+
   </div>
 </div>
 
-<div class="container max_width">
+<!--div class="container max_width">
   <div class="line">
     
-    <div class="case">
-      <div class="subject padding-big">案例推荐</div>
+    <div>
+      <div class="subject padding-big">产品推荐</div>
       <div class="line">
-        
-        <div class="x4"><a href="http://www.999wsc.com" target="_blank" title="万商城"><div><img src="__IMG__/2015031630662859.jpg" alt="万商城" title="万商城"></div><p>万商城</p></a></div>
-        
-        <div class="x4"><a href="http://www.v404.cn" target="_blank" title="中国网站频道"><div><img src="__IMG__/2014120158255269.jpg" alt="中国网站频道" title="中国网站频道"></div><p>中国网站频道</p></a></div>
-        
-        <div class="x4"><a href="http://www.webyuansu.cn" target="_blank" title="Web元素"><div><img src="__IMG__/2014120158345129.jpg" alt="Web元素" title="Web元素"></div><p>Web元素</p></a></div>
-        
-        <div class="x4"><a href="http://www.yuqihb.com" target="_blank" title="钰棋环保"><div><img src="__IMG__/2015011538577545.jpg" alt="钰棋环保" title="钰棋环保"></div><p>钰棋环保</p></a></div>
-        
-        <div class="x4"><a href="http://www.mx-fm.com" target="_blank" title="墨星封面网"><div><img src="__IMG__/2014120158586537.jpg" alt="墨星封面网" title="墨星封面网"></div><p>墨星封面网</p></a></div>
-        
-        <div class="x4"><a href="http://www.suzhouwest.com" target="_blank" title="西部网"><div><img src="__IMG__/2014120158888393.jpg" alt="西部网" title="西部网"></div><p>西部网</p></a></div>
-         
+
+      <article:list name="article" category="2" child="true">
+          <div class="x3">
+            <a href="{:U('detail/'.$article['id'])}" target="_blank" title="{$article.title}">
+              <div>
+              <img src="{$article.cover_id|get_cover=###,'path'}" width="250" height="188" alt="{$article.title}" title="{$article.title}">
+              </div>
+              <p>{$article.title}</p>
+            </a>
+          </div>
+      </article:list>
+
       </div>
     </div>
-    
-    <div class="news">
-      <div class="subject">最新动态</div>
-      <div>
-      <img src="__IMG__/ad.jpg" width="360" height="290" alt="暂无优惠活动">
-      </div>
-      <div class="border">
-        <ul>
-        
-          <li><span class="active"></span><a href="/ProNews/56.html" title="SDCMS门户版V3.1发布" >SDCMS门户版V3.1发布</a></li>
-          
-          <li><span></span><a href="/ProNews/54.html" title="SDCMS商城版2.0发布" >SDCMS商城版2.0发布</a></li>
-          
-          <li><span></span><a href="/ProNews/49.html" title="SDCMS企业版2.0发布" >SDCMS企业版2.0发布</a></li>
-          
-        </ul>
-      </div>
-    </div>
-    
   </div>
-</div>
+</div-->
 
 <div class="layout article">
   <div class="container max_width">
     <div class="line">
       
-      <div class="x3">
-        <div class="subject padding-big-top">我是新手</div>
+      <div class="x4">
+        <div class="subject padding-big-top">行业动态</div>
         <div class="bg_line"></div>
         <ul>
           
-          
-          <li><a href="/woshixinshou/31.html" title="SDCMS安装教程" >SDCMS安装教程</a></li>
-          
-          
-          <li><a href="/woshixinshou/30.html" title="SDCMS需要什么样的安装环境" >SDCMS需要什么样的安装环境</a></li>
-          
-          
-          <li><a href="/woshixinshou/29.html" title="IIS如何开启父目录" >IIS如何开启父目录</a></li>
-          
-          
-          <li><a href="/woshixinshou/28.html" title="如何设置文件夹的读写权限" >如何设置文件夹的读写权限</a></li>
-          
-          
-          <li><a href="/woshixinshou/27.html" title="如何查看Asp的HTTP 500 内部服务器错误" >如何查看Asp的HTTP 500 内部服务器…</a></li>
-          
+        <article:list name="article" category="3" child="true">
+            <li><a href="{:U('detail/'.$article['id'])}" title="{$article.title}" >{$article.title}</a></li>
+        </article:list>
+
         </ul>
       </div>
       
-      <div class="x3">
-        <div class="subject padding-big-top">高级技巧</div>
+      <div class="x4">
+        <div class="subject padding-big-top">技术支持</div>
         <div class="bg_line"></div>
         <ul>
           
-          
-          <li><a href="/gaojijiqiao/48.html" title="首页调用单页简介或单页内容的方法" >首页调用单页简介或单页内容的方法…</a></li>
-          
-          
-          <li><a href="/gaojijiqiao/47.html" title="为在线客服插件自定义模板" >为在线客服插件自定义模板</a></li>
-          
-          
-          <li><a href="/gaojijiqiao/36.html" title="3天以内的内容后面显示new小图标的方法" >3天以内的内容后面显示new小图标的…</a></li>
-          
-          
-          <li><a href="/gaojijiqiao/35.html" title="调用一个或多个类别的内容的方法" >调用一个或多个类别的内容的方法</a></li>
-          
-          
-          <li><a href="/gaojijiqiao/34.html" title="调用某类别名称及其链接的方法" >调用某类别名称及其链接的方法</a></li>
-          
+        <article:list name="article" category="5" child="true">
+            <li><a href="{:U('detail/'.$article['id'])}" title="{$article.title}" >{$article.title}</a></li>
+        </article:list>
+
         </ul>
       </div>
-      
-      <div class="x3">
-        <div class="subject padding-big-top">常见问题</div>
+
+      <div class="x4">
+        <div class="subject padding-big-top">联系方式</div>
         <div class="bg_line"></div>
-        <ul>
-          
-          
-          <li><a href="/changjianwenti/42.html" title="安装失败，无法创建Access数据库，具体原因为：没有注册类的解决方案" >安装失败，无法创建Access数据库，…</a></li>
-          
-          
-          <li><a href="/changjianwenti/41.html" title="后台文件夹可以更改吗，更改后有什么问题？" >后台文件夹可以更改吗，更改后有什…</a></li>
-          
-          
-          <li><a href="/changjianwenti/40.html" title="flv视频不能播放如何处理" >flv视频不能播放如何处理</a></li>
-          
-          
-          <li><a href="/changjianwenti/39.html" title="动态、静态、伪静态模式有什么区别" >动态、静态、伪静态模式有什么区别…</a></li>
-          
-          
-          <li><a href="/changjianwenti/38.html" title="如何去掉页面上的powered by sdcms" >如何去掉页面上的powered by sdcm…</a></li>
-          
-        </ul>
+
+        <article:content id="7">
+        {$content.content}
+        </article:content>
+
       </div>
-      
-      
-      <div class="x3">
-        <div class="subject padding-big-top">论坛互助</div>
-        <div class="bg_line"></div>
-        <ul>
-          <li><a href="http://bbs.sdcms.cn/forum2/thread-14682-1.aspx" target="_blank">3.1门户版 图片模型 点击编辑就报...</a></li>
-          <li><a href="http://bbs.sdcms.cn/company_/thread-14681-1.aspx" target="_blank">首页的公司简介修改不了</a></li>
-          <li><a href="http://bbs.sdcms.cn/forum2/thread-14680-1.aspx" target="_blank">1.3版怎么实现一个栏目内容为静态...</a></li>
-          <li><a href="http://bbs.sdcms.cn/forum4/thread-14679-1.aspx" target="_blank">仿站，高手进！</a></li>
-          <li><a href="http://bbs.sdcms.cn/forum2/thread-14677-1.aspx" target="_blank">错误 \'8002801d\' /lib/class/sdc...</a></li>
-        </ul>
-      </div>
-      
     </div>
   </div>
 </block>

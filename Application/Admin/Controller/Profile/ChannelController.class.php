@@ -33,7 +33,7 @@ class ChannelController extends \Admin\Controller\ProfileController {
         $this->assign('pid', $pid);
         $this->assign('info',null);
         $this->meta_title = '新增导航';
-        $this->display('Profile/channel/edit');
+        $this->display('Profile/Channel/edit');
     }
 
     public function edit(){
@@ -55,7 +55,7 @@ class ChannelController extends \Admin\Controller\ProfileController {
         $this->assign('pid', $pid);
         $this->assign('info', $info);
         $this->meta_title = '编辑导航';
-        $this->display('Profile/channel/edit');
+        $this->display('Profile/Channel/edit');
     }
 
     public function update(){
@@ -138,7 +138,7 @@ class ChannelController extends \Admin\Controller\ProfileController {
 
             $this->assign('list', $list);
             $this->meta_title = '导航排序';
-            $this->display('Profile/channel/sort');
+            $this->display('Profile/Channel/sort');
         }elseif (IS_POST){
             $ids = I('post.ids');
             $ids = explode(',', $ids);

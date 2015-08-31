@@ -29,13 +29,17 @@ class ArticleController extends HomeController {
 		if( $single ){
 			$this->detail($single);
 		}else{
-
+			if (!empty($category['template_index'])){ //分类已定制模板
+				$tmpl = $category['template_index'];
+			} else { //使用默认模板
+				$tmpl = 'Article/'. get_document_model($category['model'][0],'name') .'/index';
+			}
 			//频道页只显示模板，默认不读取任何内容
 			//内容可以通过模板标签自行定制
 
 			/* 模板赋值并渲染模板 */
 			$this->assign('category', $category);
-			$this->display($category['template_index']);
+			$this->display($tmpl);
 		}
 	}
 
@@ -48,9 +52,14 @@ class ArticleController extends HomeController {
 		if( $single ){
 			$this->detail($single);
 		}else{
+			if (!empty($category['template_index'])){ //分类已定制模板
+				$tmpl = $category['template_index'];
+			} else { //使用默认模板
+				$tmpl = 'Article/'. get_document_model($category['model'][0],'name') .'/index';
+			}
 			/* 模板赋值并渲染模板 */
 			$this->assign('category', $category);
-			$this->display($category['template_index']);
+			$this->display($tmpl);
 		}
 	}
 
@@ -58,7 +67,7 @@ class ArticleController extends HomeController {
 	public function detail($id = 0, $p = 1){
 		/* 标识正确性检测 */
 		if(!($id && is_numeric($id))){
-			$this->error('文档ID错误！');
+			$this->service_error(L('_DOC_ID_ERROR_'));
 		}
 
 		/* 页码检测 */
@@ -69,7 +78,7 @@ class ArticleController extends HomeController {
 		$Document = D('Document');
 		$info = $Document->detail($id);
 		if(!$info){
-			$this->error($Document->getError());
+			$this->service_error($Document->getError());
 		}
 
 		/* 分类信息 */
@@ -101,14 +110,14 @@ class ArticleController extends HomeController {
 		/* 标识正确性检测 */
 		$id = $id ? $id : I('get.category', 0);
 		if(empty($id)){
-			$this->error('没有指定文档分类！');
+			$this->service_error(L('_DOC_CATE_REQUIRED'));
 		}
 
 		/* 获取分类信息 */
 		$category = $this->category = D('Category')->info($id);
 
 		if( !in_array($category['id'], $this->cate_ids['array']) ){
-			$this->error('分类不存在。');
+			$this->service_error(L('_CATEGORY_NOT_EXIST_'));
 		}
 
 		// 获取面包屑导航
@@ -122,14 +131,14 @@ class ArticleController extends HomeController {
 		if($category && 1 == $category['status']){
 			switch ($category['display']) {
 				case 0:
-					$this->error('该分类禁止显示！');
+					$this->service_error(L('_CATEGORY_FORBIDDEN_'));
 					break;
 				//TODO: 更多分类显示状态判断
 				default:
 					return $category;
 			}
 		} else {
-			$this->error('分类不存在或被禁用！');
+			$this->service_error(L('_CATEGORY_NOT_EXIST_OR_FORBIDDEN_'));
 		}
 	}
 
@@ -184,6 +193,9 @@ class ArticleController extends HomeController {
 
 		if( in_array($single_model_id, $model_id) ){
 			$document_id = M("Document")->where('category_id='.$category['id'])->getField('id');
+			if( !$document_id ){
+				$this->service_error(L('_CONTENT_NOT_EXIST'));
+			}
 			return $document_id;
 		}
 		return false;

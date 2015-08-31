@@ -63,31 +63,6 @@
                                             <input type="text" class="form-control input-xlarge" name="name" value="{$info.name|default=''}">
                                         </div>
                                         <div class="form-group">
-                                            <label>发布内容<span class="check-tips">（是否允许发布内容）</span></label>
-                                            <div class="radio-list">
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="allow_publish"  value="0"> 不允许
-                                                </label>
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="allow_publish"  value="1" > 仅允许后台
-                                                </label>
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="allow_publish"  value="2"> 允许前后台
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>是否审核<span class="check-tips">（在该分类下发布的内容是否需要审核）</span></label>
-                                            <div class="radio-list">
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="check"  value="0" checked> 不需要
-                                                </label>
-                                                <label class="radio-inline">
-                                                    <input type="radio" name="check"  value="1"> 需要
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label>绑定文档模型<span class="check-tips">（分类支持发布的文档模型）</span></label>
                                             <volist name=":get_document_model()" id="list">
                                                 <label class="checkbox-inline">
@@ -102,6 +77,23 @@
                                                     <input type="checkbox" name="type[]" value="{$key}">{$type}
                                                 </label>
                                             </volist>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>列表行数</label>
+                                            <input type="text" class="form-control input-xlarge" name="list_row" value="{$info.list_row|default=10}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>网页标题</label>
+                                            <input type="text" class="form-control input-xlarge" name="meta_title" value="{$info.meta_title|default=''}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>关键字</label>
+                                            <textarea class="form-control input-xlarge" rows="3"  name="keywords" >{$info.keywords|default=''}</textarea>
+                                        </div>
+                                    
+                                        <div class="form-group">
+                                            <label>描述</label>
+                                            <textarea class="form-control input-xlarge" rows="3"  name="description" >{$info.description|default=''}</textarea>
                                         </div>
                                         
                                     </div>
@@ -180,21 +172,29 @@
                                             <input type="text" class="form-control input-xlarge" name="sort" value="{$info.sort|default=0}">
                                         </div>
                                         <div class="form-group">
-                                            <label>列表行数</label>
-                                            <input type="text" class="form-control input-xlarge" name="list_row" value="{$info.list_row|default=10}">
+                                            <label>发布内容<span class="check-tips">（是否允许发布内容）</span></label>
+                                            <div class="radio-list">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="allow_publish"  value="0"> 不允许
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="allow_publish"  value="1" checked> 仅允许后台
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="allow_publish"  value="2"> 允许前后台
+                                                </label>
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <label>网页标题</label>
-                                            <input type="text" class="form-control input-xlarge" name="meta_title" value="{$info.meta_title|default=''}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>关键字</label>
-                                            <textarea class="form-control input-xlarge" rows="3"  name="keywords" >{$info.keywords|default=''}</textarea>
-                                        </div>
-                                    
-                                        <div class="form-group">
-                                            <label>描述</label>
-                                            <textarea class="form-control input-xlarge" rows="3"  name="description" >{$info.description|default=''}</textarea>
+                                            <label>是否审核<span class="check-tips">（在该分类下发布的内容是否需要审核）</span></label>
+                                            <div class="radio-list">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="check"  value="0" checked> 不需要
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="check"  value="1"> 需要
+                                                </label>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label>频道模板</label>

@@ -23,9 +23,23 @@ class HomeController extends Controller {
 
 	/* 空操作，用于输出404页面 */
 	public function _empty(){
-		$this->redirect('Index/index');
+		$this->service_error(L('_ERROR_404_'), '404');
 	}
 
+    public function service_error($message = '', $code = ''){
+
+        if( $code == '404' ){
+            header('HTTP/1.1 404 Not Found');
+            header('Status:404 Not Found');
+        }else{
+            header('HTTP/1.1 503 Service Unavailable');
+            header('Status: 503 Service Unavailable');
+        }
+
+        $this->assign('error_info', $message);
+        $this->display('Public/404');
+        exit;
+    }
 
     protected function _initialize(){
         /* 读取站点配置 */
@@ -33,7 +47,7 @@ class HomeController extends Controller {
         C($config); //添加配置
 
         if(!C('WEB_SITE_CLOSE')){
-            $this->error('站点已经关闭，请稍后访问~');
+            $this->error(L('_WEB_SERVER_CLOSE_'));
         }
 
         // 初始化站点信息

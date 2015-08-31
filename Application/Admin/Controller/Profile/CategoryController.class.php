@@ -53,7 +53,7 @@ class CategoryController extends \Admin\Controller\ProfileController {
 
         if($pid){
             /* 获取上级分类信息 */
-            $cate = $Category->info($pid, 'id,name,title,status');
+            $cate = $Category->info($pid, 'id,name,title,status,site_id');
             if(!($cate && 1 == $cate['status'])){
                 $this->error('指定的上级分类不存在或被禁用！');
             }

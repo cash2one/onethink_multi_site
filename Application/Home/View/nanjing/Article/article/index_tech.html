@@ -1,0 +1,40 @@
+<extend name="Base/common"/>
+
+<block name="header">
+<div class="layout" id="banner">
+    <div class="container max_width">
+        <h2 class="fadein-top">{$category.title}</h2>
+        <span class="fadein-bottom">
+            <a href="/">首页</a>
+            <volist name="breadcrumb" id="cate">
+            &gt;&gt;<a href="{:U('cate/'.$cate['name'])}"> {$cate.title}</a>
+            </volist>
+        </span>
+    </div>
+</div>
+</block>
+
+<block name="body">
+<div class="container fadein-top" id="pagewidth">
+    <div class="padding-big">
+        <div class="button-group">
+            <article:list name="list" category="$category['id']" child="true" row="$category['list_row']">
+            <a href="{:U('detail/'.$list['id'])}" title="{$list.title}" class="button">{$list.title}</a>
+            </article:list>
+        </div>
+
+        <div class="detail margin-big-top">
+        <php>$detail_id=M("Document")->where("category_id=".$category['id'])->getField('id');</php>
+        <article:content id="$detail_id">
+        {$content.content}
+        </article:content>
+        </div>
+
+        <div class="clearfix"></div>
+        <div class="margin-top list_page">
+        <article:page cate="$category['id']" listrow="$category['list_row']" />
+        </div>
+        
+    </div>
+</div>
+</block>
