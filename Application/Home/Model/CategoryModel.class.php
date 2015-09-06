@@ -46,6 +46,7 @@ class CategoryModel extends Model{
             $map['id'] = $id;
         } else { //通过标识查询
             $map['name'] = $id;
+            $map['site_id']=C('SITE_ID');
         }
         return $this->field($field)->where($map)->find();
     }

@@ -514,7 +514,7 @@ CREATE TABLE `onethink_category` (
   `groups` varchar(255) NOT NULL DEFAULT '' COMMENT '分组定义',
   `site_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '所属站点',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_name` (`name`),
+  UNIQUE KEY `uk_name` (`name`,`site_id`),
   KEY `pid` (`pid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='分类表';
 
