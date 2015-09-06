@@ -1,0 +1,119 @@
+<extend name="Public/base"/>
+
+<block name="style">
+	<link rel="stylesheet" href="__STATIC__/plugins/data-tables/DT_bootstrap.css" />
+</block>
+
+<!-- 子导航 -->
+<block name="sidebar">
+	<include file="sidemenu" />
+</block>
+
+<block name="body">
+	{:R("Profile/siteInfo")}
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN EXAMPLE TABLE PORTLET-->
+			<div class="tabbable tabbable-custom boxless">
+				<ul class="nav nav-tabs">
+					<li><a href="{:U('Profile/site?smethod=manage')}">站点信息</a></li>
+					<li><a href="{:U('Profile/cate')}">栏目管理</a></li>
+                    <li><a href="{:U('Profile/article')}">文章管理</a></li>
+                    <li><a href="{:U('Profile/channel')}">导航管理</a></li>
+                    <li class="active"><a href="{:U('Profile/site?smethod=config')}">站点设置</a></li>
+                    <li><a href="{:U('Profile/addons')}">插件管理</a></li>
+				</ul>
+				
+				<div class="tab-content">
+					<div class="portlet box green">
+						<div class="portlet-title">
+							<div class="caption"><i class="fa fa-globe"></i>站点设置</div>
+							<div class="tools">
+								<a href="javascript:;" class="collapse"></a>
+								<a href="#portlet-config" data-toggle="modal" class="config"></a>
+								<a href="javascript:;" class="reload"></a>
+							</div>
+						</div>
+						<div class="portlet-body form">
+							<form action="{:U('Profile/site',array('smethod'=>'config'))}" method="post" class="form-1">
+								<div class="form-body">
+									<div class="form-group">
+										<label>语言<span class="check-tips"></span></label>
+								        <div class="radio-list">
+								            <label class="radio-inline">
+								            <input type="radio" name="config[DEFAULT_LANG]" <eq name="site_info.config.DEFAULT_LANG" value="zh-cn">checked</eq>  value="zh-cn"> 中文
+								            </label>
+								            <label class="radio-inline">
+								            <input type="radio" name="config[DEFAULT_LANG]" <eq name="site_info.config.DEFAULT_LANG" value="en-us">checked</eq>  value="en-us"> 英文
+								            </label>
+								        </div>
+									</div>
+									<div class="form-group">
+										<label>网页标题是否继承分类<span class="check-tips"></span></label>
+								        <div class="radio-list">
+								            <label class="radio-inline">
+								            <input type="radio" name="config[MULTI_TITLE]" <eq name="site_info.config.MULTI_TITLE" value="1">checked</eq>  value="1"> 继承
+								            </label>
+								            <label class="radio-inline">
+								            <input type="radio" name="config[MULTI_TITLE]" <eq name="site_info.config.MULTI_TITLE" value="2">checked</eq>  value="2"> 不继承
+								            </label>
+								        </div>
+									</div>
+									<div class="form-group">
+										<label>URL模式<span class="check-tips"></span></label>
+								        <div class="radio-list">
+								            <label class="radio-inline">
+								            <input type="radio" name="config[URL_MODEL]" <eq name="site_info.config.URL_MODEL" value="0">checked</eq>  value="0"> 普通
+								            </label>
+								            <label class="radio-inline">
+								            <input type="radio" name="config[URL_MODEL]" <eq name="site_info.config.URL_MODEL" value="1">checked</eq>  value="1"> PATHINFO
+								            </label>
+								            <label class="radio-inline">
+								            <input type="radio" name="config[URL_MODEL]" <eq name="site_info.config.URL_MODEL" value="2">checked</eq>  value="2"> 静态化
+								            </label>
+								            <label class="radio-inline">
+								            <input type="radio" name="config[URL_MODEL]" <eq name="site_info.config.URL_MODEL" value="3">checked</eq>  value="3"> 兼容
+								            </label>
+								        </div>
+									</div>
+									<div class="form-group">
+										<label>默认分页条数<span class="check-tips">（当分类没有分页数或分页数为0时使用该值）</span></label>
+								        <input type="text" class="form-control input-medium"  name="config[SITE_LIST_ROW]" value="{$site_info.config.SITE_LIST_ROW}">
+									</div>
+								</div>
+								
+								<div class="form-actions fluid ">
+									<div class="col-md-offset-3 col-md-9">
+										<input type="hidden" name="id" value="{$site_info.id|default=''}">
+										<button class="btn green ajax-post" type="submit" target-form="form-1">确 定</button>
+										<button class="btn default btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>				  
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+					
+			</div>
+			<!-- END EXAMPLE TABLE PORTLET-->
+		</div>
+	</div>
+
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/DT_bootstrap.js"></script>
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script src="__STATIC__/scripts/table-managed.js"></script>	 
+	<script>
+		jQuery(document).ready(function() {	   
+			App.init();
+			TableManaged.init();
+		});
+	</script>
+</block>

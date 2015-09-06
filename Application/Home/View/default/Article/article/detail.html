@@ -32,14 +32,7 @@
     <div class="span9 main-content">
         <!-- Contents
         ================================================== -->
-        <section id="contents">
-        <switch name="info.parse">
-        	<case value="0">{$info.content}</case>
-        	<case value="1"></case>
-        	<case value="2">{:W('Parsedown/index', array($info['content']))}</case>
-        	<default />
-        </switch>
-        </section>
+        <section id="contents">{$info.content}</section>
         <hr/>
         {:hook('documentDetailAfter',$info)}
     </div>

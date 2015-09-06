@@ -146,6 +146,22 @@ class CategoryModel extends Model{
     }
 
     /**
+     * 递归修改分类所属站点
+     * @param  int $cate_id 分类id
+     * @param  int $site_id 目标站点id
+     */
+    public function recursion_to_site($cate_id, $site_id){
+        $this->where("id = $cate_id")->setField('site_id',$site_id);
+
+        // 寻找下级菜单
+        $children = $this->where("pid = $cate_id")->getField('id',true);
+
+        foreach( $children as $cid ){
+            $this->recursion_to_site($cid, $site_id);
+        }
+    }
+
+    /**
      * 查询后解析扩展信息
      * @param  array $data 分类数据
      * @author 麦当苗儿 <zuojiazi@vip.qq.com>

@@ -28,8 +28,9 @@ class Think extends TagLib{
     public function _nav($tag, $content){
         $field  = empty($tag['field']) ? 'true' : $tag['field'];
         $tree   =   empty($tag['tree'])? false : true;
-        $parse  = $parse   = '<?php ';
-        $parse .= '$__NAV__ = M(\'Channel\')->field('.$field.')->where("status=1")->order("sort")->select();';
+        $parse  = '<?php ';
+        $parse .= '$site_id=C(\'SITE_ID\');';
+        $parse .= '$__NAV__ = M(\'Channel\')->field('.$field.')->where("status=1 and site_id=$site_id")->order("sort")->select();';
         if($tree){
             $parse .= '$__NAV__ = list_to_tree($__NAV__, "id", "pid", "_");';
         }

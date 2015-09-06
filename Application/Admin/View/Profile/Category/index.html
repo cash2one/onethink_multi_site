@@ -1,0 +1,320 @@
+<extend name="Public/base"/>
+
+<block name="style">
+	<link rel="stylesheet" href="__STATIC__/plugins/data-tables/DT_bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="__STATIC__/plugins/jquery-nestable/jquery.nestable.css" />
+	<style>
+	.dd3-content .editShow {
+		display:none;
+	}
+	.dd3-content .editHide{
+		display:block;
+	}
+	.success {
+		color:green;
+	}
+	.error {
+		color:red;
+	}
+	/**
+	 * Nestable Draggable Handles
+	 */
+	
+	.dd3-content.edit { display: block; height: 60px; margin: 5px 0; padding: 5px 10px 5px 40px; color: #333; text-decoration: none; font-weight: 400; border: 1px solid #ccc;
+		background: #fafafa;
+		-webkit-border-radius: 3px;
+				border-radius: 3px;
+		box-sizing: border-box; -moz-box-sizing: border-box;
+	}
+	
+	.dd3-content.edit .editShow {
+		display:block;
+	}
+	.dd3-content.edit .editHide {
+		display:none;
+	}
+	input.editShow {
+		display:inline;
+	}
+	</style>
+</block>
+
+<!-- 子导航 -->
+<block name="sidebar">
+	<include file="sidemenu" />
+</block>
+
+<block name="body">
+	{:R("Profile/siteInfo")}
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN EXAMPLE TABLE PORTLET-->
+			<div class="tabbable tabbable-custom boxless">
+				<ul class="nav nav-tabs">
+					<li><a href="{:U('Profile/site?smethod=manage')}">站点信息</a></li>
+					<li class="active"><a href="#">栏目管理</a></li>
+                    <li><a href="{:U('Profile/article')}">文章管理</a></li>
+                    <li><a href="{:U('Profile/channel')}">导航管理</a></li>
+                    <li><a href="{:U('Profile/site?smethod=config')}">站点设置</a></li>
+                    <li><a href="{:U('Profile/addons')}">插件管理</a></li>
+				</ul>
+				
+				<div class="tab-content">
+					<div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption"><i class="fa fa-globe"></i>栏目管理</div>
+							<div class="tools">
+								<a href="javascript:;" class="collapse"></a>
+								<a href="#portlet-config" data-toggle="modal" class="config"></a>
+								<a href="javascript:;" class="reload"></a>
+							</div>
+						</div>
+						<div class="portlet-body form">
+
+	                        <div class="form-body">
+	                        
+	                            <div class="btn-group" id="nestable_list_menu">
+	                        		<a class="btn blue" href="{:U('Profile/cate',array('cmethod'=>'add','site_id'=>$site_info['id']))}">添加分类</a>
+	                                <button type="button" class="btn blue" data-action="expand-all">展开</button>
+	                                <button type="button" class="btn blue" data-action="collapse-all">合并</button>
+	                        		<button type="button" class="btn blue" data-action="order-all">排序</button>
+	                            </div>
+	                        	（双击栏目编辑、拖动管理分类。）
+	                            
+	                            <div class="category dd" id="nestable_category">
+	                                {:R('Profile/editCateTree', array($site_cate_list))}
+	                            </div>
+	                                
+	                        </div>
+						</div>
+					</div>
+
+				</div>
+					
+			</div>
+			<!-- END EXAMPLE TABLE PORTLET-->
+		</div>
+	</div>
+
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/DT_bootstrap.js"></script>
+	<script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>  
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script src="__STATIC__/scripts/table-managed.js"></script>	 
+	<script>
+		jQuery(document).ready(function() {	   
+			App.init();
+			TableManaged.init();
+
+
+		   $('#nestable_list_menu').on('click', function (e) {
+                var target = $(e.target),
+                    action = target.data('action');
+                if (action === 'expand-all') {
+                    $('.dd').nestable('expandAll');
+                }
+                if (action === 'collapse-all') {
+                    $('.dd').nestable('collapseAll');
+                }
+                if (action === 'order-all') {
+                    $('#nestable_category').trigger('order');
+                }
+            });
+			$('#nestable_category')[0].onselectstart=function (){return false;}; // 禁止选中时的蓝色背
+
+			$('#nestable_category')
+			.nestable({
+                group: 1
+            })
+			.on('change', function (e) {
+				var list = e.length ? e : $(e.target),
+					startData = list.data('serialise'),
+					endData = list.nestable('serialise'),
+					change = neatableMatch(startData,endData);
+				
+				// 一次移动，只可能有一处不同	
+				if(change){
+					$.post(
+						"{:U('Profile/cate',array('cmethod'=>'move'))}",
+						change,
+						function(data){
+							/* 提示信息 */
+							if (data.status==1) {
+								updateAlert(data.info ,'alert-success');
+								setTimeout(function(){
+									$('#top-alert').find('button').click();
+								},1500);
+							}else{
+								updateAlert(data.info,'alert-danger');
+								setTimeout(function(){
+									$('#top-alert').find('button').click();
+								},1500);
+							}
+						},
+						"json"
+					);
+				}
+				
+				// 重新序列化数据
+				list.data('serialise',endData); 
+			})
+			.on('order',function(e){
+				var list = e.length ? e : $(e.target),
+					order = list.nestable('serialiseA'),
+					rs = [];
+			   
+			    getData = function(arr){
+				   arr.forEach(function(v){
+					   rs.push(v.id);
+					   if(typeof v.children !== 'undefined'){
+						   getData(v.children);
+					   }
+				   })
+					   
+			    }
+			   
+			    getData(order);  
+
+				if(rs){
+					rs = {'ids':rs.join(',')}
+					$.post(
+						"{:U('Profile/cate',array('cmethod'=>'sort'))}",
+						rs,
+						function(data){
+							//提示信息 
+							if (data.status==1) {
+								updateAlert(data.info ,'alert-success');
+								setTimeout(function(){
+									$('#top-alert').find('button').click();
+								},1500);
+							}else{
+								updateAlert(data.info,'alert-danger');
+								setTimeout(function(){
+									$('#top-alert').find('button').click();
+								},1500);
+							}
+						},
+						"json"
+					);
+					
+				};
+				
+			})
+			.data('serialise',$('#nestable_category').nestable('serialise'));    // 绑定对象数据，用于移动
+		   
+		   // 判断是否移动了分类，并返回是如何移动的
+		   function neatableMatch(objStart,objEnd,pid){
+			   var change = null,
+			   		pid = pid || 0,
+					rs = null;
+			   
+			   for( p in objEnd ){ 
+			   
+				   if( typeof objStart[p] !== 'undefined' ){  // objStart有该元素
+					   if( json(objStart[p]) !== json(objEnd[p]) ){
+							if(objEnd[p]['children']){
+								
+								if( typeof objStart[p]['children'] !== 'undefined' ){
+									rs = neatableMatch( objStart[p]['children'],objEnd[p]['children'] ,p);
+								}else{
+									for( q in objEnd[p]['children'] ){
+										return {'from':q,'to':p};
+									}
+								}
+							}
+					   };
+				   }else{
+						return {'from':p,'to':pid};
+				   }
+			   }
+			   if(rs){
+				   return rs;
+			   }
+		   }
+		   
+		   //判断是否需要重新排序，并返回排序数组
+		   function resort(arrStart,arrEnd){
+			   var rs = [];
+			   
+			   getData = function(arr){
+				   arr.forEach(function(v){
+					   rs.push(v.id);
+					   if(typeof v.children !== 'undefined'){
+						   getData(v.children);
+					   }
+				   })
+					   
+			   }
+			   
+			   if( json(arrStart) !== json(arrEnd) ){
+				   getData(arrEnd);   
+			   }else{
+				   rs = false;
+			   }
+			   
+			   return rs;
+		   }
+		   
+		   
+		   function json( obj ){
+			   return window.JSON.stringify(obj)
+		   }
+		   
+		   			
+			$('.dd3-content')
+			.on('dblclick',function(){
+				if( $(this).hasClass('edit') ){
+					$(this).removeClass('edit');
+				}else{
+					$('.edit').removeClass('edit');
+					$(this).addClass('edit');
+				}
+			})
+			.on("submit", "form", function(){
+				var self = $(this);
+				$.post(
+					self.attr("action"),
+					self.serialize(),
+					function(data){
+						/* 提示信息 */
+						var name = data.status ? "success" : "error", msg;
+						msg = self.find(".msg").addClass(name).text(data.info).css("display", "inline");
+						if(name == 'success'){
+							self.find('span.title.editHide').html( self.find('input[name=title]').val() )
+						}
+						setTimeout(function(){
+							msg.fadeOut(function(){
+								msg.text("").removeClass(name);
+							});
+						}, 1000);
+					},
+					"json"
+				);
+				return false;
+			})
+			.on({
+			   'dblclick':function(event){
+				   event.stopPropagation();
+				   
+			   },
+			   'focus':function(){
+                    $(this).data('param',$(this).closest("form").serialize());
+
+                },
+			   'blur':function(){
+                    if($(this).data('param')!=$(this).closest("form").serialize()){
+                        $(this).closest("form").submit();
+                    }
+			   }
+			},'input[name=title]')
+			
+		});
+	</script>
+</block>

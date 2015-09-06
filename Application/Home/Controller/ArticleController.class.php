@@ -15,42 +15,59 @@ namespace Home\Controller;
  */
 class ArticleController extends HomeController {
 
+	// 当前栏目
+	public $category;
+	// 当前栏目父栏目数组
+	public $parent_cate;
+
     /* 文档模型频道页 */
 	public function index(){
 		/* 分类信息 */
-		$category = $this->category();
+		$category = $this->_category();
 
-		//频道页只显示模板，默认不读取任何内容
-		//内容可以通过模板标签自行定制
+		$single = $this->_single_model();
+		if( $single ){
+			$this->detail($single);
+		}else{
+			if (!empty($category['template_index'])){ //分类已定制模板
+				$tmpl = $category['template_index'];
+			} else { //使用默认模板
+				$tmpl = 'Article/'. get_document_model($category['model'][0],'name') .'/index';
+			}
+			//频道页只显示模板，默认不读取任何内容
+			//内容可以通过模板标签自行定制
 
-		/* 模板赋值并渲染模板 */
-		$this->assign('category', $category);
-		$this->display($category['template_index']);
+			/* 模板赋值并渲染模板 */
+			$this->assign('category', $category);
+			$this->display($tmpl);
+		}
 	}
 
 	/* 文档模型列表页 */
-	public function lists($p = 1){
+	public function lists(){
 		/* 分类信息 */
-		$category = $this->category();
+		$category = $this->_category();
 
-		/* 获取当前分类列表 */
-		$Document = D('Document');
-		$list = $Document->page($p, $category['list_row'])->lists($category['id']);
-		if(false === $list){
-			$this->error('获取列表数据失败！');
+		$single = $this->_single_model();
+		if( $single ){
+			$this->detail($single);
+		}else{
+			if (!empty($category['template_index'])){ //分类已定制模板
+				$tmpl = $category['template_index'];
+			} else { //使用默认模板
+				$tmpl = 'Article/'. get_document_model($category['model'][0],'name') .'/index';
+			}
+			/* 模板赋值并渲染模板 */
+			$this->assign('category', $category);
+			$this->display($tmpl);
 		}
-
-		/* 模板赋值并渲染模板 */
-		$this->assign('category', $category);
-		$this->assign('list', $list);
-		$this->display($category['template_lists']);
 	}
 
 	/* 文档模型详情页 */
 	public function detail($id = 0, $p = 1){
 		/* 标识正确性检测 */
 		if(!($id && is_numeric($id))){
-			$this->error('文档ID错误！');
+			$this->service_error(L('_DOC_ID_ERROR_'));
 		}
 
 		/* 页码检测 */
@@ -61,11 +78,11 @@ class ArticleController extends HomeController {
 		$Document = D('Document');
 		$info = $Document->detail($id);
 		if(!$info){
-			$this->error($Document->getError());
+			$this->service_error($Document->getError());
 		}
 
 		/* 分类信息 */
-		$category = $this->category($info['category_id']);
+		$category = $this->_category($info['category_id']);
 
 		/* 获取模板 */
 		if(!empty($info['template'])){//已定制模板
@@ -80,6 +97,7 @@ class ArticleController extends HomeController {
 		$map = array('id' => $id);
 		$Document->where($map)->setInc('view');
 
+		S('SEO_ARTICLE',$info);
 		/* 模板赋值并渲染模板 */
 		$this->assign('category', $category);
 		$this->assign('info', $info);
@@ -88,27 +106,100 @@ class ArticleController extends HomeController {
 	}
 
 	/* 文档分类检测 */
-	private function category($id = 0){
+	private function _category($id = 0){
 		/* 标识正确性检测 */
 		$id = $id ? $id : I('get.category', 0);
 		if(empty($id)){
-			$this->error('没有指定文档分类！');
+			$this->service_error(L('_DOC_CATE_REQUIRED'));
 		}
 
 		/* 获取分类信息 */
-		$category = D('Category')->info($id);
+		$category = $this->category = D('Category')->info($id);
+
+		if( !in_array($category['id'], $this->cate_ids['array']) ){
+			$this->service_error(L('_CATEGORY_NOT_EXIST_'));
+		}
+
+		// 获取面包屑导航
+		$breadcrumb = $this->parent_cate = $this->_get_parent_category($category['id']);
+		// 高亮主导航
+		//$current_main_menu = $this->_hight_light_nav();
+
+		S('SEO_CATE',$category);
+		$this->assign('breadcrumb', $breadcrumb);
+
 		if($category && 1 == $category['status']){
 			switch ($category['display']) {
 				case 0:
-					$this->error('该分类禁止显示！');
+					$this->service_error(L('_CATEGORY_FORBIDDEN_'));
 					break;
 				//TODO: 更多分类显示状态判断
 				default:
 					return $category;
 			}
 		} else {
-			$this->error('分类不存在或被禁用！');
+			$this->service_error(L('_CATEGORY_NOT_EXIST_OR_FORBIDDEN_'));
 		}
+	}
+
+	/**
+	 * 面包屑导航
+	 * @param  [type] $cid [description]
+	 * @return [type]      [description]
+	 */
+	private function _get_parent_category($cid){
+	    if(empty($cid)){
+	        return false;
+	    }
+	    $cates  =   M('Category')->where(array('status'=>1))->field('id,title,pid,name')->order('sort')->select();
+	    $child  =   get_category($cid); //获取参数分类的信息
+	    $pid    =   $child['pid'];
+	    $temp   =   array();
+	    $res[]  =   $child;
+	    while(true){
+	        foreach ($cates as $key=>$cate){
+	            if($cate['id'] == $pid){
+	                $pid = $cate['pid'];
+	                array_unshift($res, $cate); //将父分类插入到数组第一个元素前
+	            }
+	        }
+	        if($pid == 0){
+	            break;
+	        }
+	    }
+	    return $res;
+	}
+
+	/**
+	 * 高亮主导航
+	 * @return [type] [description]
+	 */
+	private function _hight_light_nav(){
+		$site_id = $this->site_id;
+		$nav = M('Channel')->where("status=1 and site_id=$site_id")->order("sort")->select();
+	}
+
+	/**
+	 * 检查当前分类是否为单页类型
+	 * 		是的话返回对应文档id
+	 * @return int 文档id或false
+	 */
+	private function _single_model(){
+		$category = $this->category;
+		$model_name = 'single';
+
+		$single_model_id = M('Model')->where(" name='$model_name' ")->getField('id');
+		$model_id = $category['model'];
+
+		if( in_array($single_model_id, $model_id) ){
+			$document_id = M("Document")->where('category_id='.$category['id'])->getField('id');
+			if( !$document_id ){
+				$this->service_error(L('_CONTENT_NOT_EXIST'));
+			}
+			return $document_id;
+		}
+		return false;
+
 	}
 
 }

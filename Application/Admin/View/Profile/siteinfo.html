@@ -1,0 +1,8 @@
+<div class="note note-success">
+    <h3 class="block"><a href="{:U('Profile/site?smethod=manage')}">{$site_info.name}</a></h3>
+    <p>
+        <h4 class="label label-success"> 域名：{$site_info.domain}</h4>&nbsp;&nbsp;
+        <h4 class="label label-<eq name="site_info.status" value="1">success<else/>danger</eq>"> 状态：{$site_info.status_text}</h4>&nbsp;&nbsp;
+        <h4 class="label label-success"> 管理员：{$site_info.manage_nickname}</h4>
+    </p>
+</div>

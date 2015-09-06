@@ -14,10 +14,23 @@
 return array(
 
     // 预先加载的标签库
-    'TAGLIB_PRE_LOAD'     =>    'OT\\TagLib\\Article,OT\\TagLib\\Think',
+    'TAGLIB_PRE_LOAD'     =>    'OT\\TagLib\\Article,OT\\TagLib\\Think,Home\\TagLib\\Addons',
+
+    'LANG_SWITCH_ON'   => true,
+    'LANG_AUTO_DETECT' => false,
+    'LANG_LIST'        => 'zh-cn,en-us', 
+    'VAR_LANGUAGE'     => 'l', 
         
-    /* 主题设置 */
-    'DEFAULT_THEME' =>  'default',  // 默认模板主题名称
+    /* 路由设置 */
+    'URL_ROUTER_ON' => true,
+    'URL_ROUTE_RULES' => array(
+        '/^cate\/([a-zA-Z0-9]+)$/' => 'Article/index?category=:1',
+        '/^cate\/([a-zA-Z0-9]+)\/([0-9]+)$/' => 'Article/index?category=:1&p=:2',
+        '/^list\/([a-zA-Z0-9]+)$/' => 'Article/lists?category=:1',
+        '/^list\/([a-zA-Z0-9]+)\/([0-9]+)$/' => 'Article/lists?category=:1&p=:2',
+        '/^detail\/(\d+)$/' => 'Article/detail?id=:1',
+        '/^search\/([a-zA-Z0-9_-]+)$/' => 'Article/search?keyword=:1',
+    ),
 
     /* 数据缓存设置 */
     'DATA_CACHE_PREFIX' => 'onethink_', // 缓存前缀
@@ -58,10 +71,10 @@ return array(
     /* 模板相关配置 */
     'TMPL_PARSE_STRING' => array(
         '__STATIC__' => __ROOT__ . '/Public/static',
-        '__ADDONS__' => __ROOT__ . '/Public/' . MODULE_NAME . '/Addons',
-        '__IMG__'    => __ROOT__ . '/Public/' . MODULE_NAME . '/images',
-        '__CSS__'    => __ROOT__ . '/Public/' . MODULE_NAME . '/css',
-        '__JS__'     => __ROOT__ . '/Public/' . MODULE_NAME . '/js',
+        '__ADDONS__' => __ROOT__ . '/Public/' . MODULE_NAME . '/' . C('DEFAULT_THEME') . '/Addons',
+        '__IMG__'    => __ROOT__ . '/Public/' . MODULE_NAME . '/' . C('DEFAULT_THEME') . '/images',
+        '__CSS__'    => __ROOT__ . '/Public/' . MODULE_NAME . '/' . C('DEFAULT_THEME') . '/css',
+        '__JS__'     => __ROOT__ . '/Public/' . MODULE_NAME . '/' . C('DEFAULT_THEME') . '/js',
     ),
 
     /* SESSION 和 COOKIE 配置 */

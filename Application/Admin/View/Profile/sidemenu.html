@@ -1,0 +1,30 @@
+<ul class="page-sidebar-menu">
+    <li>
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+        <div class="sidebar-toggler hidden-phone"></div>
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+    </li>
+
+    <li <eq name="Think.ACTION_NAME" value="index">class="active"</eq>>
+        <a href="{:U('Profile/index')}">
+        <i class="fa fa-home"></i> 
+        <span class="title">个人中心</span>
+        </a>
+    </li>
+
+    <li <eq name="Think.ACTION_NAME" value="info">class="active"</eq>>
+        <a href="{:U('Profile/info')}">
+        <i class="fa fa-home"></i> 
+        <span class="title">我的资料</span>
+        </a>
+    </li>
+
+    <li <in name="Think.ACTION_NAME" value="site,cate,article,channel">class="active"</in>>
+        <a href="{:U('Profile/site')}">
+        <i class="fa fa-home"></i> 
+        <span class="title">我的站点</span>
+        </a>
+    </li>
+
+
+</ul>

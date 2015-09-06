@@ -1,0 +1,307 @@
+<extend name="Public/base"/>
+
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/plugins/bootstrap-fileupload/bootstrap-fileupload.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/plugins/bootstrap-datepicker/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/plugins/jquery-nestable/jquery.nestable.css" />
+</block>
+
+<!-- 子导航 -->
+<block name="sidebar">
+    <include file="sidemenu" />
+</block>
+
+<block name="body">
+
+<block name="body">
+    {:R('Profile/siteInfo')}
+    <!-- 表单 -->
+
+    
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="tabbable tabbable-custom boxless">
+                <ul class="nav nav-tabs">
+                    <li><a href="{:U('Profile/site?smethod=manage')}">站点信息</a></li>
+                    <li><a href="{:U('Profile/cate')}">栏目管理</a></li>
+                    <li class="active"><a href="#">文章管理</a></li>
+                    <li><a href="{:U('Profile/channel')}">导航管理</a></li>
+                    <li><a href="{:U('Profile/site?smethod=config')}">站点设置</a></li>
+                    <li><a href="{:U('Profile/addons')}">插件管理</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="row profile-account">
+                        <div class="col-md-3">
+                            <div class="category dd" id="nestable_category">
+                                {:R('Profile/listCateTree', array($site_cate_list))}
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+
+                            <!-- 标签页导航 -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    
+                                    <div class="tabbable tabbable-custom boxless">
+                                        <form id="form" action="{:U('Profile/article?amethod=update')}" method="post" class="form-1" >
+                                        <script> var _file = []; _file['picture'] = [];_file['file'] = [];</script>
+                                        <ul class="nav nav-tabs">
+                                            <volist name=":parse_config_attr($model['field_group'])" id="group">
+                                                <li <eq name="key" value="1">class="active"</eq>><a href="#tab_{$key}" data-toggle="tab">{$group}</a></li>
+                                            </volist>
+                                        </ul>
+                                        
+                                        <div class="tab-content">
+                                            <volist name=":parse_config_attr($model['field_group'])" id="group">
+                                            <div id="tab_{$key}" class="tab-pane <eq name="key" value="1">active</eq>">
+                                            
+                                                <div class="portlet box blue">
+                                                    <div class="portlet-title">
+                                                        <div class="caption"><i class="fa fa-reorder"></i>新增</div>
+                                                        <div class="tools">
+                                                            <a href="javascript:;" class="collapse"></a>
+                                                            <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                                                            <a href="javascript:;" class="reload"></a>
+                                                            <a href="javascript:;" class="remove"></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="portlet-body form">
+                                                        <!-- BEGIN FORM-->
+                                                        
+                                                            <div class="form-body">
+                                                                <volist name="fields[$key]" id="field">
+                                                                <if condition="$field['is_show'] == 1 || $field['is_show'] == 2">
+                                                                
+                                                                <div class="form-group">
+                                                                    <label>{$field['title']}<span class="check-tips"><notempty name="field['remark']">（{$field['remark']}）</notempty></span></label>
+
+                                                                    <switch name="field.type">
+                                                                        <case value="num">
+                                                                            <input type="text" class="form-control input-medium"  name="{$field.name}" value="{$field.value}">
+                                                                        </case>
+                                                                        <case value="string">
+                                                                            <input type="text" class="form-control input-xlarge"  name="{$field.name}" value="{$field.value}">
+                                                                        </case>
+                                                                        <case value="textarea">
+                                                                            <textarea class="form-control input-xlarge" rows="3"  name="{$field.name}">{$field.value}</textarea>
+
+                                                                        </case>
+                                                                        <case value="datetime">
+                                                                            <div class="input-group input-large date form_datetime">                             
+                                                                                <span class="input-group-btn">
+                                                                                <button class="btn default date-set" type="button"><i class="fa fa-calendar"></i></button>
+                                                                                </span>          
+                                                                                <input type="text" size="16" name="{$field.name}" readonly class="form-control">
+                                                                            </div>
+
+                                                                        </case>
+                                                                        <case value="bool">
+                                                                            <select class="form-control input-medium" name="{$field.name}">
+                                                                                <volist name=":parse_field_attr($field['extra'])" id="vo">
+                                                                                    <option value="{$key}" <eq name="field.value" value="$key">selected</eq>>{$vo}</option>
+                                                                                </volist>
+                                                                            </select>
+                                                                        </case>
+                                                                        <case value="select">
+                                                                            <select class="form-control input-medium" name="{$field.name}">
+                                                                                <volist name=":parse_field_attr($field['extra'])" id="vo">
+                                                                                    <option value="{$key}" <eq name="field.value" value="$key">selected</eq>>{$vo}</option>
+                                                                                </volist>
+                                                                            </select>
+                                                                        </case>
+                                                                        <case value="radio">
+                                                                            <div class="radio-list">
+                                                                            <volist name=":parse_field_attr($field['extra'])" id="vo">
+                                                                                <label class="radio-inline">
+                                                                                <input type="radio" name="{$field.name}" <eq name="field.value" value="$key">checked</eq>  value="{$key}"> {$vo}
+                                                                                </label>
+                                                                            </volist>
+                                                                            </div>
+                                                                        </case>
+                                                                        <case value="checkbox">
+                                                                            <div class="checkbox-list">
+                                                                            <volist name=":parse_field_attr($field['extra'])" id="vo">
+                                                                                <label class="checkbox-inline">
+                                                                                <input type="checkbox" value="{$key}" name="{$field.name}[]" <eq name="field.value" value="$key">checked</eq>>{$vo}
+                                                                                </label>
+                                                                            </volist>
+                                                                            </div>
+                                                                        </case>
+                                                                        <case value="editor">
+                                                                            <div id="markdown">
+                                                                                <textarea name="{$field.name}" rows="20">{$field.value}</textarea>
+                                                                            </div>
+                                                                            {:hook('adminArticleEdit', array('name'=>$field['name'],'value'=>$field.value))}
+                                                                        </case>
+                                                                        <case value="picture">
+                                                                            <script> _file['picture'].push("{$field.name}")</script>
+                                                                            <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                                                <div class="fileupload-new thumbnail" >
+                                                                                    <img id="field_pic_{$field.name}" src="__STATIC__/img/noimage.gif" alt="" />
+                                                                                </div>
+                                                                                <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+                                                                                <div>
+                                                                                    <input type="file" class="default"   id="{$field.name}"  />
+                                                                                    <input type="hidden"   name="{$field.name}" id="field_{$field.name}" value="{$data[$field['name']]}" />
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                        </case>
+                                                                        <case value="file">
+                                                                            <script> _file['file'].push("{$field.name}")</script>
+                                                                            <div class="fileupload fileupload-new" data-provides="fileupload" data-filed="{$field.name}">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-btn">
+                                                                                        <span class="uneditable-input">
+                                                                                            <i class="fa fa-file fileupload-exists"></i> 
+                                                                                            <span class="fileupload-preview"></span>
+                                                                                        </span>
+                                                                                    </span>
+                                                                                    <span class="btn-file">
+                                                                                        <input type="file" class="default"  id="{$field.name}"  value="{$data[$field['name']]}"/>
+                                                                                        <input type="hidden" name="{$field.name}"/>
+                                                                                    </span>
+                                                                                    <a href="#" class="btn red fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash-o"></i> 删除</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </case>
+                                                                        <default/>
+                                                                    </switch>
+                                                                </div>
+                                                                
+                                                                </if>
+                                                                </volist>
+                                                            </div>
+                                                            
+                                                            
+                                                            <div class="form-actions fluid ">
+                                                                <div class="col-md-offset-3 col-md-9">
+                                                                    <button class="btn green submit-btn ajax-post" id="submit" type="submit" target-form="form-1">确 定</button>
+                                                                    <a class="btn default btn-return" href="{:U('Profile/article?amethod=index?cate_id='.$cate_id)}">返 回</a>
+                                                                    <button class="btn save-btn blue" url="{:U('Profile/article?amethod=autoSave')}" target-form="form-1" id="autoSave">
+                                                                        存草稿
+                                                                    </button>
+                                                                    <input type="hidden" name="id" value="{$info.id|default=''}"/>
+                                                                    <input type="hidden" name="pid" value="{$info.pid|default=''}"/>
+                                                                    <input type="hidden" name="model_id" value="{$info.model_id|default=''}"/>
+                                                                    <input type="hidden" name="category_id" value="{$info.category_id|default=''}">                           
+                                                                </div>
+                                                            </div>
+                                                        
+                                                        <!-- END FORM--> 
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            </volist>
+                                        </div>
+                                        
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--end col-md-9-->                                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</block>
+
+<block name="script">
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="__STATIC__/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="__STATIC__/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="__STATIC__/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="__STATIC__/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="__STATIC__/plugins/jquery-nestable/jquery.nestable.js"></script>  
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="__STATIC__/scripts/app.js"></script>
+    <script src="__STATIC__/scripts/form-components.js"></script> 
+    <script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js?t={:rand(0,9999)}"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+    jQuery(document).ready(function() {       
+        // initiate layout and plugins
+        App.init();
+        FormComponents.init();
+        
+        _file['picture'].forEach(function(i){
+            $("#"+i).uploadify({
+                "height"          : 34,
+                "swf"             : "__STATIC__/uploadify/uploadify.swf",
+                "fileObjName"     : "download",
+                "buttonText"      : "上传图片",
+                "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+                "width"           : 80,
+                'removeTimeout'   : 1,
+                'fileTypeExts'    : '*.jpg; *.png; *.gif;',
+                "onUploadSuccess" : function(file, data){
+                    var data = $.parseJSON(data);
+                    var src = '';
+                    if(data.status){
+                        $("#field_"+i).val(data.id);
+                        src = data.url || '__ROOT__' + data.path
+                        $("#field_pic_"+i).attr({"src":src}).parent().css({"width":'',"height":''});
+                    } else {
+                        updateAlert(data.info);
+                        setTimeout(function(){
+                            $('#top-alert').find('button').click();
+                            $(that).removeClass('disabled').prop('disabled',false);
+                        },1500);
+                    }
+                },
+                'onFallback' : function() {
+                    alert('未检测到兼容版本的Flash.');
+                }
+            });
+        })
+        
+        _file['file'].forEach(function(i){
+            $("#"+i).uploadify({
+                "height"          : 34,
+                "swf"             : "__STATIC__/uploadify/uploadify.swf",
+                "fileObjName"     : "download",
+                "buttonText"      : "上传附件",
+                "uploader"        : "{:U('File/uploadCOA',array('session_id'=>session_id()))}",
+                "width"           : 120,
+                'removeTimeout'   : 1,
+                "onUploadSuccess" : function(file, data){
+                    var data = $.parseJSON(data);
+                    
+                    if(data.status){
+                        var name = i;
+                        $("input[name="+name+"]").val(data.data);
+                        $('div[data-filed='+name+'] .uneditable-input').find('.fileupload-preview').html(data.info);
+                        $('div[data-filed='+name+'] .uneditable-input').find('i').removeClass('fileupload-exists');
+                    } else {
+                        updateAlert(data.info);
+                        setTimeout(function(){
+                            $('#top-alert').find('button').click();
+                        },1500);
+                    }
+                },
+                'onFallback' : function() {
+                    alert('未检测到兼容版本的Flash.');
+                }
+            });
+        })
+        
+        $('#nestable_category')
+        .nestable({dragEnable:false})
+        .on('selectstart',function(){
+            return false;
+        });
+    });
+    </script>
+</block>

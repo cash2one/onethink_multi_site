@@ -33,9 +33,8 @@ class CategoryController extends AdminController {
      * @author 麦当苗儿 <zuojiazi@vip.qq.com>
      */
     public function tree($tree = null){
-        C('_SYS_GET_CATEGORY_TREE_') || $this->_empty();
         $this->assign('tree', $tree);
-        $this->display('tree');
+        $this->display('Category/tree');
     }
 
     /* 编辑分类 */
@@ -43,7 +42,16 @@ class CategoryController extends AdminController {
         $Category = D('Category');
 
         if(IS_POST){ //提交表单
+
+            // 修改被移动菜单所属站点
+            $site_id = I('site_id');
+            $site_id_old = M("Category")->where("id = $id ")->getField('site_id');
+
             if(false !== $Category->update()){
+                if( $site_id && $site_id != $site_id_old ){
+                    $Category->recursion_to_site($id, $site_id);
+                }
+                
                 $this->success('编辑成功！', U('index'));
             } else {
                 $error = $Category->getError();
@@ -58,6 +66,9 @@ class CategoryController extends AdminController {
                     $this->error('指定的上级分类不存在或被禁用！');
                 }
             }
+
+            $sites = M("Site")->getField('id,domain');
+            $this->assign('sites',  $sites);
 
             /* 获取分类信息 */
             $info = $id ? $Category->info($id) : '';
@@ -84,14 +95,18 @@ class CategoryController extends AdminController {
             $cate = array();
             if($pid){
                 /* 获取上级分类信息 */
-                $cate = $Category->info($pid, 'id,name,title,status');
+                $cate = $Category->info($pid, 'id,site_id,name,title,status');
                 if(!($cate && 1 == $cate['status'])){
                     $this->error('指定的上级分类不存在或被禁用！');
                 }
+                $site_id = $cate['site_id'];
             }
 
+            $sites = M("Site")->getField('id,domain');
+            $this->assign('sites',  $sites);
+
             /* 获取分类信息 */
-            $this->assign('info',       null);
+            $this->assign('info',       array('site_id'=>$site_id));
             $this->assign('category', $cate);
             $this->meta_title = '新增分类';
             $this->display('edit');
@@ -178,6 +193,14 @@ class CategoryController extends AdminController {
         $to = I('post.to');
         $from = I('post.from');
         $res = M('Category')->where(array('id'=>$from))->setField('pid', $to);
+
+        // 修改被移动菜单所属站点
+        $site_id = M("Category")->where("id = $to ")->getField('site_id');
+        $site_id_old = M("Category")->where("id = $from ")->getField('site_id');
+        if( $site_id && $site_id != $site_id_old ){
+            D("Category")->recursion_to_site($from, $site_id);
+        }
+
         if($res !== false){
             $this->success('分类移动成功！', U('index'));
         }else{
@@ -224,5 +247,22 @@ class CategoryController extends AdminController {
             $this->error('合并分类失败！');
         }
 
+    }
+
+
+    /**
+     * 分类排序
+     */
+    public function sort(){
+        $ids = I('post.ids');
+        $ids = explode(',', $ids);
+        foreach ($ids as $key=>$value){
+            $res = M('Category')->where(array('id'=>$value))->setField('sort', $key+1);
+        }
+        if($res !== false){
+            $this->success('排序成功！');
+        }else{
+            $this->eorror('排序失败！');
+        }
     }
 }
