@@ -977,7 +977,7 @@ CREATE TABLE `onethink_site` (
 -- -----------------------------
 -- Records of `onethink_site`
 -- -----------------------------
-INSERT INTO `onethink_site` VALUES(1, '测试站点', 'localhost', 1, '1', 'title', 'description', 'keywords', 'default', '');
+INSERT INTO `onethink_site` VALUES(1, '测试站点', 'localhost', 1, '1', 'title', 'description', 'keywords', 'default', '{"DEFAULT_LANG":"zh-cn","MULTI_TITLE":"2","URL_MODEL":"2","SITE_LIST_ROW":"8"}');
 
 -- -----------------------------
 -- Table structure for `onethink_ucenter_admin`
