@@ -68,8 +68,8 @@ class Page{
     public function show() {
         if(0 == $this->totalRows) return '';
 
-        $wrap = $this->$config['wrap'];
-        if( $wrap ){
+        if( !empty($this->$config['wrap']) ){
+            $wrap = $this->$config['wrap'];
             $wrap_head = '<'.$wrap.'>';
             $wrap_end = '</'.$wrap.'>';
         }else{
