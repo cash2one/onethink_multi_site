@@ -144,7 +144,7 @@ class Page{
                 }
             }else{
                 if($page > 0 && $this->totalPages != 1){
-                    $link_page .= $wrap_head_active. '<span class="current">' . $page . '</span>'.$wrap_end;
+                    $link_page .= $wrap_head_active. '<span class="'.$this->config['active'].'">' . $page . '</span>'.$wrap_end;
                 }
             }
         }
