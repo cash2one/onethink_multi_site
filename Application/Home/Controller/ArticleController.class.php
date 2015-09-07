@@ -202,4 +202,37 @@ class ArticleController extends HomeController {
 
 	}
 
+	public function search($keyword){
+		if(!$keyword){
+			$this->error('输入要查询的内容');
+		}
+		$model_id = get_table_field('product','name','id','model');
+		
+		$map['model_id'] = $model_id;
+		$map['title'] = array('like','%'.$keyword.'%');
+
+		$rs = D('Document')->where($map)->select();
+
+		// 过滤非本站内容
+		$cate_ids_array = $this->cate_ids['array'];
+		foreach($rs as $k=>$v ){
+			$category = $v['category_id'];
+			if( !in_array($category, $cate_ids_array) ){
+				unset($rs[$k]);
+			}
+		}
+
+		// 搜索结果页SEO信息
+		$seo = array(
+			'title' 		=> $keyword.' -- 搜索结果',
+			'keywords'		=> $keyword,
+			'description'	=> $keyword,
+		);
+		S('SEO_ARTICLE',$seo);
+
+		$this->assign('rs',$rs);
+		$this->assign('keyword',$keyword);
+		$this->display();
+	}
+
 }

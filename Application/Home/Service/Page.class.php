@@ -68,6 +68,14 @@ class Page{
     public function show() {
         if(0 == $this->totalRows) return '';
 
+        $wrap = $this->$config['wrap'];
+        if( $wrap ){
+            $wrap_head = '<'.$wrap.'>';
+            $wrap_end = '</'.$wrap.'>';
+        }else{
+            $wrap_head = $wrap_end = '';
+        }
+
         // 配合路由经行简化
         switch( ACTION_NAME ){
             case 'lists':
@@ -95,22 +103,22 @@ class Page{
 
         //上一页
         $up_row  = $this->nowPage - 1;
-        $up_page = $up_row > 0 ? '<a class="prev" href="' . $this->url($up_row) . '">' . $this->config['prev'] . '</a>' : '';
+        $up_page = $up_row > 0 ? $wrap_head. '<a class="prev" href="' . $this->url($up_row) . '">' . $this->config['prev'] . '</a>'.$wrap_end : '';
 
         //下一页
         $down_row  = $this->nowPage + 1;
-        $down_page = ($down_row <= $this->totalPages) ? '<a class="next" href="' . $this->url($down_row) . '">' . $this->config['next'] . '</a>' : '';
+        $down_page = ($down_row <= $this->totalPages) ? $wrap_head. '<a class="next" href="' . $this->url($down_row) . '">' . $this->config['next'] . '</a>'.$wrap_end : '';
 
         //第一页
         $the_first = '';
         if($this->totalPages > $this->rollPage && ($this->nowPage - $now_cool_page) >= 1){
-            $the_first = '<a class="first" href="' . $this->url(1) . '">' . $this->config['first'] . '</a>';
+            $the_first = $wrap_head. '<a class="first" href="' . $this->url(1) . '">' . $this->config['first'] . '</a>'.$wrap_end;
         }
 
         //最后一页
         $the_end = '';
         if($this->totalPages > $this->rollPage && ($this->nowPage + $now_cool_page) < $this->totalPages){
-            $the_end = '<a class="end" href="' . $this->url($this->totalPages) . '">' . $this->config['last'] . '</a>';
+            $the_end = $wrap_head. '<a class="end" href="' . $this->url($this->totalPages) . '">' . $this->config['last'] . '</a>'.$wrap_end;
         }
 
         //数字连接
@@ -126,13 +134,13 @@ class Page{
             if($page > 0 && $page != $this->nowPage){
 
                 if($page <= $this->totalPages){
-                    $link_page .= '<a class="num" href="' . $this->url($page) . '">' . $page . '</a>';
+                    $link_page .= $wrap_head. '<a class="num" href="' . $this->url($page) . '">' . $page . '</a>'.$wrap_end;
                 }else{
                     break;
                 }
             }else{
                 if($page > 0 && $this->totalPages != 1){
-                    $link_page .= '<span class="current">' . $page . '</span>';
+                    $link_page .= $wrap_head. '<span class="current">' . $page . '</span>'.$wrap_end;
                 }
             }
         }
@@ -142,6 +150,6 @@ class Page{
             array('%HEADER%', '%NOW_PAGE%', '%UP_PAGE%', '%DOWN_PAGE%', '%FIRST%', '%LINK_PAGE%', '%END%', '%TOTAL_ROW%', '%TOTAL_PAGE%'),
             array($this->config['header'], $this->nowPage, $up_page, $down_page, $the_first, $link_page, $the_end, $this->totalRows, $this->totalPages),
             $this->config['theme']);
-        return "<div>{$page_str}</div>";
+        return "{$page_str}";
     }
 }
