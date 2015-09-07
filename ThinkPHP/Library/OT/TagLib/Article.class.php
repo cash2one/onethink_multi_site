@@ -90,7 +90,7 @@ class Article extends TagLib{
         $parse  .= '$__CATE__ = D(\'Category\')->getChildrenId('.$cate.');';
         $parse  .= '$__PAGE__ = new \Home\Service\Page(get_list_count($__CATE__), ' . $listrow . ');';
         if( !empty($wrap) ){
-            $parse .= '$__PAGE__->setConfig("wrap","'.$wrap.'")';
+            $parse .= '$__PAGE__->setConfig("wrap","'.$wrap.'");';
         }
         $parse  .= 'echo $__PAGE__->show();';
         $parse  .= ' ?>';
