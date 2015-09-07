@@ -1,0 +1,79 @@
+<extend name="Base/common_full"/>
+
+<block name="header">
+<div id="carousel-example-generic" class="carousel slide hidden-xs" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    </ol>
+
+        <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+    <Addons:focus group="vip" name="pic">
+        <div class="item <eq name="key" value="0">active</eq>">
+            <img src="{$pic.path}" alt="{$pic.title}">
+            <div class="carousel-caption">
+            </div>
+        </div>
+    </Addons:focus>
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<div class="bc-social">
+    <div class="container">
+        <ul class="bc-social-buttons">
+            <li class="social-qq">
+            <i class="fa fa-qq"></i> 电话：027-87656932
+            </li>
+            <li class="social-forum">
+            <i class="fa fa-comments"></i> 传真：027-88391805
+            </li>
+        </ul>
+    </div>
+</div>
+
+</block>
+
+<block name="body">
+
+    <article:position name="list" cate="$prduct_cates" pos="4" >
+    <div class="product-box">
+        <div class="row">
+            <div class="col-md-6 product-pic">
+                <!--img src="__IMG__/demo.jpg" alt="..."-->
+                <img src="{$list.cover_id|get_cover=###,path}" alt="...">
+            </div>
+            <div class="col-md-6 product-detail">
+                <div class="product-head">
+                    <h3><a href="{:U('detail/'.$list['id'])}">{$list.title}</a></h3>
+                </div>
+                <div class="product-body">
+                    <p>
+                        {$list.description}
+                    </p>
+                    <em class="big_pic pull-right">
+                        <span class="currency_arial">¥</span>{$list.price}
+                    </em>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="product-foot">
+                    <span class="brand"><img src="__IMG__/logo-dubois.png" alt="dubois"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </article:position>
+
+</block>

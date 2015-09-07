@@ -1,0 +1,23 @@
+<extend name="Base/common_full"/>
+
+<block name="style">
+<style>
+#content p img {
+    max-width: 250px
+}
+</style>
+</block>
+
+<block name="body">
+
+    <div class="row">
+        <div class="col-md-3">
+            <p  class="text-center"><img  src="{$info.cover_id|get_cover=###,path}"></p>
+        </div>
+        <div class="col-md-9">
+        {$info.content}
+        
+        </div>
+    </div>
+
+</block>

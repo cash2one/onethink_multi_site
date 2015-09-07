@@ -1,0 +1,26 @@
+<extend name="Base/common"/>
+
+
+<block name="breadcrumb">
+
+    <ol class="breadcrumb">        
+        <li><a href="/">首页</a></li>
+        <volist name="breadcrumb" id="cate">
+        <li><a href="{:U('cate/'.$cate['name'])}"> {$cate.title}</a></li>
+        </volist>
+        <li>{$info.title}</li>
+    </ol>
+</block>
+
+<block name="body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{$info.title}</h3>
+                </div>
+                <div class="panel-body">
+                    <p  class="text-center"><img  src="{$info.cover_id|get_cover=###,path}"></p>
+                    <p>{$info.content}</p>
+                </div>
+            </div>
+
+</block>

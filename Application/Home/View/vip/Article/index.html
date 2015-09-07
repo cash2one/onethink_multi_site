@@ -1,0 +1,32 @@
+<extend name="Base/common"/>
+
+<block name="breadcrumb">
+    
+            <ol class="breadcrumb">
+                <li><a href="/">首页</a></li>
+                <volist name="breadcrumb" id="cate">
+                <li><a href="{:U('cate/'.$cate['name'])}"> {$cate.title}</a></li>
+                </volist>
+            </ol>
+</block>
+
+
+<block name="body">
+                <h2>产品列表</h2>
+                <hr>
+                <div class="row">
+                
+                    <article:list name="list" category="$category['id']" child="true">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="thumbnail">
+                            <img src="{$list.cover_id|get_cover=###,path}" alt="...">
+                            <div class="caption">
+                                <h3><a href="/product/{$list['id']}.html">{$list.title}</a></h3>
+                                <p>{$list.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    </article:list>
+                
+                </div>
+</block>

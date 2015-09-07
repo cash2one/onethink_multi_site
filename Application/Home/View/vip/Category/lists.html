@@ -1,0 +1,12 @@
+<notempty name="category">
+			<ul class="list-group">
+<volist name="category" id="cate">
+                <li class="list-group-item <eq name="current" value="$cate['id']">active</eq>">
+                    <a href="{:U('cate/'.$cate['name'])}">
+                    <i class="icon-chevron-right"></i>{$cate.title}
+
+                    </a>
+                </li>
+</volist>
+			</ul>
+</notempty>

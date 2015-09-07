@@ -1,0 +1,31 @@
+<extend name="Base/common"/>
+
+<block name="breadcrumb">
+    
+            <ol class="breadcrumb">
+                <li><a href="/">首页</a></li>
+                <volist name="breadcrumb" id="cate">
+                <li><a href="{:U('cate/'.$cate['name'])}"> {$cate.title}</a></li>
+                </volist>
+            </ol>
+</block>
+
+<block name="body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{$category.title}</h3>
+                    </div>
+                    <div class="list-group">
+                    <article:list name="list" category="$category['id']" child="true">
+                        <a href="/detail/{$list['id']}.html" class="list-group-item">
+                            <h4 class="list-group-item-heading">{$list.title}</h4>
+                            <span>{$list.create_time|date='Y-m-d H:i',###}，</span>  
+                            <span>阅读( {$list.view} )</span>
+                            <p class="list-group-item-text">
+                            {$list.description}
+                            </p>
+                        </a>
+                    </article:list>
+                    </div>
+                </div>
+</block>

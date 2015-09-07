@@ -1,0 +1,47 @@
+<extend name="Base/common_full"/>
+
+
+<block name="body">
+                <h3>"{$keyword}"搜索结果</h3>
+                <hr>
+                <div class="row">
+                
+                    <volist name="rs" id="list">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="thumbnail">
+                            <img src="{$list.cover_id|get_cover=###,path}" alt="...">
+                            <div class="caption">
+                                <h3><a href="/detail/{$list['id']}.html">{$list.title}</a></h3>
+                                <p>{$list.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    </volist>
+                
+                </div>
+</block>
+
+
+<block name="script">
+<script>
+window.onload= function(){
+    $(function(){
+        var $proBox = $(".thumbnail"),
+            height = 0,
+            h = 0;
+
+        $proBox.each(function(i,box){
+            h = $(box).height();
+
+            if( h > height){
+                height = h;
+            };
+        })
+
+        $proBox.css({'height':height})
+
+    })
+
+}
+</script>
+</block>

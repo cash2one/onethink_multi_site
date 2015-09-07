@@ -1,0 +1,172 @@
+body {
+	font-family:"Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","WenQuanYi Micro Hei",sans-serif;
+
+	color:#777;
+}
+
+p {
+	line-height: 1.8;
+	text-indent: 2em;
+}
+
+#content {
+	margin-top:20px;
+
+}
+
+#content p img {
+    max-width: 250px
+}
+#overview {
+	background:url('../images/bg3.gif') ;
+}
+
+/**
+ * nav
+ */
+.navbar.navbar-default{
+	margin-bottom: 0;
+	background: none;
+}
+@media (min-width: 768px){
+
+	.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+		margin-left: 0px;
+	}
+
+	.navbar-header {
+		margin:auto;
+	}
+	.navbar-collapse ul, .navbar-form {
+		padding: 30px 0;
+	}
+
+	.navbar-width-brand {
+		display: block;
+		padding-top:15px;
+	}
+}
+
+.navbar-brand {
+	padding:0;
+}
+.navbar-brand img {
+	padding:5px 5px 5px 15px;
+}
+.navbar-brand span {
+	display: block;
+	padding:15px 0;
+}
+
+/**
+ * padding-head
+ */
+.padding-head {
+	padding-top:40px;
+}
+
+/**
+ * carousel
+ */
+.carousel .item img {
+	width:100%;
+}
+
+/**
+ * bc-social
+ */
+.bc-social{padding:15px 0;text-align:center;background-color:#f5f5f5;border-top:1px solid #fff;border-bottom:1px solid #ddd}.bc-social-buttons{margin-left:0;margin-bottom:0;padding-left:0;list-style:none}.bc-social-buttons li{display:inline-block;line-height:1;color:#555}.bc-social-buttons li .fa{font-size:18px;margin-right:3px}.bc-social-buttons li .fa-weibo{font-size:20px}.bc-social-buttons li a{color:#555}.bc-social-buttons li.social-qq:hover{color:#428bca}.bc-social-buttons li.social-weibo a:hover{color:#d9534f}.bc-social-buttons>li+li:before{padding:0 10px;color:#ccc;content:"|"}
+
+/**
+ * side
+ */
+ul.list-group li.active a {
+	color:#fff;
+}
+
+
+/**
+ * product-box
+ */
+.product-box {
+	border:1px solid #e3e3e3;
+	box-shadow: 1px 1px 4px #e3e3e3;
+	margin:20px 0;
+	background:url('../images/bg.gif') ;
+}
+
+.product-box:hover {
+box-shadow: 0 2px 17px rgba(000,000,000,.3);
+}
+
+.product-box a {
+}
+
+.product-box .row,
+.product-pic {
+	margin:0;
+	padding:0;
+}
+
+.product-detail{
+	padding:20px 30px;
+}
+.product-pic img {
+	width:100%;
+}
+
+.product-head,
+.product-body {
+	border-bottom:1px solid #e3e3e3;
+}
+
+.product-body p {
+	padding:5px 0;
+	line-height: 1.8;
+}
+
+.product-foot {
+	margin-top:20px;
+}
+.product-foot span.brand {
+	display:inline-block;
+}
+.big_pic {
+	font-size: 36px;
+	color: #ec2b8c;
+	font-style: normal;
+	font-weight: 400;
+}
+.currency_arial{
+	font-family:arial;
+	font-size: 20px;
+	margin-right: 5px;
+}
+
+
+/**
+ * 分页
+ */
+.pagination {
+	margin:5px 0;
+}
+
+/**
+ * footer
+ */
+.footer{
+	color:#777;padding:30px 0 0 0;
+	border-top:1px solid #e5e5e5;
+	margin-top:70px;
+}
+.footer a{color:#777}
+.footer-top .about>div{height:110px;margin-bottom:10px}
+.footer-top .about>div h4{color:#563d7c;font-size:16px}
+.footer-bottom{font-size:13px}
+.footer-bottom ul>li{padding:0}
+.footer-bottom ul>li+li:before{padding:0 10px;color:#ccc;content:"|"}
+.footer p {
+	text-indent: 2em;
+	font-size:18px;
+	padding:10px;
+}

@@ -1,0 +1,95 @@
+<extend name="Base/common"/>
+
+<block name="breadcrumb">
+    
+            <ol class="breadcrumb">
+                <li><a href="/">首页</a></li>
+                <volist name="breadcrumb" id="cate">
+                <li><a href="{:U('cate/'.$cate['name'])}"> {$cate.title}</a></li>
+                </volist>
+            </ol>
+</block>
+
+<block name="side">
+                <!-- List group -->
+                {:W('Category/lists', array($category['id'],true))}
+                    
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">联系方式</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            武汉励合化学新材料有限公司
+                        </p>
+                        <p>
+                            联系人：高经理
+                        </p>
+                        <p>
+                            电话：027-87656932
+                        </p>
+                        <p>
+                            联系地址：武汉市珞狮路147号武汉理工大学创业园310室
+                        </p> 
+                    </div>
+                </div>
+</block>
+
+<block name="body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{$category.title}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                            
+                                <article:list name="list" category="$category['id']" child="true">
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="thumbnail">
+                                        <!--img src="__IMG__/demo.jpg" alt="..."-->
+                                        <img src="{$list.cover_id|get_cover=###,path}" alt="...">
+                                        <div class="caption">
+                                            <h4><a href="/detail/{$list['id']}.html">{$list.title}</a></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                </article:list>
+                            
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <nav>
+                            <ul class="pagination">
+                            <article:page cate="$category['id']" listrow="$category['list_row']" />
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+</block>
+
+<block name="script">
+<script>
+window.onload= function(){
+    $(function(){
+        var $proBox = $(".thumbnail"),
+            height = 0,
+            h = 0;
+
+        $proBox.each(function(i,box){
+            h = $(box).height();
+
+            if( h > height){
+                height = h;
+            };
+        })
+
+        $proBox.css({'height':height})
+
+    })
+
+}
+</script>
+</block>

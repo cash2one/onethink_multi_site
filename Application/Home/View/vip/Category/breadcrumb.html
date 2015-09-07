@@ -1,0 +1,4 @@
+	<li><a href="http://{:C('WEB_DOMAIN')}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+	<volist name="breadcrumb" id="cate">
+		<li><a href="{:U('cate/'.$cate['name'])}">{$cate.title}</a></li>
+	</volist>
