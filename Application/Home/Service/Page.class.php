@@ -22,6 +22,8 @@ class Page{
         'first'  => '1...',
         'last'   => '...%TOTAL_PAGE%',
         'theme'  => '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%',
+        'wrap'   => '',
+        'active' => 'current',
     );
 
     /**
@@ -68,12 +70,14 @@ class Page{
     public function show() {
         if(0 == $this->totalRows) return '';
 
-        if( !empty($this->$config['wrap']) ){
-            $wrap = $this->$config['wrap'];
+        if( !empty($this->config['wrap']) ){
+            $wrap = $this->config['wrap'];
             $wrap_head = '<'.$wrap.'>';
             $wrap_end = '</'.$wrap.'>';
+
+            $wrap_head_active = '<'.$wrap.' class="'.$this->config['active'].'">';
         }else{
-            $wrap_head = $wrap_end = '';
+            $wrap_head = $wrap_end = $wrap_head_active = '';
         }
 
         // 配合路由经行简化
@@ -140,7 +144,7 @@ class Page{
                 }
             }else{
                 if($page > 0 && $this->totalPages != 1){
-                    $link_page .= $wrap_head. '<span class="current">' . $page . '</span>'.$wrap_end;
+                    $link_page .= $wrap_head_active. '<span class="current">' . $page . '</span>'.$wrap_end;
                 }
             }
         }

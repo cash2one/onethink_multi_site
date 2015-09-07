@@ -21,7 +21,7 @@ class Article extends TagLib{
         'partpage' => array('attr' => 'id,listrow', 'close' => 0), //段落分页
         'prev'     => array('attr' => 'name,info', 'close' => 1), //获取上一篇文章信息
         'next'     => array('attr' => 'name,info', 'close' => 1), //获取下一篇文章信息
-        'page'     => array('attr' => 'cate,listrow,wrap', 'close' => 0), //列表分页
+        'page'     => array('attr' => 'cate,listrow,wrap,active', 'close' => 0), //列表分页
         'position' => array('attr' => 'pos,cate,limit,filed,name', 'close' => 1), //获取推荐位列表
         'list'     => array('attr' => 'name,category,child,page,row,field', 'close' => 1), //获取指定分类列表
         'content'  => array('attr' => 'id,callback', 'close' => 1), //获取指定分类列表
@@ -85,12 +85,16 @@ class Article extends TagLib{
     public function _page($tag){
         $cate    = $tag['cate'];
         $wrap    = $tag['wrap'];
+        $active    = $tag['active'];
         $listrow = (empty($tag['listrow']) || empty($tag['listrow']) == 0 )   ? C('SITE_LIST_ROW') : $tag['listrow'];
         $parse   = '<?php ';
         $parse  .= '$__CATE__ = D(\'Category\')->getChildrenId('.$cate.');';
         $parse  .= '$__PAGE__ = new \Home\Service\Page(get_list_count($__CATE__), ' . $listrow . ');';
         if( !empty($wrap) ){
             $parse .= '$__PAGE__->setConfig("wrap","'.$wrap.'");';
+        }
+        if( !empty($active) ){
+            $parse .= '$__PAGE__->setConfig("active","'.$active.'");';
         }
         $parse  .= 'echo $__PAGE__->show();';
         $parse  .= ' ?>';
