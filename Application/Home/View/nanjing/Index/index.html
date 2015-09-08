@@ -5,7 +5,7 @@
   <div class="banner">
     <div class="carousel">
     <Addons:focus group="focus" name="pic">
-      <div class="item b0{$key+1}" style="background-image:url({$pic.path})"><a href="{$pic.url}" title="{$pic.title}"></a></div>
+      <div class="item b0{$key+1}" style="background-image:url({$pic.path|get_cover=###,'path'})"><a href="{$pic.url}" title="{$pic.title}"></a></div>
     </Addons:focus>
     </div>
   </div>
