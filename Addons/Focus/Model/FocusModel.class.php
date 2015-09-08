@@ -69,8 +69,8 @@ class FocusModel extends Model{
             }
             $result = $this->where($map)->order('sort asc,id desc')->select();
             foreach($result as $key=>$val){
-                $cover = get_cover($val['pic'],'path');
-                $result[$key]['path'] = $cover;
+                $cover = M('picture')->find($val['pic']);
+                $result[$key]['path'] = $cover['path'];
             }
             return $result;
     }
