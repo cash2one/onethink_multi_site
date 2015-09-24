@@ -1,0 +1,24 @@
+<extend name="Base/common"/>
+
+<block name="body">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">  
+
+            <article:list name="list" category="$category['id']" child="true" row="$category['list_row']">
+                <h3><a href="{:U('detail/'.$list['id'])}" title="{$list.title}" >{$list.title}</a></h3>
+                <p>
+                {$list.description}
+                </p>
+                <hr>
+            </article:list>
+
+            <ul class="pagination">
+              <article:page cate="$category['id']" listrow="$category['list_row']" wrap="li" active="active" />
+            </ul>
+
+            </div>
+        </div>
+    </div>
+</block>

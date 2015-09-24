@@ -1,0 +1,99 @@
+<extend name="Base/common"/>
+
+
+<block name="body">
+<!--div class="container fadein-top" id="pagewidth">
+    <div class="padding-big">
+        <div class="button-group">
+          {:W('Category/lists', array($category['id'], ACTION_NAME == 'index'))}
+        </div>
+
+        <article:list name="list" category="$category['id']" child="true" row="$category['list_row']">
+            <div class="x3">
+              <a href="{:U('detail/'.$list['id'])}" title="{$list.title}" target="_blank">
+                <div class="pic-box"><img src="{$list.cover_id|get_cover=###,'path'}" /></div>
+                <p>{$list.title}</p>
+              </a>
+            </div>
+        </article:list>
+        
+        <div class="clearfix"></div>
+        <div class="margin-top list_page">
+        <article:page cate="$category['id']" listrow="$category['list_row']" />
+        </div>
+        
+    </div>
+</div-->
+
+
+
+  <div class="space20"></div>
+
+  <div class="container">  
+    <div class="row"> 
+    
+      <!-- Sidebar -->
+      <div class="col-md-3">
+      
+            <div class="">
+                <div class="space25"></div>
+                    <h4>搜索</h4>
+
+                    <div class="input-group">
+                    <input type="text" class="form-control no-border-right" placeholder="Search">
+                    <span class="input-group-btn">
+                      <button class="btn" type="button"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+
+                <div class="space40"></div>
+
+                <h4>产品分类</h4>
+                <ul class="list-2">
+                {:W('Category/lists', array($category['id'], ACTION_NAME == 'index'))}
+                </ul>
+
+            </div>  
+
+      </div>
+      <!-- Sidebar End -->
+      
+      <div class="col-md-9 blog-content">
+        
+            <section id="portfolio-items">            
+              <ul class="row portfolio boxed popup-gallery">   
+                <article:list name="list" category="$category['id']" child="true" row="$category['list_row']">
+                <li> 
+                  <!-- Gallery Item -->
+                  <article class="col-md-3 col-sm-3 col-xs-6 project boxed-project" data-tags="bootstrap,html">
+                    <div class="img-container">
+                      <!-- Item Link -->  
+                      <a href="{$list.cover_id|get_cover=###,'path'}" title="Photo Title">
+                        <!-- Image -->
+                        <img src="{$list.cover_id|get_cover=###,'path'}" alt="">
+                        <!-- Icon -->  
+                        <i class="fa fa-arrows-alt"></i>
+                      </a>
+                      <!-- Item Link End -->          
+                    </div>
+                    <div class="title">
+                      <h4><a href="{:U('detail/'.$list['id'])}" title="{$list.title}" target="_blank">{$list.title}</a></h4>
+                    </div>
+                  </article>
+                  <!-- Gallery Item End -->
+                </li> 
+                </article:list>
+            
+              </ul>              
+            </section>
+
+            <ul class="pagination">
+              <article:page cate="$category['id']" listrow="$category['list_row']" wrap="li" active="active" />
+            </ul>
+
+      </div>
+    </div> 
+  </div> 
+
+  <div class="space60"></div>
+</block>

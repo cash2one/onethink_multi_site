@@ -1,0 +1,42 @@
+<extend name="Base/common"/>
+
+<block name="header">
+<div class="layout" id="banner">
+    <div class="container max_width">
+        <h2 class="fadein-top">产品中心</h2>
+        <span class="fadein-bottom">
+            <a href="/">首页</a>
+            <volist name="breadcrumb" id="cate">
+            &gt;&gt;<a href="{:U('list/'.$cate['name'])}"> {$cate.title}</a>
+            </volist>
+        </span>
+    </div>
+</div>
+</block>
+
+<block name="body">
+<div class="container fadein-top" id="pagewidth">
+    <div class="padding-big">
+        <div class="subject margin-big-bottom">产品中心</div>
+        <div class="button-group">
+          {:W('Category/lists', array($category['id'], ACTION_NAME == 'index'))}
+        </div>
+        <div class="line caselist margin-big-top">
+          
+        <article:list name="list" category="$category['id']" child="true" row="$category['list_row']">
+            <div class="x3">
+              <a href="{:U('detail/'.$list['id'])}" title="{$list.title}" target="_blank">
+                <div><img src="__IMG__/2015061748152085.jpg"></div>
+                <p>{$list.title}</p>
+              </a>
+            </div>
+        </article:list>
+        </div>
+        
+        <div class="clearfix margin-top list_page">
+        <article:page cate="$category['id']" listrow="$category['list_row']" />
+        </div>
+        
+    </div>
+</div>
+</block>
