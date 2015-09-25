@@ -1,5 +1,20 @@
 <extend name="Base/common"/>
 
+<block name="header">
+    <div class="breadcrumb-container">
+        <div class="container">  
+            <div class="row">  
+                <div class="col-md-12">
+                    <h1>{$info.title}</h1>
+                    <ol class="breadcrumb">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="{:U('search/'.$keyword)}"> "{$keyword}"搜索结果</a></li>
+                    </ol>
+                </div>  
+            </div> 
+        </div> 
+    </div>
+</block>
 
 <block name="body">
 
@@ -18,17 +33,11 @@
                     <form action="{:U('Article/search')}" method="post">
                         <div class="input-group">
                             <input type="text" class="form-control no-border-right" name="keyword">
-                            <span class="input-group-btn"><button class="btn" type="submit"><i class="fa fa-search"></i></button></span>
+                            <span class="input-group-btn">
+                            <button class="btn" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
                         </div>
                     </form>
-
-                    <div class="space40"></div>
-
-                    <h4>产品分类</h4>
-                    <ul class="list-2">
-                    {:W('Category/lists', array($category['id'], ACTION_NAME == 'index'))}
-                    </ul>
-
                 </div>  
 
             </div>
@@ -38,7 +47,7 @@
 
                 <section id="portfolio-items">            
                     <ul class="row portfolio boxed popup-gallery">   
-                    <article:list name="list" category="$category['id']" child="true" row="$category['list_row']">
+                    <volist name="rs" id="list">
                         <li> 
                             <!-- Gallery Item -->
                             <article class="col-md-3 col-sm-3 col-xs-6 project boxed-project" data-tags="bootstrap,html">
@@ -58,8 +67,7 @@
                             </article>
                             <!-- Gallery Item End -->
                         </li> 
-                    </article:list>
-
+                    </volist>
                     </ul>              
                 </section>
 

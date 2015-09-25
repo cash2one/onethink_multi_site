@@ -1,46 +1,46 @@
 <!-- Header -->
 <header> 
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="top-container">
-          <!-- Logo -->                       
-          <a href="/" class="logo" title="Home"><img src="__IMG__/logo.png" alt=""></a> 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="top-container">
+                    <!-- Logo -->                       
+                    <a href="/" class="logo" title="Home"><img src="__IMG__/logo.png" alt=""></a> 
 
-          <!-- Top Items --> 
-          <ul class="top-items">
-            <li><i class="fa fa-lightbulb-o"></i>电话: 027-8888 8888</li>
-            <li class="red"><i class="fa fa-envelope-o"></i><a href="mailto:info@yoursite.com" class="red">info@yoursite.com</a></li>
-          </ul>
-          <!-- Top Items End --> 
-        </div>
-      </div> 
+                    <!-- Top Items --> 
+                    <ul class="top-items">
+                        <li><i class="fa fa-lightbulb-o"></i>电话: 027-8888 8888</li>
+                        <li class="red"><i class="fa fa-envelope-o"></i><a href="mailto:info@yoursite.com" class="red">info@yoursite.com</a></li>
+                    </ul>
+                    <!-- Top Items End --> 
+                </div>
+            </div> 
+        </div> 
     </div> 
-  </div> 
 
-  <!-- Nav -->
-  <nav class="navbar" role="navigation">
-    <div class="navbar-inner">
-      <div class="container">     
-        <!-- Menu -->
-        <ul class="nav navbar-nav" id="nav">
-        <think:nav name="nav">
-        <eq name="nav.pid" value="0">
-          <li <eq name="nav.url|get_nav_url" value="__SELF__">class="selected"</eq> >  <!--  class="current"--> 
-          <a href="{$nav.url|get_nav_url}" target="<eq name='nav.target' value='1'>_blank<else/>_self</eq>">{$nav.title}
-          <span>{$nav.name}</span>
-          </a>
-          </li>
-        </eq>
-        </think:nav>
+    <!-- Nav -->
+    <nav class="navbar" role="navigation">
+        <div class="navbar-inner">
+            <div class="container">     
+                <!-- Menu -->
+                <ul class="nav navbar-nav" id="nav">
+                <think:nav name="nav">
+                <eq name="nav.pid" value="0">
+                    <li <eq name="nav.url|get_nav_url" value="__SELF__">class="selected"</eq> >  <!--  class="current"--> 
+                        <a href="{$nav.url|get_nav_url}" target="<eq name='nav.target' value='1'>_blank<else/>_self</eq>">{$nav.title}
+                        <span>{$nav.name}</span>
+                        </a>
+                    </li>
+                </eq>
+                </think:nav>
 
-        </ul>
-        <!-- Menu End -->    
-      </div> 
-    </div>  
-  </nav>
-  <!-- Nav End -->
+                </ul>
+                <!-- Menu End -->    
+            </div> 
+        </div>  
+    </nav>
+    <!-- Nav End -->
   
 </header>
 <!-- Header End -->
