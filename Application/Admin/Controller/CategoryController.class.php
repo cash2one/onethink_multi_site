@@ -249,7 +249,6 @@ class CategoryController extends AdminController {
 
     }
 
-
     /**
      * 分类排序
      */
