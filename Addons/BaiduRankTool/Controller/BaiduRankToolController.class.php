@@ -30,7 +30,7 @@ class BaiduRankToolController extends AddonsController{
 			'site_url' => $site_url
 		);
 
-		$list = $SiteKeywordRank->where($data)->select();
+		$list = $SiteKeywordRank->where($data)->order('datetime desc')->limit(30)->select();
 
 		foreach( $list as $k=>$item ){
 			$date = $item['datetime'];
@@ -49,6 +49,70 @@ class BaiduRankToolController extends AddonsController{
 		$this->display();
 	}	
 
+	public function showAll(){
+		$class = get_addon_class('BaiduRankTool');
+        if(!class_exists($class))
+            $this->error('插件不存在');
+        $addon = new $class();
+        $param = $addon->admin_list;
+        extract($param);
+        if(!isset($fields))
+            $fields = '*';
+        if(!isset($search_key))
+            $key = 'title';
+        else
+            $key = $search_key;
+
+
+        $model  =   D("Addons://{$name}/{$model}");
+        // 条件搜索
+        $map    =   array();
+        foreach($_REQUEST as $name=>$val){
+            if($fields == '*'){
+                $fields = $model->getDbFields();
+            }
+            if(in_array($name, $fields)){
+                $map[$name] = $val;
+            }
+        }
+        if(!isset($order))  $order = '';
+        $list = $model->field($fields)->select();
+
+        $fields = array();
+        foreach ($list_grid as &$value) {
+            // 字段:标题:链接
+            $val = explode(':', $value);
+            // 支持多个字段显示
+            $field = explode(',', $val[0]);
+            $value = array('field' => $field, 'title' => $val[1]);
+            if(isset($val[2])){
+                // 链接信息
+                $value['href'] = $val[2];
+                // 搜索链接信息中的字段信息
+                preg_replace_callback('/\[([a-z_]+)\]/', function($match) use(&$fields){$fields[]=$match[1];}, $value['href']);
+            }
+            if(strpos($val[1],'|')){
+                // 显示格式定义
+                list($value['title'],$value['format']) = explode('|',$val[1]);
+            }
+            foreach($field as $val){
+                $array = explode('|',$val);
+                $fields[] = $array[0];
+            }
+        }
+
+        $this->meta_title = '按站点分类显示';
+		
+		$this->assign('name', 'BaiduRankTool');
+        $this->assign('model', $model->model);
+        $this->assign('list_grid', $list_grid);
+        $this->assign('_list', $list);
+
+        $this->assign('execute', $this->fetch($addon->addon_path.'View/showAll.html'));
+        Cookie('__forward__',$_SERVER['REQUEST_URI']);
+		$this->display();
+
+	}
 	/**
 	 * 按站点分类显示
 	 * @return 
