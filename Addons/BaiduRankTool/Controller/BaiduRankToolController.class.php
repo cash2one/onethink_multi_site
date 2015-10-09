@@ -226,6 +226,7 @@ class BaiduRankToolController extends AddonsController{
 		if( $searched ){
 			$SiteKeywordRank->where($data)->setField('rank', $now_rank);
 		}else{
+            $data['rank'] = $now_rank;
 			$SiteKeywordRank->add($data);
 		}
 
