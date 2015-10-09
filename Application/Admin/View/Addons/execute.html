@@ -1,0 +1,46 @@
+<extend name="Public/base"/>
+
+<block name="style">
+	<link rel="stylesheet" href="__STATIC__/plugins/data-tables/DT_bootstrap.css" />
+</block>
+
+<block name="body">
+    
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption"><i class="fa fa-globe"></i>{$title}内容列表</div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"></a>
+                        <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                        <a href="javascript:;" class="reload"></a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <present name="execute">
+                        {$execute}
+                    </present>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+</block>
+
+<block name="script">
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="__STATIC__/plugins/data-tables/DT_bootstrap.js"></script>
+	<!-- END PAGE LEVEL PLUGINS -->
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script src="__STATIC__/scripts/app.js"></script>
+	<script src="__STATIC__/scripts/table-managed.js"></script>     
+	<script>
+		jQuery(document).ready(function() {       
+		   App.init();
+		   TableManaged.init();
+		});
+	</script>
+</block>

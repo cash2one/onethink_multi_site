@@ -1,0 +1,27 @@
+<div class="table-toolbar">
+
+    <div class="btn-group"> 
+        <a class="btn green" href="{:U('Addons/execute',array('_addons'=>'BaiduRankTool','_controller'=>'BaiduRankTool','_action'=>'showAll'))}">查看全部</a>
+        <a class="btn green" href="{:U('Addons/execute',array('_addons'=>'BaiduRankTool','_controller'=>'BaiduRankTool','_action'=>'bysite'))}">分站点查看</a>
+    </div>
+</div>
+
+<table class="table table-striped table-bordered table-hover" id="sample_{$index}">
+    <thead>
+        <tr>
+            <th colspan='2'>域名：{$keywords.site_url},关键词：{$keywords.keyword}</th>
+        </tr>
+        <tr>
+            <th>日期</th>
+            <th>排名</th>
+        </tr>
+    </thead>
+    <tbody>
+        <volist name="list" id="vo">
+        <tr>
+            <td>{$vo.datetime}</td>
+            <td>{$vo.rank}</td>
+        </tr>
+        </volist>
+    </tbody>
+</table>
