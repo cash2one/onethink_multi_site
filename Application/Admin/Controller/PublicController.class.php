@@ -86,7 +86,7 @@ class PublicController extends \Think\Controller {
     }
 
     public function baidurank(){
-        if(true){
+        if(IS_CLI){
             if(C('URL_CASE_INSENSITIVE')){
                 $_addons        =   ucfirst(parse_name('BaiduRankTool', 1));
                 $_controller    =   parse_name('BaiduRankTool',1);
