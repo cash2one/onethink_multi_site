@@ -1,0 +1,23 @@
+<table class="table table-striped table-bordered table-hover" id="sample_{$index}">
+    <thead>
+        <tr>
+            <th colspan='2'>域名：{$keywords.site_url},关键词：{$keywords.keyword}</th>
+        </tr>
+        <tr>
+            <th>日期</th>
+            <th>排名</th>
+        </tr>
+    </thead>
+    <tbody>
+        <volist name="list" id="vo">
+        <tr>
+            <td>{$vo.datetime}</td>
+            <td>{$vo.rank}</td>
+        </tr>
+        </volist>
+    </tbody>
+</table>
+
+<div class="page">
+    {$_page}
+</div>
