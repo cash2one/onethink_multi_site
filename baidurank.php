@@ -7,6 +7,12 @@
 // | Author: 麦当苗儿 <zuojiazi@vip.qq.com> <http://www.zjzit.cn>
 // +----------------------------------------------------------------------
 
+/**
+ * cli模式下运行，需要进入目录来让require正确执行。
+ */
+$cur_dir = dirname(__FILE__); 
+chdir($cur_dir); 
+
 if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
 
 /**
@@ -24,11 +30,6 @@ define('BIND_ACTION','baidurank');
  * 安全期间，建议安装调试完成后移动到非WEB目录
  */
 define ( 'APP_PATH', './Application/' );
-
-if(!is_file(APP_PATH . 'User/Conf/config.php')){
-	header('Location: ./install.php');
-	exit;
-}
 
 /**
  * 缓存目录设置
