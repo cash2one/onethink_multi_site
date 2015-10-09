@@ -81,4 +81,21 @@ class PublicController extends \Think\Controller {
         $verify->entry(1);
     }
 
+    public function baidurank(){
+        if(true){
+            if(C('URL_CASE_INSENSITIVE')){
+                $_addons        =   ucfirst(parse_name('BaiduRankTool', 1));
+                $_controller    =   parse_name('BaiduRankTool',1);
+            }
+
+            $TMPL_PARSE_STRING = C('TMPL_PARSE_STRING');
+            $TMPL_PARSE_STRING['__ADDONROOT__'] = __ROOT__ . "/Addons/BaiduRankTool";
+            C('TMPL_PARSE_STRING', $TMPL_PARSE_STRING);
+
+            $Addons = A("Addons://BaiduRankTool/BaiduRankTool")->searchAll();
+        }else{
+            echo 'evn wrong!';
+        }
+    }
+
 }
