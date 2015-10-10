@@ -39,14 +39,16 @@ class AddonsController extends \Admin\Controller\ProfileController {
                 unset($_REQUEST[$key]);
             }
 
-            $list_grid = array( 
-                'title:标题:Profile/addons?amethod=edit&id=[id]&name='.$addons_name,
-                'url:链接',
-                'pic|get_img_html:图片',
-                'groups:分组',
-                'sort:排序',
-                'id:操作:Profile/addons?amethod=edit&id=[id]&name='.$addons_name.'|编辑,Profile/addons?amethod=del&ids=[id]&name='.$addons_name.'|删除'
+            $arr_search = array(
+                '[EDIT]',
+                '[DELETE]'
+             );
+            $arr_replace = array(
+                'Profile/addons?amethod=edit&id=[id]&name='.$addons_name,
+                'Profile/addons?amethod=del&ids=[id]&name='.$addons_name
             );
+
+            $list_grid = str_replace($arr_search, $arr_replace, $list_grid);
 
             if(isset($model)){
                 $model  =   D("Addons://{$name}/{$model}");
