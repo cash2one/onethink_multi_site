@@ -17,6 +17,37 @@ class BaiduRankToolController extends AddonsController{
         $this->_config = $this->addon->getConfig();
     }
 
+    public function sort(){
+        if(IS_GET){
+            $ids        =   I('get.ids');
+
+            //获取排序的数据
+            $map['status'] = array('gt',-1);
+            if(!empty($ids)){
+                $map['id'] = array('in',$ids);
+            }
+            $list = M('SiteKeyword')->where($map)->field('id,keyword')->order('sort DESC,id DESC')->select();
+
+            $this->assign('list', $list);
+            $this->meta_title = '关键词排序';
+            $this->assign('execute', $this->fetch($this->addon->addon_path.'View/sort.html'));
+            $this->display();
+        }elseif (IS_POST){
+            $ids = I('post.ids');
+            $ids = array_reverse(explode(',', $ids));
+            foreach ($ids as $key=>$value){
+                $res = M('SiteKeyword')->where(array('id'=>$value))->setField('sort', $key+1);
+            }
+            if($res !== false){
+                $this->success('排序成功！');
+            }else{
+                $this->error('排序失败！');
+            }
+        }else{
+            $this->error('非法请求！');
+        }
+    }
+
 	public function history(){
 		$id = I('_id');
 
@@ -78,7 +109,7 @@ class BaiduRankToolController extends AddonsController{
             }
         }
         if(!isset($order))  $order = '';
-        $list = $model->field($fields)->select();
+        $list = $model->field($fields)->order('sort desc, id desc')->select();
 
         $fields = array();
         foreach ($list_grid as &$value) {
@@ -143,7 +174,7 @@ class BaiduRankToolController extends AddonsController{
             }
         }
         if(!isset($order))  $order = '';
-        $list = $model->field($fields)->select();
+        $list = $model->field($fields)->order('sort desc, id desc')->select();
 
         $_list = array();
         foreach($list as $item){
