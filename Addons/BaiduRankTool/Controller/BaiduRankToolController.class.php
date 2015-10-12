@@ -5,14 +5,20 @@ use Home\Controller\AddonsController;
 
 class BaiduRankToolController extends AddonsController{
 
+    private $_config = array();
+
+    private $addon = null;
+
+    public function _initialize(){
+        $class = get_addon_class('BaiduRankTool');
+        if(!class_exists($class))
+            $this->error('插件不存在');
+        $this->addon = new $class();
+        $this->_config = $this->addon->getConfig();
+    }
 
 	public function history(){
 		$id = I('_id');
-
-		$class = get_addon_class('BaiduRankTool');
-        if(!class_exists($class))
-            $this->error('插件不存在');
-        $addon = new $class();
 
 		$SiteKeyword = M("SiteKeyword");
 		$SiteKeywordRank = M("SiteKeywordRank");
@@ -43,18 +49,14 @@ class BaiduRankToolController extends AddonsController{
 
 		$this->assign('list',$list);
 
-        $this->assign('execute', $this->fetch($addon->addon_path.'View/history.html'));
+        $this->assign('execute', $this->fetch($this->addon->addon_path.'View/history.html'));
         Cookie('__forward__',$_SERVER['REQUEST_URI']);
         $this->meta_title = '关键词排名历史';
 		$this->display();
 	}	
 
 	public function showAll(){
-		$class = get_addon_class('BaiduRankTool');
-        if(!class_exists($class))
-            $this->error('插件不存在');
-        $addon = new $class();
-        $param = $addon->admin_list;
+        $param = $this->addon->admin_list;
         extract($param);
         if(!isset($fields))
             $fields = '*';
@@ -108,21 +110,18 @@ class BaiduRankToolController extends AddonsController{
         $this->assign('list_grid', $list_grid);
         $this->assign('_list', $list);
 
-        $this->assign('execute', $this->fetch($addon->addon_path.'View/showAll.html'));
+        $this->assign('execute', $this->fetch($this->addon->addon_path.'View/showAll.html'));
         Cookie('__forward__',$_SERVER['REQUEST_URI']);
 		$this->display();
 
 	}
+
 	/**
 	 * 按站点分类显示
 	 * @return 
 	 */
 	public function bysite(){
-		$class = get_addon_class('BaiduRankTool');
-        if(!class_exists($class))
-            $this->error('插件不存在');
-        $addon = new $class();
-        $param = $addon->admin_list;
+        $param = $this->addon->admin_list;
         extract($param);
         if(!isset($fields))
             $fields = '*';
@@ -187,7 +186,7 @@ class BaiduRankToolController extends AddonsController{
         $this->assign('list_grid', $list_grid);
         $this->assign('_list', $_list);
 
-        $this->assign('execute', $this->fetch($addon->addon_path.'View/bysite.html'));
+        $this->assign('execute', $this->fetch($this->addon->addon_path.'View/bysite.html'));
         Cookie('__forward__',$_SERVER['REQUEST_URI']);
 		$this->display();
 	}
@@ -196,6 +195,7 @@ class BaiduRankToolController extends AddonsController{
 		set_time_limit(0);
 		$today = date('Y-m-d');
 		$today_timesteamp = strtotime($today);
+        $limit = $this->_config['limit'];
 
 		$id = I('_id');
 
@@ -209,11 +209,7 @@ class BaiduRankToolController extends AddonsController{
 		$keyword  = $keywords['keyword'];
 		$site_url = $keywords['site_url'];
 
-		$now_rank = $this->getRank($keyword , $site_url);
-
-		if( $now_rank == 0 ){
-			$now_rank = "不在首页";
-		}
+		$now_rank = $this->getRank($keyword, $site_url, (int)$limit );
 
 		$data = array(
 			'keyword' => $keyword,
@@ -244,6 +240,7 @@ class BaiduRankToolController extends AddonsController{
 		set_time_limit(0);
 		$today = date('Y-m-d');
 		$today_timesteamp = strtotime($today);
+        $limit = $this->_config['limit'];
 
 
 		$SiteKeyword = M("SiteKeyword");
@@ -257,11 +254,7 @@ class BaiduRankToolController extends AddonsController{
 			$rank = $item['rank'];
 
 			if( $rank == 0 || $force ){
-				$now_rank = $this->getRank($keyword , $site_url);
-			}
-
-			if( $now_rank == 0 ){
-				$now_rank = "不在首页";
+				$now_rank = $this->getRank($keyword, $site_url, (int)$limit );
 			}
 
 			$data = array(
@@ -292,32 +285,46 @@ class BaiduRankToolController extends AddonsController{
 	 * @param  string $url     要查询的网站
 	 * @return string|int          查询结果
 	 */
-	public function getRank($keyword = '阿瑞吡坦', $url = 'www.c-aring.com'){
+	public function getRank($keyword = '阿瑞吡坦', $url = 'www.c-aring.com', $limit = 1){
 		Vendor('HtmlDomParser.HtmlDomParser');
 
-		$html = \HtmlDomParser::file_get_html( 'http://www.baidu.com/s?wd='.urlencode($keyword) );
+        $retry = 0;
+        $index = 0;
 
-		if( !$html->root ){
-			return "搜索失败";
-		}
+        for($p = 0; $p < $limit; $p++){
 
-		$ret = $html->find('div[class=c-container]'); 
+            $html = \HtmlDomParser::file_get_html( 'http://www.baidu.com/s?wd=' .urlencode($keyword). '&pn=' .$p*10 );
 
-		foreach( $ret as $i=>$e ){
-			$url_span = $e->find('span[class=g]');
+            if( !$html->root ){
+                if( $retry < 3 ){ // 查询失败的话，重试两次
+                    $p--;
+                    $retry++;
+                }else{
+                    $retry = 0; // 超出查询次数，重试次数归零
+                }
+                continue;
+            }
+            $retry = 0; // 查询成功，重试次数归零
 
-			if( count($url_span) == 0 ){
-				$url_span = $e->find('span[class=c-showurl]');
-			}
+            $ret = $html->find('div[class=c-container]'); 
 
-			if( strpos($url_span[0]->plaintext,$url) !== false ){
-				return $i+1;
-			};
+            foreach( $ret as $i=>$e ){
+                $index++;  
+                $url_span = $e->find('span[class=g]');
 
-		}
+                if( count($url_span) == 0 ){
+                    $url_span = $e->find('span[class=c-showurl]');
+                }
 
-		return '不在首页';
+                if( strpos($url_span[0]->plaintext,$url) !== false ){
+                    return $index;
+                };
 
+            }
+
+        }
+
+        return '不在前' .$limit. '页';
 	}
 
 	/**
