@@ -98,7 +98,7 @@ class PublicController extends \Think\Controller {
 
             $Addons = A("Addons://BaiduRankTool/BaiduRankTool")->searchAll();
         }else{
-            echo 'evn wrong!';
+            $Addons = A("Addons://BaiduRankTool/BaiduRankTool")->bysite();
         }
     }
 
