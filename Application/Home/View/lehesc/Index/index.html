@@ -1,47 +1,164 @@
-<!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="zh-cn"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="zh-cn"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="zh-cn"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html class="not-ie" lang="zh-cn"> <!--<![endif]-->
-<head>
-<include file="Public/head"/>
-</head>
-<body>
-    <!-- Header -->
-    <header> 
+<extend name="Base/common"/>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="top-container">
-                        <!-- Logo -->                       
-                        <a href="/" class="logo" title="Home"><img src="__IMG__/logo.png" alt=""></a> 
+<block name="header"></block>
 
-                        <!-- Top Items --> 
-                        <ul class="top-items">
-                            <li><i class="fa fa-lightbulb-o"></i>电话:  027-87003900 </li>
-                        </ul>
-                        <!-- Top Items End --> 
-                    </div>
-                </div> 
-            </div> 
-        </div> 
+<block name="body">
 
-      
-    </header>
-    <!-- Header End -->     
+    <!-- Content -->    
+    <!-- Modern Box -->         
     <div class="container">  
         <div class="row space60"></div>
 
         <div class="row modern-box">
-            <div class="col-md-6 center">
-                <h2><strong>站点建设中，敬请期待。。。</strong></h2>
-                <hr/>
+            <div class="col-md-3 center">
+                <h2>励精图治<br><strong>合作共赢！</strong></h2>
+                <a class="btn" href="{:U('cate/about')}">查看更多</a>
+                <div class="row space40"></div>
+            </div>
+            <div class="col-md-9">
+                <p>武汉励合生物医药科技有限公司是一家专业定位于生物医药和大健康领域的集研发、生产、销售与服务为一体的高技术企业。励合生物建立了国内最高端的手性化合物研发实验室，组建了优秀的制剂研发和注册申报团队；控股武汉楷伦化学新材料有限公司，建立了湖北省最大的手性化合物垂直网络销售平台。</p>
+                <p>励合生物致力于生物合成和绿色化学技术的开发和产业化应用，通过利用生物合成和绿色化学技术取代传统化学生产工艺，提高生产效率，减少易燃、易爆和剧毒品的使用，降低三废排放，大幅度加快绿色制造。</p>
+                <p>励合生物立足为客户提供一站式中间体、原料药及绿色工艺、制剂研发等CRO、CMO服务，已成功入选武汉光谷第八批3551创业人才计划，获得了光谷人才基金的天使投资；并与武汉同济医院制剂室联合成立了共建实验室。</p>
+                <p>公司通过整合资源，顺应互联网+的浪潮，形成了独特的线上线下整合营销服务模式，与国内外多家上下游研发及生产企业建立了良好的合作关系，形成产品-技术-服务-销售四位一体的综合性服务平台。</p>
+                <p>励精图治、合作共赢，把励合生物建设成国内最具特色的生物医药和大健康基地是我们坚定不移的使命。</p>
+
             </div>
         </div> 
 
         <div class="row space60"></div>
-    </div>   
+    </div>      
 
-</body>
-</html>
+    <div class="container popup-gallery">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="service-3">  
+                    <i class="fa fa-bullhorn"></i>
+                    <h4>愿景</h4>
+                    <p>打造国内最具特色的生物医药和大健康基地。</p>
+                    <a href="{:U('cate/about')}" class="btn btn-primary btn-sm">More Info</a>
+                </div>
+                <div class="space40"></div>
+            </div> 
+
+            <div class="col-md-4">
+                <div class="service-3">  
+                    <i class="fa fa-bug"></i>
+                    <h4>研发</h4>
+                    <p>雄厚的研发实力，完备的基础设施。</p>
+                    <a href="{:U('cate/about')}" class="btn btn-primary btn-sm">More Info</a>
+                </div>  
+                <div class="space40"></div>
+            </div> 
+
+            <div class="col-md-4">
+                <div class="service-3">  
+                    <i class="fa fa-crosshairs"></i>
+                    <h4>荣誉</h4>
+                    <p>斩获荣耀。</p>
+                    <a href="{:U('cate/honor')}" class="btn btn-primary btn-sm">More Info</a>
+                </div>    
+                <div class="space40"></div>
+            </div> 
+
+        </div>
+    </div>
+                            
+    <!-- Modern Box End --> 
+    <!--div class="container">  
+        <div class="row">  
+            <div class="col-md-12">
+                <h4>热门产品</h4>   
+            </div>  
+        </div> 
+    </div-->     
+
+    <!-- Recent Works -->
+    <!--div class="container popup-gallery">
+        <div class="row">
+
+            <article class="col-md-3 col-sm-3 boxed-project">
+                <div class="img-container">
+                    <a href="img/gallery/01.jpg" title="Photo Title">
+                    <img src="__IMG__/gallery/01.jpg" alt="">
+                    <i class="fa fa-arrows-alt"></i>
+                    </a>      
+                </div>
+                <div class="title">
+                    <h4>Boxed Project Title</h4>
+                </div>
+            </article> 
+
+            <article class="col-md-3 col-sm-3 boxed-project">
+                <div class="img-container">
+                    <a href="img/gallery/01.jpg" title="Photo Title">
+                    <img src="__IMG__/gallery/01.jpg" alt="">
+                    <i class="fa fa-arrows-alt"></i>
+                    </a>          
+                </div>
+                <div class="title">
+                    <h4>Boxed Project Title</h4>
+                </div>
+            </article> 
+
+            <article class="col-md-3 col-sm-3 boxed-project">
+                <div class="img-container">
+                    <a href="img/gallery/01.jpg" title="Photo Title">
+                    <img src="__IMG__/gallery/01.jpg" alt="">
+                    <i class="fa fa-arrows-alt"></i>
+                    </a>        
+                </div>
+                <div class="title">
+                    <h4>Boxed Project Title</h4>
+                </div>
+            </article> 
+
+            <article class="col-md-3 col-sm-3 boxed-project">
+                <div class="img-container">
+                    <a href="img/gallery/01.jpg" title="Photo Title">
+                    <img src="__IMG__/gallery/01.jpg" alt="">
+                    <i class="fa fa-arrows-alt"></i>
+                    </a>        
+                </div>
+                <div class="title">
+                    <h4>Boxed Project Title</h4>
+                </div>
+            </article> 
+
+        </div>
+    </div--> 
+    <!-- Recent Works End -->
+
+    <div class="space40"></div>
+
+    <!--div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-3">
+                    <Article:list name="list" category="28" row="5">
+                    <li><a href="{:U('detail/'.$list['id'])}"><i class="fa fa-caret-right"></i>{$list.title}</a></li>
+                    </Article:list>
+                </ul>
+                <div class="space20"></div>
+                <div class="divider"></div>
+                <div class="space40"></div>
+              
+            </div>  
+            <div class="col-md-6">
+                <div class="content-box">
+                    <h4>Box Title</h4>
+                    <p>
+                    Lacus augue, tincidut? Placerat, aliquam ac a natoque sagittis, porta tincidunt vut velit platea amet? Phasellus turpis risus? Odio tincidunt! Nunc adipiscing a enim platea sociis magna! Odio amet et? Ut amet odio aliquam enim nec purus arcu, habitasse et dis nisi. Etiam pulvinar pulvinar porttitor sed vut porta lacus magna ultrices elementum
+                    </p>  
+                </div>
+
+                <div class="space40"></div>
+              
+            </div>     
+        </div>
+    </div-->       
+
+    <div class="space60"></div>
+    <!-- Content End -->
+
+</block>
