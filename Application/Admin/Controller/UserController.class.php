@@ -202,6 +202,12 @@ class UserController extends AdminController {
 
     public function add($username = '', $password = '', $repassword = '', $email = ''){
         if(IS_POST){
+            
+            $username = I('post.username'); 
+            $password = I('post.password'); 
+            $repassword = I('post.repassword'); 
+            $email = I('post.email');
+
             /* 检测密码 */
             if($password != $repassword){
                 $this->error('密码和重复密码不一致！');
