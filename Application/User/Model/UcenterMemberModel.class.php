@@ -23,7 +23,14 @@ class UcenterMemberModel extends Model{
 	 * @var string
 	 */
 	protected $connection = UC_DB_DSN;
-
+	
+	/*
+	 * 盐长度
+	 */
+	protected $_salt_length = 4;
+	protected $_salt_value;
+	
+	
 	/* 用户模型自动验证 */
 	protected $_validate = array(
 		/* 验证用户名 */
@@ -48,11 +55,12 @@ class UcenterMemberModel extends Model{
 
 	/* 用户模型自动完成 */
 	protected $_auto = array(
-		array('password', 'think_ucenter_md5', self::MODEL_BOTH, 'function', UC_AUTH_KEY),
+		array('password', 'pwdEncode', self::MODEL_INSERT, 'callback'),
 		array('reg_time', NOW_TIME, self::MODEL_INSERT),
 		array('reg_ip', 'get_client_ip', self::MODEL_INSERT, 'function', 1),
 		array('update_time', NOW_TIME),
 		array('status', 'getStatus', self::MODEL_BOTH, 'callback'),
+		array('salt', 'getSalt', self::MODEL_INSERT, 'callback'),
 	);
 
 	/**
@@ -89,7 +97,32 @@ class UcenterMemberModel extends Model{
 	protected function getStatus(){
 		return true; //TODO: 暂不限制，下一个版本完善
 	}
+	
+	/**
+	 * 密码加密
+	 * @return integer 
+	 */
+	protected function pwdEncode($password_in){
+		$this->setSalt();
+		return think_ucenter_md5($password_in,$this->getSalt());
+	}
 
+	/**
+	 * 随机盐
+	 * @return integer 用户状态
+	 */
+	protected function setSalt(){
+		$len = $this->_salt_length;
+		$this->_salt_value = randCode($len);
+	}
+	
+	/**
+	 * 获取盐
+	 */
+	protected function getSalt(){
+		return $this->_salt_value;
+	}
+	
 	/**
 	 * 注册一个新用户
 	 * @param  string $username 用户名
@@ -108,7 +141,6 @@ class UcenterMemberModel extends Model{
 
 		//验证手机
 		if(empty($data['mobile'])) unset($data['mobile']);
-
 		/* 添加用户 */
 		if($this->create($data)){
 			$uid = $this->add();
@@ -147,8 +179,11 @@ class UcenterMemberModel extends Model{
 		/* 获取用户数据 */
 		$user = $this->where($map)->find();
 		if(is_array($user) && $user['status']){
+			if(empty($user['salt'])){
+				$user['salt'] = UC_AUTH_KEY;
+			}
 			/* 验证用户密码 */
-			if(think_ucenter_md5($password, UC_AUTH_KEY) === $user['password']){
+			if(think_ucenter_md5($password, $user['salt']) === $user['password']){
 				$this->updateLogin($user['id']); //更新用户登录信息
 				return $user['id']; //登录成功，返回用户ID
 			} else {
@@ -174,12 +209,42 @@ class UcenterMemberModel extends Model{
 		}
 
 		$user = $this->where($map)->field('id,username,email,mobile,status')->find();
-		if(is_array($user) && $user['status'] == 1){
+		if(is_array($user) && $user['status'] = 1){
 			return array($user['id'], $user['username'], $user['email'], $user['mobile']);
 		} else {
 			return -1; //用户不存在或被禁用
 		}
 	}
+	
+	/**
+	 * 获取用户状态
+	 */
+	public function getUserStatus($uid, $is_username = false){
+		$map = array();
+		if($is_username){ //通过用户名获取
+			$map['username'] = $uid;
+		} else {
+			$map['id'] = $uid;
+		}
+
+		return $this->where($map)->getField('status');
+	}
+	
+	/**
+	 * 获取用户盐
+	 */
+	public function getUserSalt($uid, $is_username = false){
+		$map = array();
+		if($is_username){ //通过用户名获取
+			$map['username'] = $uid;
+		} else {
+			$map['id'] = $uid;
+		}
+
+		return $this->where($map)->getField('salt');
+	}
+	
+
 
 	/**
 	 * 检测用户信息
@@ -238,7 +303,11 @@ class UcenterMemberModel extends Model{
 			$this->error = '验证出错：密码不正确！';
 			return false;
 		}
-
+		
+		if(!isset($data['password'])){
+			$data['id'] = $uid;
+		}
+		
 		//更新用户信息
 		$data = $this->create($data);
 		if($data){
@@ -256,10 +325,72 @@ class UcenterMemberModel extends Model{
 	 */
 	protected function verifyUser($uid, $password_in){
 		$password = $this->getFieldById($uid, 'password');
-		if(think_ucenter_md5($password_in, UC_AUTH_KEY) === $password){
+		$salt = $this->getFieldById($uid, 'salt');
+		if(!$salt){
+			$salt = UC_AUTH_KEY ;
+		}
+		if(think_ucenter_md5($password_in, $salt) === $password){
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 冻结用户
+	 */
+	public function freeze($uid){
+		return $this->where(array('id'=>$uid))->setField('status',0);
+	}
+	
+	/**
+	 * 初次激活用户
+	 */
+	public function active($uid,$data){
+		if(empty($uid) ||  empty($data)){
+			$this->error = '参数错误！';
+			return false;
+		}
+		
+		//更新用户信息
+		$data = $this->create($data);
+		if($data){
+			return $this->where(array('id'=>$uid))->save($data);
+		}
+		return false;
+	}
+	
+	/**
+	 * 找回密码
+	 */
+	public function lostpwd($email){
+		if(!empty($email)){
+			$map = array();
+			$map['email'] = $email;
+			return $this->where($map)->getField('id');
+		}
+		return false;
+	}
+	
+	/**
+	 * 重设密码
+	 */
+	public function setpwd($uid,$password_in){
+		$map = array();
+		$map['id'] = $uid;
+		
+		// 更新信息，而不是新增信息 
+		$data['password'] = $password_in;
+		$data['status'] = 1;
+		
+		//更新用户信息
+		$data = $this->create($data);
+		
+		if($data){
+			return $this->where(array('id'=>$uid))->save($data);
+		}
+		
+		return true;
+
 	}
 
 }

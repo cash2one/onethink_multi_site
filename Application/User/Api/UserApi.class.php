@@ -97,4 +97,51 @@ class UserApi extends Api{
         return $return;
     }
 
+	/**
+	 * 获取用户状态
+	 */
+	public function getUserStatus($uid){
+		return $this->model->getUserStatus($uid);
+	}
+
+	/**
+	 * 获取用户盐
+	 */
+	public function getUserSalt($uid){
+		return $this->model->getUserSalt($uid);
+	}
+	
+	/**
+	 * 冻结用户
+	 */
+	public function freeze($uid){
+		return $this->model->freeze($uid);
+	}
+	
+	/**
+	 * 初次激活用户
+	 */
+	public function active($uid,$data){
+		if($this->model->active($uid,$data) !== false){
+            $return['status'] = true;
+        }else{
+            $return['status'] = false;
+            $return['info'] = $this->model->getError();
+        }
+        return $return;
+	}
+	
+	/**
+	 * 找回密码
+	 */
+	public function lostpwd($email){
+		return $this->model->lostpwd($email);
+	}
+	
+	/**
+	 * 重设密码
+	 */
+	public function setpwd($uid,$password_in){
+		return $this->model->setpwd($uid,$password_in);
+	}
 }
