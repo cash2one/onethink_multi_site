@@ -926,6 +926,7 @@ function get_link($link_id = null, $field = 'url'){
  * @return 完整的数据  或者  指定的$field字段值
  * @author huajie <banhuajie@163.com>
  */
+/*
 function get_cover($cover_id, $field = null){
     if(empty($cover_id)){
         return false;
@@ -940,6 +941,11 @@ function get_cover($cover_id, $field = null){
     }
     return empty($field) ? $picture : $picture[$field];
 }
+*/
+function get_cover($cover_id){
+    return "http://img.ikl8.com/p/".$cover_id;
+}
+
 
 /**
  * 检查$pos(推荐位的值)是否包含指定推荐位$contain
